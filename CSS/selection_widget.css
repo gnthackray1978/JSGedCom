@@ -1,0 +1,72 @@
+﻿
+
+.filterTable
+{
+    /*width: 250px;*/
+  height:75px;
+    max-height: 400px;
+    top: 0px;
+   overflow: auto;
+}
+
+#selection_container {
+    border: thin solid #000000;
+    height: 125px;
+}
+
+  #leftcontent {
+    position: absolute;
+    left:1%;
+    width:20%;
+    top:10px;
+    background:#fff;
+  }
+
+  #centerleftcontent {
+    position: absolute;
+    left:22%;
+    width:28%;
+    top:10px;
+    background:#fff;
+  }
+
+  #centerrightcontent {
+    position: absolute;
+    left:51%;
+    width:28%;
+    top:10px;
+    background:#fff;
+  }
+
+  #rightcontent {
+    position: absolute;
+    left: 80%;
+    width: 19%;
+    top: 10px;
+    background: #fff;
+   
+}
+
+#right_inner {
+
+     margin-top: 10px;
+     margin-left: 25px;
+}
+
+  #rightcontent, #centerrightcontent, #centerleftcontent, #leftcontent {
+  
+  }
+
+
+  .displayPanel
+{
+    display: block;
+    
+}
+    
+.hidePanel
+{
+    display: none;
+        
+    }
+    

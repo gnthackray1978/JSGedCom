@@ -1,0 +1,47 @@
+link to file
+http://local.gnthackray.net:666/Trees/GetTreeDiag?callback=jQuery172024712666007690132_1375481326528&0=c41dfad2-f3d4-4682-9c52-610851c36dc6&_=1375481326998
+
+
+{
+
+
+BirthLocation: "Hunsingore",
+ChildCount: 1,
+ChildIdx: 0,
+ChildIdxLst: [ ],
+ChildLst: [
+"28b13c89-2f06-49de-8e07-dfd0fc6e60d5"
+],
+DOB: "1694",
+DOD: "",
+DeathLocation: "",
+DescendentCount: 2,
+FatherDOB: null,
+FatherId: "ea1395d4-1cbe-4626-93a2-4c1112472fc3",
+FatherIdx: 0,
+GenerationIdx: 1,
+Index: 0,
+IsDisplayed: true,
+IsFamilyEnd: false,
+IsFamilyStart: false,
+IsHtmlLink: false,
+IsParentalLink: true,
+MotherId: "00000000-0000-0000-0000-000000000000",
+MotherIdx: 0,
+Name: "Mary Thackray",
+Occupation: "",
+PersonId: "98965b8d-ce9e-4880-b8bf-bf30110a2f40",
+RelationType: 0,
+SpouseIdxLst: [
+3
+],
+SpouseLst: [
+"a834b5d5-e78f-443d-8b61-8da4911118e8"
+],
+X1: 0,
+X2: 0,
+Y1: 0,
+Y2: 0,
+zoom: 0
+},
+{
