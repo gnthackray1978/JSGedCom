@@ -8,7 +8,14 @@
 Bio.prototype = {
 
     fill: function (person) {
+        
+        if (person.BaptismPlace == undefined) person.BaptismPlace = '';
+        if (person.BirthPlace == undefined) person.BirthPlace = '';
+        if (person.BirthDate == undefined) person.BirthDate = '';
+        if (person.BaptismDate == undefined) person.BaptismDate = '';
+        if (person.name == undefined) person.name = '';
 
+        
 
         try {
             var bio = {
@@ -18,18 +25,23 @@ Bio.prototype = {
                 DOD: person.DeathDate || '',
                 DeathLocation: person.DeathPlace || '',
                 Name: person.name.replace('/', '').replace('/', ''),
-                OccupationDate: person.OccupationDate,
-                OccupationPlace: person.OccupationPlace,
-                Occupation :person.Occupation,
-
+                OccupationDate: person.OccupationDate || '',
+                OccupationPlace: person.OccupationPlace || '',
+                Occupation: person.Occupation || '',
+                FirstName :'',
+                Surname: '',
                 BirthLocation: person.BaptismPlace == '' ? person.BaptismPlace : person.BirthPlace
             };
+
+
 
             var n = person.name.split("/");
 
             if (n.length == 3) {
                 bio.FirstName = n[0];
                 bio.Surname = n[1];
+                
+
             }            
         } catch(e) {
             console.log(person + ' ' + e);

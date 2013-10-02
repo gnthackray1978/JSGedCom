@@ -102,7 +102,7 @@ var DataLoader = {};
                         currentId.OccupationPlace= '';
                         currentId.Occupation = '';
                         currentId.DeathLocation = '';
-
+                        currentId.name = '';
 
                         if (currentId.type == 'FAM') this.families.push(currentId);
 

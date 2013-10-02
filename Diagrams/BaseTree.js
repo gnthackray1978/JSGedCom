@@ -75,6 +75,7 @@ var TreeBase = function () {
     this.selectedPersonId = '';
     this.selectedPersonX = 0;
     this.selectedPersonY = 0;
+    this.treeUI;
 
 };
 
@@ -133,6 +134,9 @@ TreeBase.prototype = {
         this.middleSpan = this.original_middleSpan;
 
         this.topSpan = this.original_topSpan;
+        
+
+
 
     },
     GetTreePerson: function (personId) {
@@ -161,15 +165,16 @@ TreeBase.prototype = {
         var _genidx = 0;
 
 
-        if (this.generations.length > parent.GenerationIdx + 1) {
+        if (this.generations.length > parent.GenerationIdx) {
             _genidx = 0;
-            while (_genidx < this.generations[parent.GenerationIdx + 1].length) {
+            while (_genidx < this.generations[parent.GenerationIdx].length) {
                 // find all the children of the parent
 
-                if (this.generations[parent.GenerationIdx + 1][_genidx].FatherId == parent.PersonId ||
-                        this.generations[parent.GenerationIdx + 1][_genidx].MotherId == parent.PersonId) {
+              
+                if (this.generations[parent.GenerationIdx][_genidx].FatherId == parent.PersonId ||
+                        this.generations[parent.GenerationIdx][_genidx].MotherId == parent.PersonId) {
 
-                    personStack.push(this.generations[parent.GenerationIdx + 1][_genidx]);
+                    personStack.push(this.generations[parent.GenerationIdx][_genidx]);
                 }
 
                 _genidx++;
@@ -185,17 +190,17 @@ TreeBase.prototype = {
             while (spouseIdx < currentTP.SpouseIdxLst.length) {
                 var spIdx = currentTP.SpouseIdxLst[spouseIdx];
 
-                this.generations[currentTP.GenerationIdx][spIdx].IsDisplayed = isDisplay;
+                this.generations[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
                 spouseIdx++;
             }
 
             if (this.generations.length > currentTP.GenerationIdx + 1) {
                 _genidx = 0;
-                while (_genidx < this.generations[currentTP.GenerationIdx + 1].length) {
+                while (_genidx < this.generations[currentTP.GenerationIdx].length) {
                     // find all the children of the currently selected generation
 
-                    if (this.generations[currentTP.GenerationIdx + 1][_genidx].FatherId == currentTP.PersonId || this.generations[currentTP.GenerationIdx + 1][_genidx].MotherId == currentTP.PersonId) {
-                        personStack.push(this.generations[currentTP.GenerationIdx + 1][_genidx]);
+                    if (this.generations[currentTP.GenerationIdx][_genidx].FatherId == currentTP.PersonId || this.generations[currentTP.GenerationIdx][_genidx].MotherId == currentTP.PersonId) {
+                        personStack.push(this.generations[currentTP.GenerationIdx][_genidx]);
                     }
 
                     _genidx++;
@@ -363,7 +368,7 @@ TreeBase.prototype = {
 
         if (mouseLink !== null || buttonLink !== null) {
             document.body.style.cursor = 'pointer';
-            console.log(mouseLink.action);
+         //   console.log(mouseLink.action);
         }
         else {
             if (mousestate == false)
@@ -377,12 +382,12 @@ TreeBase.prototype = {
 
         var isDisplayed = true;
 
-        if (this.generations.length > person.GenerationIdx + 1) {
+        if (this.generations.length > person.GenerationIdx) {
             var _genidx = 0;
-            while (_genidx < this.generations[person.GenerationIdx + 1].length) {
+            while (_genidx < this.generations[person.GenerationIdx].length) {
 
-                if (this.generations[person.GenerationIdx + 1][_genidx].PersonId == person.ChildLst[0]) {
-                    var _person = this.generations[person.GenerationIdx + 1][_genidx];
+                if (this.generations[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
+                    var _person = this.generations[person.GenerationIdx][_genidx];
                     isDisplayed = _person.IsDisplayed;
                     break;
                 }
@@ -393,6 +398,9 @@ TreeBase.prototype = {
 
         return isDisplayed;
     },
+
+    // move this up to the derived classes
+
     PerformClick: function (x, y) {
 
         var mouseLink = this.links.LinkContainingPoint(x, y);
@@ -437,6 +445,7 @@ TreeBase.prototype = {
 
                 this.SetVisibility(clickedPerson, isVis);
 
+                
             }
 
         }
@@ -444,6 +453,7 @@ TreeBase.prototype = {
 
 
     },
+   
     SetCentrePoint: function (param_x, param_y) {
 
         if (param_x == 1000000 && param_y == 1000000) {

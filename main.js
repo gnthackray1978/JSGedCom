@@ -61,7 +61,8 @@ $(document).ready(function () {
                         break;
 
                     case 'desc_2':
-                        forceDirect = new ForceDirect(loader);
+                        
+                        forceDirect = new ForceDirect(new GedPreLoader(loader));
                         forceDirect.init(selectedId);
                         break;
 

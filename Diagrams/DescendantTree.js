@@ -16,9 +16,9 @@ function DescTree() {
 
 
     this.startx1 = 0.0;
-    this.endx2 = 0.0;
-    this.familyCount = 0;
-    this.curGenPerCount = 0;
+    //this.endx2 = 0.0;
+ 
+     
     this.firstPX = 0.0;
     this.secondPX = 0.0;
     this.percX1 = 0.0;
@@ -32,11 +32,8 @@ DescTree.prototype = {
 
     SetZoom: function (p_percentage) {
 
-        var workingtp = this.original_distanceBetweenBoxs / 100;
-
-        this.distancesbetfam = workingtp * this.zoomPercentage;
-
-        workingtp = this.original_lowerStalkHeight / 100;
+      
+        var workingtp = this.original_lowerStalkHeight / 100;
 
         this.lowerSpan = workingtp * this.zoomPercentage; // (int)original_lowerStalkHeight;
 
@@ -78,8 +75,8 @@ DescTree.prototype = {
         var _personIdx = 0;
         //this.generations.length
 
-        var treeUI = new TreeUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight, 0);
-
+        this.treeUI.UpdateUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight);
+       
         this.links = [];
         this.buttonLinks = [];
 
@@ -94,13 +91,13 @@ DescTree.prototype = {
 
                 var _person = this.generations[_genidx][_personIdx];
 
-                var personLink = treeUI.DrawPerson(_person, this.sourceId, this.zoomPercentage);
+                var personLink = this.treeUI.DrawPerson(_person, this.sourceId, this.zoomPercentage);
 
                 if (personLink !== null)
                     this.links.push(personLink);
 
                 if (_person.GenerationIdx != 0) {
-                    var buttonLink = treeUI.DrawButton(_person, this.GetChildDisplayStatus(_person));
+                    var buttonLink = this.treeUI.DrawButton(_person, this.GetChildDisplayStatus(_person));
 
                     if (buttonLink !== null)
                         this.buttonLinks.push(buttonLink);
@@ -121,7 +118,7 @@ DescTree.prototype = {
             while (_fslInner < this.familySpanLines[_fslOuter].length) {
 
                 //if (_fslOuter == 7 && _fslInner == 15) {
-                treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
+                this.treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
                 // }
                 _fslInner++;
 
@@ -135,15 +132,20 @@ DescTree.prototype = {
         _fslOuter = 0;
         while (_fslOuter < this.childlessMarriages.length) {
 
-            treeUI.DrawLine(this.childlessMarriages[_fslOuter]);
+            this.treeUI.DrawLine(this.childlessMarriages[_fslOuter]);
 
             _fslOuter++;
         }
 
+
+
     },
 
-    ComputeLocations: function () {
 
+
+    ComputeLocations: function () {
+        console.log('compute locations');
+        
         if (this.generations.length === 0) {
             return;
         }
@@ -161,19 +163,12 @@ DescTree.prototype = {
 
 
         //initialize familyspan array
-        while (_genIdx < this.generations.length) {
-            //  var _innerIdx = 0;
+     //   while (_genIdx < this.generations.length) {
+           
+     //       this.familySpanLines.push([]);
 
-            //var newarray = [];
-            this.familySpanLines.push([]);
-
-            //            while (_innerIdx < this.familySpanLines[_genIdx].length) {
-            //                this.familySpanLines[_genIdx][_innerIdx] = [];
-            //                _innerIdx++;
-            //            }
-
-            _genIdx++;
-        }
+     //       _genIdx++;
+     //   }
 
 
 
@@ -182,21 +177,34 @@ DescTree.prototype = {
         _genIdx = 0;
 
         var lastPersonY2 = 0.0;
-
+         
         while (_genIdx < this.generations.length) {
+            this.familySpanLines.push([]);
+            
+            //IsGenerationDisplayed
+      //      var tp = this.IsGenerationDisplayed(_genIdx);
+        //    if (tp != this.generations[_genIdx].GenerationVisible) {
+         //       console.log('gen visible wrong');
+        //    }
+            
 
-            if (this.IsGenerationDisplayed(_genIdx)) {
+            
+            if (this.generations[_genIdx].GenerationVisible) {
                 _displayGenCount++;
 
-                this.SetScheduleVars(_genIdx);
+                this.startx1 = this.SetScheduleVars(_genIdx, this.startx1);
+                
+                this.fillGenXs(_genIdx);
+
+
 
                 var _current_gen_upper_y = (_genIdx * this.boxHeight) + (_genIdx * this.distanceBetweenGens) + this.centreVerticalPoint;
+
+
 
                 var _increment_temp = 0.0;
 
                 var _famIdx = 0;
-
-                this.fillGenXs(_genIdx);
 
                 var familydirectionCounts = this.createFamilyCountArray(_genIdx);
 
@@ -414,7 +422,7 @@ DescTree.prototype = {
                             //endregion
                             var _family0 = this.familySpanLines[_genIdx][_familyIdx];
 
-                            //_family0.push();
+                 
                             _family0.push(new Array(_secondStorkX, _firstRow));
                             _family0.push(new Array(_secondStorkX, _secondRow));
                             _family0.push(new Array(_thirdStorkX, _secondRow));
@@ -448,6 +456,12 @@ DescTree.prototype = {
 
                         this.CalcTPZoom(_genIdx, _personIdx);
 
+
+
+                        
+                        
+
+
                     } // end (genPerson.IsDisplayed)
 
                     } catch (e) {
@@ -477,110 +491,136 @@ DescTree.prototype = {
 
     },
 
-    IsGenerationDisplayed: function (genidx) {
-        //returns if generation is to be displayed
-        //also counts displayed families and displayed person
+    //run when generation is loaded
+    //run when visibility changed
+    UpdateGenerationState: function () {
 
-        var idx = 0;
-        var isGenDisplayed = false;
-        this.curGenPerCount = 0;
-        this.familyCount = 0;
+        console.log('DescTree.UpdateGenerationState');
 
-        while (idx < this.generations[genidx].length) {
+        var familyCount = 0;
+        var personCount = 0;
+        var isDisplayed = true;
+        var genIdx = 0;
+        var personIdx = 0;
+        var firstVisibleIdx = -1;
+        var lastVisibleIdx = -1;
+        var firstFamilyIdx = -1;
+        var lastFamilyIdx = -1;
 
-            if (this.generations[genidx][idx].IsDisplayed) {
-                if (this.generations[genidx][idx].IsFamilyStart) {
-                    this.familyCount++;
-                }
+        this.childlessMarriages = [];
 
-                this.curGenPerCount++;
+        this.familySpanLines = [];
+        // initialize familyspan array
+        // set generation variables
+        // visible family count
+        // visible person count
+        // generation displayed
+        while (genIdx < this.generations.length) {      
+            this.familySpanLines.push([]);
 
-                isGenDisplayed = true;
+            personIdx = 0;
+            isDisplayed = false;
+            familyCount = 0;
+            personCount = 0;
+            firstVisibleIdx = -1;
+            lastVisibleIdx = -1;
+            firstFamilyIdx = -1;
+            lastFamilyIdx = -1;
+            
+            while (personIdx < this.generations[genIdx].length) {                
+                if (this.generations[genIdx][personIdx].IsDisplayed) {
+                    if (this.generations[genIdx][personIdx].IsFamilyStart) {
+                        familyCount++;
+                    }
+
+                    personCount++;
+
+                    isDisplayed = true;
+
+                    lastVisibleIdx = personIdx;
+
+                    if (this.generations[genIdx][personIdx].ChildLst.length > 0) {
+
+                        lastFamilyIdx = personIdx;
+                        
+                        if (firstFamilyIdx == -1) firstFamilyIdx = personIdx;
+                    }
+
+
+                    if (firstVisibleIdx == -1) firstVisibleIdx = personIdx;
+                    
+
+                }                
+                personIdx++;
             }
-            idx++;
-        }
+            
+            this.generations[genIdx].VisibleFamilyCount = familyCount;
+            this.generations[genIdx].VisiblePersonCount = personCount;
+            this.generations[genIdx].GenerationVisible = isDisplayed;
+            this.generations[genIdx].FirstVisibleIdx = firstVisibleIdx;
+            this.generations[genIdx].LastVisibleIdx = lastVisibleIdx;
+            this.generations[genIdx].FirstFamilyIdx = firstFamilyIdx;
+            this.generations[genIdx].LastFamilyIdx = lastFamilyIdx;
 
-        return isGenDisplayed;
+
+            genIdx++;
+        }
+        
+
+
     },
 
-    //IsGenerationDisplayed
-    //must be run first
-    SetScheduleVars: function (genidx) {
-        var idx = 0;
-        var _firstx1 = 0.0;
-        var _lastx2 = 0.0;
-        var innercount = 0;
+ 
+    SetScheduleVars: function (genidx, currentRowX1) {
+      //  var idx = 0;
+        var prevGenX1 = 0.0;
+        var prevGenX2 = 0.0;
+      //  var innercount = 0;
 
-
+        //var currentRowX1 = 0;
+      //  var tp = currentRowX1;
+     
 
         if (genidx === 0) {
-            this.drawingX1 = this.startx1;
-            this.startx1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
+            this.drawingX1 = currentRowX1;
+            currentRowX1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
         }
         else {
 
 
-            var firstPerson = null;
-            var lastPerson = null;
 
-            while (idx < this.generations[genidx - 1].length) {
-                // in the preceeding generation there should always be at least one person with 
-                // a child!!! 
-                if (this.generations[genidx - 1][idx].ChildLst.length > 0 &&
-                    this.generations[genidx - 1][idx].IsDisplayed) {
+            prevGenX1 = this.generations[genidx - 1][this.generations[genidx - 1].FirstFamilyIdx].X1;
+            prevGenX2 = this.generations[genidx - 1][this.generations[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
 
-                    if (innercount === 0) {
-                        _firstx1 = this.generations[genidx - 1][idx].X1;
-                        _lastx2 = this.generations[genidx - 1][idx].X1;
+               
+            currentRowX1 = prevGenX1 + (this.boxWidth / 2);
+            var endx2 = prevGenX2 - (this.boxWidth / 2);
 
-                        firstPerson = this.generations[genidx - 1][idx];
-                        lastPerson = this.generations[genidx - 1][idx];
-                    }
-                    else {
-                        if (_firstx1 > this.generations[genidx - 1][idx].X1) {
-                            _firstx1 = this.generations[genidx - 1][idx].X1;
-                            firstPerson = this.generations[genidx - 1][idx];
-                        }
-                        if (_lastx2 < this.generations[genidx - 1][idx].X1) {
-                            _lastx2 = this.generations[genidx - 1][idx].X1;
-                            lastPerson = this.generations[genidx - 1][idx];
-                        }
-                    }
-                    innercount++;
-                }
-                idx++;
-            }
+            var _prevGenLen = endx2 - currentRowX1;
 
-            _lastx2 += this.boxWidth;
-
-            //  console.log(genidx);
-            // console.log('first and last: ' + _firstx1 + ' ' + _lastx2);
-            // console.log('first and last persons: ' + firstPerson.Name + ' ' + lastPerson.Name);
-
-            this.startx1 = _firstx1 + (this.boxWidth / 2);
-            this.endx2 = _lastx2 - (this.boxWidth / 2);
-
-            var _prevGenLen = this.endx2 - this.startx1;
-            var _curGenLen = 0.0;
-
-            _curGenLen = (this.curGenPerCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.familyCount);
-
+            var _curGenLen = (this.generations[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.generations[genidx].VisibleFamilyCount);
             if (_prevGenLen > _curGenLen) {
-                this.distancesbetfam = (_prevGenLen - _curGenLen) / this.familyCount;
+                this.distancesbetfam = (_prevGenLen - _curGenLen) / this.generations[genidx].VisibleFamilyCount;        
             }
             else {
                 this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
             }
 
             //add in the distances between the families
-            _curGenLen = _curGenLen + (this.distancesbetfam * (this.familyCount - 1));
+            _curGenLen = _curGenLen + (this.distancesbetfam * (this.generations[genidx].VisibleFamilyCount - 1));
 
             // middle of the families of the previous generation
-            var _desiredMidPoint = ((this.endx2 - this.startx1) / 2) + this.startx1;
+            var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
 
             // set new start point by subtracting half the total space required for the generation
-            this.startx1 = _desiredMidPoint - (_curGenLen / 2);
+            currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
+            
+
+
+
         }
+      //  console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
+        return currentRowX1;
 
     },
 
@@ -590,6 +630,9 @@ DescTree.prototype = {
         var _currentDistanceBetweenBoxes = 0.0;
         var innerIdx = 0;
         var prevPerson = null;
+
+        console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
+
         while (idx < this.generations[genidx].length) {
 
             if (this.generations[genidx][idx].IsDisplayed) {

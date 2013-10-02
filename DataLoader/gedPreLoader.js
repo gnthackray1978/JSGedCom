@@ -275,7 +275,7 @@ function GedPreLoader(gedLoader) {
 
         var idx = 0;
 
-
+        if (person.children == undefined) person.children = [];
 
         while (idx < person.children.length) {
 

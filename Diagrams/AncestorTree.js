@@ -45,8 +45,8 @@ AncTree.prototype = {
            var _personIdx = 0;
 
 
-           var treeUI = new TreeUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight,1);
-
+          // var treeUI = new TreeUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight,1,null);
+           this.treeUI.UpdateUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight);
 
             try
             {
@@ -61,7 +61,7 @@ AncTree.prototype = {
 
                        var _person = this.generations[_genidx][_personIdx];
 
-                       var personLink = treeUI.DrawPerson(_person,this.sourceId, this.zoomPercentage);
+                       var personLink = this.treeUI.DrawPerson(_person, this.sourceId, this.zoomPercentage);
 
                        if(personLink !== null)
                         this.links.push(personLink);
@@ -90,7 +90,7 @@ AncTree.prototype = {
                while (_fslOuter < this.familySpanLines.length) {
                    _fslInner = 0;
                    while (_fslInner < this.familySpanLines[_fslOuter].length) {
-                       treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
+                       this.treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
                        _fslInner++;
                    } // end familySpanLines[_fslOuter].length
 
@@ -102,6 +102,9 @@ AncTree.prototype = {
                 console.log('Error Drawing Lines');
                 console.log(err);
             }
+
+
+
 
 
        },
@@ -344,6 +347,13 @@ AncTree.prototype = {
 
     },       //end compute locations
 
+    //run when generation is loaded
+    //run when visibility changed
+    UpdateGenerationState: function () {
+
+
+    },
+
     CreateConnectionLines : function () {
 
         // this.FamilySpanLines = new List<List<List<TreePoint>>>();
@@ -383,7 +393,7 @@ AncTree.prototype = {
                     bottomParent = this.generations[genidx + 1][0].Y1 + parentHeight;// + 10
                     distanceBetweenGens = (this.generations[genidx][personIdx].Y1 - this.generations[genidx + 1][0].Y2);
 
-                    if (this.generations[genidx][personIdx].FatherIdx > 0 || this.generations[genidx][personIdx].MotherIdx > 0) {
+                    if (this.generations[genidx][personIdx].FatherIdx >-1 || this.generations[genidx][personIdx].MotherIdx > -1) {
                         // top middle of child 
                         middleXChild = (this.generations[genidx][personIdx].X1 + this.generations[genidx][personIdx].X2) / 2;
                         middleGeneration = this.generations[genidx][personIdx].Y1 - (distanceBetweenGens / 2) + 10;

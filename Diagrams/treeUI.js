@@ -1,27 +1,10 @@
 
-var TreeUI = function (screen_width, screen_height, box_width, box_height, modelCode) {
-
-    this.screen_width = screen_width;
-    this.screen_height = screen_height;
-    this.canvas = document.getElementById("myCanvas");
-    this.modelCode = modelCode;
-
-    this.context = this.canvas.getContext("2d");
-
-
-
-
-    // this.context.fillStyle = "rgba(0, 0, 255, .5)";
-
-
-    this.boxWidth = box_width;
-    this.boxHeight = box_height;
+var TreeUI = function (modelCode, callback) {
 
     this.docClose = new Image();
     this.docNew = new Image();
+    this.modelCode = modelCode;
 
-    this.docClose.src = '/JSGedCom/Images/icons/24x24/plus.png';
-    this.docNew.src = '/JSGedCom/Images/icons/24x24/minus.png';
 
     //red box "#99003A"
     //blue "#99CCFF"
@@ -50,9 +33,19 @@ var TreeUI = function (screen_width, screen_height, box_width, box_height, model
 
     }
 
+  
+    this.docClose.src = '/JSGedCom/Images/icons/24x24/plus.png';
 
+    var that = this;
+    this.docClose.onload = function () {
+        that.docNew.src = '/JSGedCom/Images/icons/24x24/minus.png';
+        
+        that.docNew.onload = function () {
+            callback(that);
+        };
 
-
+    };
+    
 
 };
 
@@ -60,6 +53,20 @@ var TreeUI = function (screen_width, screen_height, box_width, box_height, model
 
 TreeUI.prototype = {
 
+
+    UpdateUI: function (screen_width, screen_height, box_width, box_height) {
+        
+        this.screen_width = screen_width;
+        this.screen_height = screen_height;
+        this.canvas = document.getElementById("myCanvas");
+        
+
+        this.context = this.canvas.getContext("2d");
+
+        this.boxWidth = box_width;
+        this.boxHeight = box_height;
+    },
+    
     DrawLine: function (points) {
 
         var _pointIdx = 0;
@@ -134,11 +141,11 @@ TreeUI.prototype = {
             // because obviously the we want the parent to stay visible so we
             // can turn on and off the childrens visibility. if we cant see it , we cant turn anything on and off..
             if (checked) {
-                //  this.context.fillStyle = "red";
+                  this.context.fillStyle = "red";
                 this.context.drawImage(this.docClose, _person.X1 - 10, _person.Y1 + 5);
             }
             else {
-                // this.context.fillStyle = "black";
+                 this.context.fillStyle = "black";
                 this.context.drawImage(this.docNew, _person.X1 - 10, _person.Y1 + 5);
             }
 
