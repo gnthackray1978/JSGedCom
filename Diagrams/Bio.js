@@ -51,5 +51,39 @@ Bio.prototype = {
 
         return bio;
 
+    },
+    
+    fillQuestionData: function (info, question, answer, questionType) {
+
+ 
+        try {
+            var bio = {
+                DOB:1700,
+                BirthDate: '',
+                BaptismDate: '',
+                DOD: '',
+                DeathLocation: '',
+                Name: info,
+                OccupationDate: '',
+                OccupationPlace: '',
+                Occupation: '',
+                FirstName: '',
+                Surname: '',
+                BirthLocation: '',
+                Question: question,
+                Answer: answer,
+                QuestionType: questionType
+            };
+
+
+
+        } catch (e) {
+            console.log(person + ' ' + e);
+        }
+
+
+
+        return bio;
+
     }
 };

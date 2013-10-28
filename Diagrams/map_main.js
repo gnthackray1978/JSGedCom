@@ -88,7 +88,8 @@ ForceDirect.prototype = {
     },
 
     run: function (data) {
-
+        var f = JSON.stringify(data);
+        
         this.tree = new Tree(data);
 
         var that = this;

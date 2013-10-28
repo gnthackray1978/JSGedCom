@@ -1,5 +1,14 @@
 ﻿
 
+#defaultFile {
+    display: inline;
+
+}
+
+#fileinput {
+    display: inline;
+}
+
 .filterTable
 {
     /*width: 250px;*/
@@ -11,7 +20,10 @@
 
 #selection_container {
     border: thin solid #000000;
-    height: 125px;
+     background:#fff;
+    height: 145px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
   #leftcontent {

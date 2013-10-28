@@ -75,8 +75,16 @@ DescTree.prototype = {
         var _personIdx = 0;
         //this.generations.length
 
-        this.treeUI.UpdateUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight);
+        try {
+            this.treeUI.UpdateUI(this.screenWidth, this.screenHeight, this.boxWidth, this.boxHeight);
+        } catch(e) {
+            console.log('error UpdateUI ' + e);
+        } 
+
+
        
+
+
         this.links = [];
         this.buttonLinks = [];
 
@@ -84,59 +92,83 @@ DescTree.prototype = {
 
         //html('<span>Downloading Descendant Tree</span>');
 
-        while (_genidx < this.generations.length) {
-            _personIdx = 0;
 
-            while (_personIdx < this.generations[_genidx].length) {
+        try {
 
-                var _person = this.generations[_genidx][_personIdx];
+            while (_genidx < this.generations.length) {
+                _personIdx = 0;
 
-                var personLink = this.treeUI.DrawPerson(_person, this.sourceId, this.zoomPercentage);
+                while (_personIdx < this.generations[_genidx].length) {
 
-                if (personLink !== null)
-                    this.links.push(personLink);
+                    var _person = this.generations[_genidx][_personIdx];
 
-                if (_person.GenerationIdx != 0) {
-                    var buttonLink = this.treeUI.DrawButton(_person, this.GetChildDisplayStatus(_person));
+                    var personLink = this.treeUI.DrawPerson(_person, this.sourceId, this.zoomPercentage);
 
-                    if (buttonLink !== null)
-                        this.buttonLinks.push(buttonLink);
+                    if (personLink !== null)
+                        this.links.push(personLink);
+
+                    if (_person.GenerationIdx != 0) {
+                        var buttonLink = this.treeUI.DrawButton(_person, this.GetChildDisplayStatus(_person));
+
+                        if (buttonLink !== null)
+                            this.buttonLinks.push(buttonLink);
+                    }
+
+                    _personIdx++;
                 }
-
-                _personIdx++;
+                _genidx++;
             }
-            _genidx++;
+
+
+        } catch (e) {
+            console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
         }
+
+
+
+
+
 
         var _fslOuter = 0;
         var _fslInner = 0;
         //   var _pointIdx = 0;
 
 
-        while (_fslOuter < this.familySpanLines.length) {
-            _fslInner = 0;
-            while (_fslInner < this.familySpanLines[_fslOuter].length) {
+        try {                 
+            while (_fslOuter < this.familySpanLines.length) {
+                _fslInner = 0;
+                while (_fslInner < this.familySpanLines[_fslOuter].length) {
 
-                //if (_fslOuter == 7 && _fslInner == 15) {
-                this.treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
-                // }
-                _fslInner++;
+                    //if (_fslOuter == 7 && _fslInner == 15) {
+                    this.treeUI.DrawLine(this.familySpanLines[_fslOuter][_fslInner]);
+                    // }
+                    _fslInner++;
 
 
-            } // end familySpanLines[_fslOuter].length
+                } // end familySpanLines[_fslOuter].length
 
-            _fslOuter++;
-        } // end this.familySpanLines.length
+                _fslOuter++;
+            } // end this.familySpanLines.length
+
+
+        } catch (e) {
+            console.log('error drawing familySpanLines: familySpanLines idx ' + _fslOuter + ' ' + _fslInner);
+        }
+
 
 
         _fslOuter = 0;
-        while (_fslOuter < this.childlessMarriages.length) {
+        
+        try {                
+            while (_fslOuter < this.childlessMarriages.length) {
 
-            this.treeUI.DrawLine(this.childlessMarriages[_fslOuter]);
+                this.treeUI.DrawLine(this.childlessMarriages[_fslOuter]);
 
-            _fslOuter++;
+                _fslOuter++;
+            }
+        } catch (e) {
+            console.log('error drawing childless marriages: marriage idx ' + _fslOuter);
         }
-
 
 
     },
@@ -522,10 +554,10 @@ DescTree.prototype = {
             isDisplayed = false;
             familyCount = 0;
             personCount = 0;
-            firstVisibleIdx = -1;
+            firstVisibleIdx = -1; // there might not be anything visible so we need this to be -1
             lastVisibleIdx = -1;
-            firstFamilyIdx = -1;
-            lastFamilyIdx = -1;
+            firstFamilyIdx = 0; //should always be a family
+            lastFamilyIdx = 0;
             
             while (personIdx < this.generations[genIdx].length) {                
                 if (this.generations[genIdx][personIdx].IsDisplayed) {
@@ -579,46 +611,48 @@ DescTree.prototype = {
 
         //var currentRowX1 = 0;
       //  var tp = currentRowX1;
-     
 
-        if (genidx === 0) {
-            this.drawingX1 = currentRowX1;
-            currentRowX1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
-        }
-        else {
+        try {
+            
+      
 
-
-
-            prevGenX1 = this.generations[genidx - 1][this.generations[genidx - 1].FirstFamilyIdx].X1;
-            prevGenX2 = this.generations[genidx - 1][this.generations[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
-
-               
-            currentRowX1 = prevGenX1 + (this.boxWidth / 2);
-            var endx2 = prevGenX2 - (this.boxWidth / 2);
-
-            var _prevGenLen = endx2 - currentRowX1;
-
-            var _curGenLen = (this.generations[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.generations[genidx].VisibleFamilyCount);
-            if (_prevGenLen > _curGenLen) {
-                this.distancesbetfam = (_prevGenLen - _curGenLen) / this.generations[genidx].VisibleFamilyCount;        
+            if (genidx === 0) {
+                this.drawingX1 = currentRowX1;
+                currentRowX1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
             }
             else {
-                this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
+                prevGenX1 = this.generations[genidx - 1][this.generations[genidx - 1].FirstFamilyIdx].X1;
+                prevGenX2 = this.generations[genidx - 1][this.generations[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
+
+                currentRowX1 = prevGenX1 + (this.boxWidth / 2);
+                var endx2 = prevGenX2 - (this.boxWidth / 2);
+
+                var _prevGenLen = endx2 - currentRowX1;
+
+                var _curGenLen = (this.generations[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.generations[genidx].VisibleFamilyCount);
+                if (_prevGenLen > _curGenLen) {
+                    this.distancesbetfam = (_prevGenLen - _curGenLen) / this.generations[genidx].VisibleFamilyCount;        
+                }
+                else {
+                    this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
+                }
+                //add in the distances between the families
+                _curGenLen = _curGenLen + (this.distancesbetfam * (this.generations[genidx].VisibleFamilyCount - 1));
+                // middle of the families of the previous generation
+                var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
+                // set new start point by subtracting half the total space required for the generation
+                currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
+           
             }
-
-            //add in the distances between the families
-            _curGenLen = _curGenLen + (this.distancesbetfam * (this.generations[genidx].VisibleFamilyCount - 1));
-
-            // middle of the families of the previous generation
-            var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
-
-            // set new start point by subtracting half the total space required for the generation
-            currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
+        
+        } catch (e) {
+            console.log('SetScheduleVars: ' + genidx + ' exception: ' + e);
             
-
-
-
+            if (this.generations.length > genidx - 1) {
+                console.log('SetScheduleVars ffidx: ' + this.generations[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.generations[genidx - 1].LastFamilyIdx);
+            }
         }
+
       //  console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
         return currentRowX1;
 

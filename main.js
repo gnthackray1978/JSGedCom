@@ -4,52 +4,46 @@
 $(document).ready(function () {
 
 
+    var fileLoaded = function (data) {
 
 
-
-
-    var selector = new SelectorWidget();
-
-    selector.InitPanelVisibility();
-
-    selector.newFileLoaded($.proxy(function (data) {
-
-        var loader = new DataLoader.GedLoader();
+        //svar loader = new DataLoader.GedLoader();
 
         var that = this;
         var selectedId = '';
 
-        var descClick = function(id,name) {
-            
+        var descClick = function (id, name) {
+
             that.showSelectedPerson(id, name);
 
             selectedId = id;
 
         };
- 
-        loader.processFile(data, function (families, persons) {
 
-            var selectedPersonId = that.showPersonSelectList(persons, descClick);
 
-        //    var gedPreLoader = new GedPreLoader(loader);
+        //receive the tree file here 
+        that.loader.processFile(data, function (families, persons) {
 
-        //   // gedPreLoader.GetGenerations('@I4@');
-           // var ancTreeDiag = null;
+            selectedId = that.showPersonSelectList(persons, descClick);
+
+            //    var gedPreLoader = new GedPreLoader(loader);
+
+            //   // gedPreLoader.GetGenerations('@I4@');
+            // var ancTreeDiag = null;
             var treeRunner = null;
-            var forceDirect = null;               
-           
-            that.RunDiagClicked(selectedPersonId, function (id) {
-                            
-                
+            var forceDirect = null;
+
+            that.RunDiagClicked(0, function (id) {
 
 
-                switch(that.GetDiagramType())
-                {
+
+
+                switch (that.GetDiagramType()) {
                     case 'anc':
                         if (treeRunner != null)
                             treeRunner.CleanUp();
                         treeRunner = new TreeRunner();
-                        treeRunner.run(selectedId,loader,new AncTree());
+                        treeRunner.run(selectedId, that.loader, new AncTree());
 
                         break;
                     case 'desc_1':
@@ -57,71 +51,57 @@ $(document).ready(function () {
                         if (treeRunner != null)
                             treeRunner.CleanUp();
                         treeRunner = new TreeRunner();
-                        treeRunner.run(selectedId, loader, new DescTree());
+                        treeRunner.run(selectedId, that.loader, new DescTree());
                         break;
 
                     case 'desc_2':
-                        
-                        forceDirect = new ForceDirect(new GedPreLoader(loader));
+
+                        if (treeRunner != null)
+                            treeRunner.CleanUp();
+
+                        // forceDirect = new ForceDirect(new GedPreLoader(that.loader));
+                        forceDirect = new ForceDirect(that.gedPreLoader);
                         forceDirect.init(selectedId);
                         break;
 
                     default:
                         //  code to be executed if n is different from case 1 and 2
 
-                        var g = new GedPreLoader(loader);
+                        var g = new GedPreLoader(that.loader);
 
                         g.SearchFurthestAncestor('@I931@');// annie harmston
-                        
+
 
                 }
-               
+
 
             });
 
-            
+
         });
 
+    };
 
 
+    var selector = new SelectorWidget();
 
-      
-      //  loader.processFile(data, function (families, persons) {
+    selector.InitPanelVisibility();
+    
+    selector.loader = new DataLoader.GedLoader();
+    selector.gedPreLoader = new GedPreLoader(selector.loader);
+    selector.newFileLoaded($.proxy(fileLoaded, selector));
+  
+    //var autoLoader = new AutoLoader();
 
-          //  var selectedPersonId = that.showPersonSelectList(persons, descClick);
+    //autoLoader.InitPanelVisibility();
 
-     //       var gedPreLoader = new GedAncPreLoader(loader);
+    //autoLoader.loader = new FakeData();
 
-            //gedPreLoader.GetGenerations('@I1@');
+    //autoLoader.gedPreLoader = new FakeData();
 
-
-        //    var ancTreeDiag = new AncTreeDiag(new GedAncPreLoader(loader));
-        //    ancTreeDiag.run('@I1@');
-
-             // that.RunDiagClicked(selectedPersonId, function (id) {
-            //
-              //    var ancTreeDiag = new AncTreeDiag(new GedAncPreLoader(loader));
-             //     ancTreeDiag.run('@I1@');
-              //  });
-
-      //  });
-
-
-
-
-
-    }, selector));
-
-   
+    //autoLoader.newFileLoaded($.proxy(fileLoaded, autoLoader));
 
     
-
- 
-    
-    //loader.processFile(tpFile());
-
-
-
 });
 
 
@@ -134,3 +114,37 @@ function tpFile() {
 
 }
 
+
+
+
+
+
+function AutoLoader() {}
+
+
+AutoLoader.prototype.GetDiagramType = function() {
+    return 'desc_2';
+};
+
+
+AutoLoader.prototype.RunDiagClicked = function(personId, action) {
+    action(personId);         
+};
+
+AutoLoader.prototype.showSelectedPerson = function (id, name) {
+ 
+    return id;
+};
+
+AutoLoader.prototype.InitPanelVisibility = function() {
+    $("#selection_container").removeClass("displayPanel").addClass("hidePanel");
+    $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
+};
+
+AutoLoader.prototype.newFileLoaded = function (treedate) {
+    treedate();       
+};
+
+AutoLoader.prototype.showPersonSelectList = function (data, ancestorFunc) {
+    return data;
+};

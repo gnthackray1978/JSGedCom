@@ -21,14 +21,14 @@ function SelectorWidget() {
 
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
 
-        var handleFileSelect = function (evt) {
+        var handleFileSelect = function(evt) {
             var files = evt.target.files; // FileList object
             // Loop through the FileList and render image files as thumbnails.
             for (var i = 0, f; f = files[i]; i++) {
                 var reader = new FileReader();
                 // Closure to capture the file information.
-                reader.onload = (function (theFile) {
-                    return function (e) {
+                reader.onload = (function(theFile) {
+                    return function(e) {
                         // loader.processFile(e.target.result);
 
                         treedate(e.target.result);
@@ -37,7 +37,16 @@ function SelectorWidget() {
                 // Read in the image file as a data URL.
                 reader.readAsText(f);
             }
-        }
+        };
+        
+        $('#defaultFile').click(function (e) {
+
+            $.get('/JSGedCom/default.ged', function (contents) {
+                treedate(contents);
+            }, 'text');
+
+            e.preventDefault();
+        });
 
 
         document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
@@ -152,7 +161,7 @@ function SelectorWidget() {
 
         showPersons(data, ancestorFunc);
 
-
+        return 0;
         //$('.dec_class').click(function (e) {
         //    decendantFunc(e.target.parentNode.id);
         //    e.preventDefault();

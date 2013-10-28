@@ -15,7 +15,7 @@ Tree.prototype = {
 
 
 
-        while (genIdx < 8) {
+        while (genIdx < this.data.Generations.length) {
 
             var personIdx = 0;
             var genArray = new Array();
