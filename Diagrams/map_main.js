@@ -298,17 +298,54 @@ ForceDirect.prototype = {
 
         var layoutList = [];
 
-        //var added = false;
+
+        var gidx = 0;
+        //var topYear = 0;
+        var botYear = 0;
+        var topYear = 0;
+
+        var years = [];
+        
+        while (gidx < data.Generations.length) {
+            var pidx = 0;
+            
+            while (pidx < data.Generations[gidx].length) {
+
+                if (Number(data.Generations[gidx][pidx].bio.DOB)!=0)
+                    years.push(Number(data.Generations[gidx][pidx].bio.DOB));
+ 
+                pidx++;
+            }
+             
+            gidx++;
+        }
+
+        years = years.sort(function (a, b) { return a - b; });
+
+        if (years.length > 0) {
+            botYear = years[0];
+            topYear = years[years.length - 1];
+        }
+
+        if (botYear == 0) {
+            botYear = 1695;
+            topYear = 1695;
+        }
+            
+        
+
+        console.log(botYear);
+
 
         function myTimer() {
 
-            $('#map_year').html(that.year);
+            $('#map_year').html(botYear);
 
 
-            that.tree.populateGraph(that.year, that.graph);
+            that.tree.populateGraph(botYear, that.graph);
 
-            that.year += 5;
-            if (that.year == '2000') clearInterval(myVar);
+            botYear += 5;
+            if (Number(botYear) > topYear) clearInterval(myVar);
         }
 
 
@@ -389,54 +426,6 @@ ForceDirect.prototype = {
 
         };
 
-        var _dir = '';
-
-        // auto adjusting bounding box
-        Layout.requestAnimationFrame(function adjust() {
-            layoutList.forEach(function (value, index, ar) {
-                value.layout.mapHandler.adjustPosition(_dir);
-            });
-
-            $('#nodes').html(layoutList[0].layout.mapHandler.countOnscreenNodes());
-
-            //$('#map_zoom').html(Math.round(this.zoompercentage));
-
-
-            var onScreenList = [];
-
-            if (layoutList[0].layout.mapHandler.zoompercentage > 8500)
-                onScreenList = layoutList[0].layout.mapHandler.onscreenNodes(20);
-
-
-            // create a list of the new layouts we need to add
-            onScreenList.forEach(function (ovalue, index, ar) {
-                var nodePresent = false;
-                layoutList.forEach(function (value, index, ar) {
-                    if (value.type == 'child' && value.layout.parentNode.id == ovalue.id) nodePresent = true;
-                });
-                if (!nodePresent)
-                    layoutList.push({ layout: createSubLayout(ovalue), edges: drawEdges, nodes: drawNodes, type: 'child' });
-            });
-
-            //remove the layouts for nodes that are no longer on the screen
-
-            for (i = layoutList.length - 1; i >= 0; i--) {
-
-                if (layoutList[i].type == 'child') {
-                    var nodePresent = false;
-                    onScreenList.forEach(function (value, index, ar) {
-                        if (layoutList[i].layout.parentNode.id == value.id) nodePresent = true;
-                    });
-
-                    if (!nodePresent) layoutList.splice(i, 1);
-                }
-            };
-
-
-
-            Layout.requestAnimationFrame(adjust);
-        });
-
         jQuery(this.canvas).mousedown(function (e) {
 
             layoutList.forEach(function (value, index, ar) {
@@ -445,10 +434,10 @@ ForceDirect.prototype = {
 
 
             combinedRenderer.start();
-        }).mouseup(function () {
+        }).mouseup(function (e) {
 
             layoutList.forEach(function (value, index, ar) {
-                value.layout.mouseUp();
+                value.layout.mouseUp(e);
             });
         });
 
@@ -456,18 +445,24 @@ ForceDirect.prototype = {
             console.log('button mouse down');
 
             //mouseup = false;
+            layoutList.forEach(function (value, index, ar) {
+                $.proxy(value.layout.mouseDown(evt), value);
+            });
+ 
+         //   combinedRenderer.start();
+         //   if (evt.target.id == "up") _dir = 'UP';
+         //   if (evt.target.id == "dn") _dir = 'DOWN';
+         //   if (evt.target.id == "we") _dir = 'WEST';
+         //   if (evt.target.id == "no") _dir = 'NORTH';
+         //   if (evt.target.id == "es") _dir = 'EAST';
+         //   if (evt.target.id == "so") _dir = 'SOUTH';
+         //   if (evt.target.id == "de") _dir = 'DEBUG';
 
-            if (evt.target.id == "up") _dir = 'UP';
-            if (evt.target.id == "dn") _dir = 'DOWN';
-            if (evt.target.id == "we") _dir = 'WEST';
-            if (evt.target.id == "no") _dir = 'NORTH';
-            if (evt.target.id == "es") _dir = 'EAST';
-            if (evt.target.id == "so") _dir = 'SOUTH';
-            if (evt.target.id == "de") _dir = 'DEBUG';
-
-        }).mouseup(function () {
+        }).mouseup(function (evt) {
             //mouseup = true;
-            _dir = '';
+            layoutList.forEach(function (value, index, ar) {
+                $.proxy(value.layout.mouseUp(evt), value);
+            });
         });
 
 
@@ -479,7 +474,9 @@ ForceDirect.prototype = {
             combinedRenderer.start();
         });
 
-        var combinedRenderer = new CombinedRenderer(clearFunction, layoutList);
+
+
+        var combinedRenderer = new CombinedRenderer(clearFunction, layoutList, createSubLayout,drawEdges, drawNodes);
 
         combinedRenderer.start();
 

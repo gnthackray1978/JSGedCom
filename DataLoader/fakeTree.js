@@ -35,7 +35,7 @@ FakeData.prototype = {
 
             this.generations[0].push(this.getData(0, 0,life, 'life','',-1,'',0,true,true,true));
 
-            this.generations.push([]);
+   
             this.generations[1] = [];
 
             

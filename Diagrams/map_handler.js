@@ -53,6 +53,9 @@ var mapHandler = function (colourScheme, startwidth, startheight) {
 
     //info tracker 
     this.infoDisplayed = new Array();
+
+
+    this.moving = '';
 };
 
 
@@ -132,6 +135,7 @@ mapHandler.prototype = {
         var increment = 2;
 
         if (_dir == 'SOUTH') {
+            console.log('south');
             this.centreVerticalPoint -= increment;
         }
         if (_dir == 'NORTH') {
@@ -240,13 +244,13 @@ mapHandler.prototype = {
         return v1;
     },
 
-    adjustPosition: function (_dir) {
+    adjustPosition: function () {
+
+
 
         if (this.layout.parentNode == undefined) {
             this.targetBB = this.layout.getBoundingBox();
-
-
-
+            
             // current gets 20% closer to target every iteration
             this.zoomCurrentBB(this.targetBB, 10);
 
@@ -255,7 +259,7 @@ mapHandler.prototype = {
                 this.SetCentrePoint(_point[0], _point[1]);
             }
 
-            this.UpdatePosition(_dir);
+            this.UpdatePosition(this.moving);
         }
         else {
             if (this.layout.parentNode && this.layout.firstNode) {

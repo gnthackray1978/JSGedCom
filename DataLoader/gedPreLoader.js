@@ -1,10 +1,11 @@
 
 
 /** @constructor */
-function GedPreLoader(gedLoader) {
+function GedPreLoader(loader) {
     // Constructor
     //this.monkey = 'm';
-
+    if (loader == undefined) loader = new DataLoader.GedLoader();
+    
     this.ancUtils = new AncUtils();
 
     this.searchDepth = 0;
@@ -13,10 +14,10 @@ function GedPreLoader(gedLoader) {
 
     this.generations = [];
 
-    this.families = gedLoader.families;
-    this.persons = gedLoader.person;
+    this.families = loader.families;
+    this.persons = loader.person;
 
-    this.gedLoader = gedLoader;
+    this.gedLoader = loader;
 
     this.bioLoader = new Bio();
 

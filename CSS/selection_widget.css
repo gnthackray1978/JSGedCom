@@ -18,7 +18,7 @@
    overflow: auto;
 }
 
-#selection_container {
+.selection_container {
     border: thin solid #000000;
      background:#fff;
     height: 145px;
@@ -26,7 +26,7 @@
     border-radius: 10px;
 }
 
-  #leftcontent {
+.leftcontent {
     position: absolute;
     left:1%;
     width:20%;
@@ -34,7 +34,7 @@
     background:#fff;
   }
 
-  #centerleftcontent {
+.centerleftcontent {
     position: absolute;
     left:22%;
     width:28%;
@@ -42,7 +42,7 @@
     background:#fff;
   }
 
-  #centerrightcontent {
+.centerrightcontent {
     position: absolute;
     left:51%;
     width:28%;
@@ -50,7 +50,7 @@
     background:#fff;
   }
 
-  #rightcontent {
+.rightcontent {
     position: absolute;
     left: 80%;
     width: 19%;
@@ -59,7 +59,7 @@
    
 }
 
-#right_inner {
+.right_inner {
 
      margin-top: 10px;
      margin-left: 25px;

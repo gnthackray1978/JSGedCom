@@ -1,23 +1,10 @@
 ﻿/** @constructor */
-function SelectorWidget() {
-    // Constructor
-    //this.monkey = 'm';
-
-
-
-
+function SelectorWidget(gedPreLoader) {       
+    this.gedPreLoader = gedPreLoader;
+    this.loader = this.gedPreLoader.gedLoader; 
 }
 
-(function () {
 
-    function moduleFoo(url) {
-        // Problem using "this" keyword. Will require @this annotation.
-        console.log('called');
-    }
-
-    SelectorWidget.prototype = {
-        foo: moduleFoo
-    };
 
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
 
@@ -52,67 +39,65 @@ function SelectorWidget() {
         document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
     };
 
-    SelectorWidget.prototype.showSelectedPerson = function (id, name) {
+    SelectorWidget.prototype.showSelectedPerson = function(id, name) {
 
         var selectedPerson = 'Selected Person: ' + id + ' ' + name;
 
         $('#selected_person').html(selectedPerson);
 
         return id;
-    },
+    };
 
-    SelectorWidget.prototype.RunDiagClicked = function (personId, action) {
-        $('#btnRunDiag').click(function (e) {
+    SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
+        $('#btnRunDiag').click(function(e) {
 
             action(personId);
 
             e.preventDefault();
         });
-    },
+    };
 
-    SelectorWidget.prototype.GetDiagramType = function () {
+    SelectorWidget.prototype.GetDiagramType = function() {
         return $("input[name='type_sel']:checked").val();
-    },
+    };
 
-    SelectorWidget.prototype.InitPanelVisibility = function () {
+    SelectorWidget.prototype.InitPanelVisibility = function() {
 
         // ok so click on the hide button to hide file options
-        
 
 
         // click on the show to bring it back.
 
-        var newTop = parseInt($('#selection_container').css('height')) + 30;
+        var newTop = parseInt($('#ged_options').css('height')) + 30;
 
         $("#map_control").css('top', newTop + "px");
         $("#map_message").css('top', newTop + "px");
 
 
+        $('#show_gedOptions').click(function(e) {
 
-        $('#show_gedOptions').click(function (e) {
-
-            $("#selection_container").removeClass("hidePanel").addClass("displayPanel");
+            $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
             $("#minimized_options").removeClass("displayPanel").addClass("hidePanel");
 
-            var newTop = parseInt($('#selection_container').css('height')) + 30 ;
-             
+            var newTop = parseInt($('#ged_options').css('height')) + 30;
+
 
             $("#map_control").css('top', newTop + "px");
             $("#map_message").css('top', newTop + "px");
         });
 
-        $('#hide_gedOptions').click(function (e) {
+        $('#hide_gedOptions').click(function(e) {
 
-            $("#selection_container").removeClass("displayPanel").addClass("hidePanel");
+            $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
             $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
             //map_control
-            
+
             $("#map_control").css('top', "30px");
             $("#map_message").css('top', "30px");
         });
 
 
-    },
+    };
 
 
 
@@ -174,5 +159,3 @@ function SelectorWidget() {
     };
 
 
-
-})();

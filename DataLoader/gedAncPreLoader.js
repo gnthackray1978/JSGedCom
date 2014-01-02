@@ -3,7 +3,9 @@
 /** @constructor */
 function GedAncPreLoader(gedLoader) {
 
-    
+    if (gedLoader == undefined) gedLoader = new DataLoader.GedLoader();
+
+
     this.ancUtils = new AncUtils();
 
 

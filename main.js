@@ -83,68 +83,21 @@ $(document).ready(function () {
     };
 
 
-    var selector = new SelectorWidget();
+    var diagMode = null;
 
-    selector.InitPanelVisibility();
-    
-    selector.loader = new DataLoader.GedLoader();
-    selector.gedPreLoader = new GedPreLoader(selector.loader);
-    selector.newFileLoaded($.proxy(fileLoaded, selector));
-  
-    //var autoLoader = new AutoLoader();
+    if (window.location.hash == '#test') {
+        diagMode = new AutoLoader(new FakeData());
+    } else {
+        diagMode = new SelectorWidget(new GedPreLoader());
+    }
 
-    //autoLoader.InitPanelVisibility();
 
-    //autoLoader.loader = new FakeData();
+    diagMode.InitPanelVisibility();
 
-    //autoLoader.gedPreLoader = new FakeData();
-
-    //autoLoader.newFileLoaded($.proxy(fileLoaded, autoLoader));
+    diagMode.newFileLoaded($.proxy(fileLoaded, diagMode));
 
     
 });
 
 
-
-
-
-
-function tpFile() {
-    return $('#myfile').val();
-
-}
-
-
-
-
-
-
-function AutoLoader() {}
-
-
-AutoLoader.prototype.GetDiagramType = function() {
-    return 'desc_2';
-};
-
-
-AutoLoader.prototype.RunDiagClicked = function(personId, action) {
-    action(personId);         
-};
-
-AutoLoader.prototype.showSelectedPerson = function (id, name) {
  
-    return id;
-};
-
-AutoLoader.prototype.InitPanelVisibility = function() {
-    $("#selection_container").removeClass("displayPanel").addClass("hidePanel");
-    $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
-};
-
-AutoLoader.prototype.newFileLoaded = function (treedate) {
-    treedate();       
-};
-
-AutoLoader.prototype.showPersonSelectList = function (data, ancestorFunc) {
-    return data;
-};

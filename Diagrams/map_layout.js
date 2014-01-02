@@ -170,25 +170,48 @@ Layout.ForceDirected.prototype = {
 
     mouseDown: function (e) {
 
-        this.mouseup = false;
 
-        var pos = $(this.canvasId).offset();
+        if (e.target.id == "myCanvas") {
+            this.mouseup = false;
 
-        var p = this.mapHandler.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
+            var pos = $(this.canvasId).offset();
 
+            var p = this.mapHandler.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
 
-        this.selected = this.nearest = this.dragged = this.nearestPoint(p);
+            this.selected = this.nearest = this.dragged = this.nearestPoint(p);
 
-        if (this.selected.node !== null) {
-            this.dragged.point.m = 10000.0;
+            if (this.selected.node !== null) {
+                this.dragged.point.m = 10000.0;
+            }
+
+            console.log(this.selected);
+
         }
+
+
+        if (e.target.id == "up") this.mapHandler.moving = 'UP';
+        if (e.target.id == "dn") this.mapHandler.moving = 'DOWN';
+        if (e.target.id == "we") this.mapHandler.moving = 'WEST';
+        if (e.target.id == "no") this.mapHandler.moving = 'NORTH';
+        if (e.target.id == "es") this.mapHandler.moving = 'EAST';
+        if (e.target.id == "so") this.mapHandler.moving = 'SOUTH';
+        if (e.target.id == "de") this.mapHandler.moving = 'DEBUG';
+        
+        //layoutList[0].layout.selected.node.data.person.bio
 
     },
 
-    mouseUp: function () {
-        this.mapHandler.addToMouseQueue(1000000, 1000000);
-        this.dragged = null;
-        this.mouseup = true;
+    mouseUp: function (e) {
+
+        if (e.target.id == "myCanvas") {
+
+            this.mapHandler.addToMouseQueue(1000000, 1000000);
+            this.dragged = null;
+            this.mouseup = true;
+        } else {
+            this.mapHandler.moving = '';
+        }
+        
     },
 
     mouseMove: function (e) {
@@ -250,33 +273,33 @@ Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 
 
 // start simulation
-Layout.ForceDirected.prototype.start = function (interval, render, done) {
-    var t = this;
+//Layout.ForceDirected.prototype.start = function (interval, render, done) {
+//    var t = this;
 
-    if (this._started) return;
-    this._started = true;
+//    if (this._started) return;
+//    this._started = true;
 
-    Layout.requestAnimationFrame(function step() {
-        t.applyCoulombsLaw();
-        t.applyHookesLaw();
-        t.attractToCentre();
-        t.updateVelocity(0.03);
-        t.updatePosition(0.03);
+//    Layout.requestAnimationFrame(function step() {
+//        t.applyCoulombsLaw();
+//        t.applyHookesLaw();
+//        t.attractToCentre();
+//        t.updateVelocity(0.03);
+//        t.updatePosition(0.03);
 
-        if (typeof (render) !== 'undefined')
-            render();
+//        if (typeof (render) !== 'undefined')
+//            render();
 
-        // stop simulation when energy of the system goes below a threshold
-        if (t.totalEnergy() < 0.01) {
-            t._started = false;
-            if (typeof (done) !== 'undefined') { done(); }
-        } else {
+//        // stop simulation when energy of the system goes below a threshold
+//        if (t.totalEnergy() < 0.01) {
+//            t._started = false;
+//            if (typeof (done) !== 'undefined') { done(); }
+//        } else {
 
-            Layout.requestAnimationFrame(step);
+//            Layout.requestAnimationFrame(step);
 
-        }
-    });
-};
+//        }
+//    });
+//};
 
 // Find the nearest point to a particular position
 Layout.ForceDirected.prototype.nearestPoint = function (pos) {

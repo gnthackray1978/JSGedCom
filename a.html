@@ -16,7 +16,7 @@
     <script src="Libs/extensions.js"></script>
     <script src="Libs/util_func.js"></script>
     <script src="UI/selectionWidget.js"></script>
-   
+    <script src="UI/AutoLoader.js"></script>
     <script src="Diagrams/treeUI.js" type="text/javascript"></script>
     <script src="Diagrams/BaseTree.js" type="text/javascript"></script>
     <script src="Diagrams/DescendantTree.js" type="text/javascript"></script>
@@ -49,9 +49,9 @@
     
     
      
-   <div id="selection_container" class ="displayPanel">
+   <div id="ged_options" class ="displayPanel selection_container">
    
-    <div id="leftcontent">
+    <div class="leftcontent">
       
       Choose Ged file
         <br/>
@@ -62,7 +62,7 @@
         <input id ="hide_gedOptions" class ="options_button" type="submit" value="Show" /><br />
     </div>
 
-    <div id="centerleftcontent">
+    <div class="centerleftcontent">
 
        <div>       
         <div><span>Select Default Person</span></div>
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div id="centerrightcontent">
+    <div class="centerrightcontent">
       
        Select Person
         <div class="filterTable">
@@ -91,7 +91,7 @@
          
     </div>
 
-    <div id="rightcontent">
+    <div class="rightcontent">
         <div id ="right_inner">
             <input type="radio" name="type_sel" value="anc">Ancestors<br>
             <input type="radio" name="type_sel" value="desc_1">Descendants<br>
@@ -102,6 +102,39 @@
 
 
     </div>
+    
+    
+    <div id="edit_tools" class ="hidePanel selection_container">
+   
+    <div class="leftcontent">
+      
+      Info
+    
+    </div>
+
+    <div class="centerleftcontent">
+      Selected Node
+        <div id ="selected-information">Animals</div>
+        <div id ="selected-question">the question</div>
+
+    </div>
+
+    <div class="centerrightcontent">
+      
+      Add Question
+      
+         
+    </div>
+
+    <div class="rightcontent">
+      Save
+        
+
+    </div>
+
+
+    </div>
+    
 
     <div id ="minimized_options" class ="hidePanel">
         <input id ="show_gedOptions" class ="options_button" type="submit" value="Hide" /><br />
@@ -113,7 +146,7 @@
         <div class = "map_year"><span>Zoom level: </span><span id ="map_zoom" >0</span></div> 
         <div class = "map_year"><span>X Pos: </span><span id ="map_X" >0</span></div> 
         <div class = "map_year"><span>Y Pos: </span><span id ="map_Y" >0</span></div> 
-        <div class = "map_year"><span>Nodes: </span><span id ="nodes" >0</span></div> 
+        <div class = "map_year"><span>Nodes: </span><span id ="nodes" >0</span><span> Energy: </span><span id ="energy" >0</span></div> 
 
     </div>
 
