@@ -9,12 +9,29 @@
 // };
 
 // -----------
+
+
+
+// Point
+Point = function (position, mass) {
+    this.p = position; // position
+    this.m = mass; // mass
+    this.v = new Vector(0, 0); // velocity
+    this.a = new Vector(0, 0); // acceleration
+};
+
+Point.prototype.applyForce = function (force) {
+    this.a = this.a.add(force.divide(this.m));
+};
+
+
 var Layout = {};
 
+
 Layout.ForceDirected = function (graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
-    this.selected = null;
-    this.nearest = null;
-    this.dragged = null;
+    this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
+    this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
+    this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
     this.parentNode = parentNode;
     this.parentLayout = parentLayout;
 
@@ -34,13 +51,22 @@ Layout.ForceDirected = function (graph, mapHandler, stiffness, repulsion, dampin
 
     this.mapHandler.layout = this; // oh dear george! 
     this.mapHandler.currentBB = this.getBoundingBox(); // fix this!!!
+
+    this.selectionChanged = null;
+    this.nearestChanged = null;
+    this.draggedChanged = null;
+    
+    this.highLightedListeners = [];
+    
+    this.selectedListeners = [];
+
 };
 
 Layout.ForceDirected.prototype = {
     point: function (node) {
         if (typeof (this.nodePoints[node.id]) === 'undefined') {
             var mass = typeof (node.data.mass) !== 'undefined' ? node.data.mass : 1.0;
-            this.nodePoints[node.id] = new Layout.ForceDirected.Point(Vector.random(), mass);
+            this.nodePoints[node.id] = new Point(Vector.random(), mass);
         }
 
         return this.nodePoints[node.id];
@@ -178,13 +204,37 @@ Layout.ForceDirected.prototype = {
 
             var p = this.mapHandler.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
 
-            this.selected = this.nearest = this.dragged = this.nearestPoint(p);
+            var newNearest = this.nearestPoint(p);
+
+
+            //this.selected = this.nearest = this.dragged = ;
+
+            if (newNearest.node != null) {
+                
+                if (newNearest.node.id != this.selected.node.id) {
+                    this.selected = newNearest;
+                   // console.log('selected changed: ' + this.selected);
+
+                    this.notifySelection(this.selected);
+                }
+                if (newNearest.node.id != this.nearest.node.id) {
+                    this.nearest = newNearest;
+                //     console.log('nearest changed: ' + this.nearest);
+                    this.notifyHighLight(this.nearest);
+
+                }
+                if (newNearest.node.id != this.dragged.node.id) {
+                    this.dragged = newNearest;
+                  //  console.log('dragged changed: ' + this.dragged);
+                }
+
+            }
 
             if (this.selected.node !== null) {
                 this.dragged.point.m = 10000.0;
             }
 
-            console.log(this.selected);
+           
 
         }
 
@@ -206,7 +256,7 @@ Layout.ForceDirected.prototype = {
         if (e.target.id == "myCanvas") {
 
             this.mapHandler.addToMouseQueue(1000000, 1000000);
-            this.dragged = null;
+            this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
             this.mouseup = true;
         } else {
             this.mapHandler.moving = '';
@@ -219,27 +269,37 @@ Layout.ForceDirected.prototype = {
         var pos = $(this.canvasId).offset();
         var p = this.mapHandler.currentPositionFromScreen(pos, e);
 
-        if (!this.mouseup && this.selected.node === null) {
+        if (!this.mouseup && this.selected.node.id !== -1 && this.dragged.node.id == -1) {
             this.mapHandler.addToMouseQueue(e.clientX, e.clientY);
         }
 
-        this.nearest = this.nearestPoint(p);
+        var newNearest = this.nearestPoint(p);
+      
 
-        if (this.dragged !== null && this.dragged.node !== null) {
+        if (newNearest.node != null && newNearest.node.id != this.nearest.node.id) {
+            this.nearest = newNearest;
+            //  console.log('nearest changed: ' + this.nearest);
+            this.notifyHighLight(this.nearest);
+        }
+
+        //  if (this.dragged !== null && this.dragged.node !== null && this.dragged.node.id !== -1) {
+        if (this.dragged.node.id !== -1) {
             this.dragged.point.p.x = p.x;
             this.dragged.point.p.y = p.y;
         }
     },
 
-    
-      getSelection: function (node) {
+    getSelection: function (node) {
             // 1 nothing 
             // 2 nearest 
             // 3 selected 
             var selectedPersonId = '';
             var nodePersonId = '';
 
-            if (this.selected != null && this.selected.node != undefined && this.selected.node.data != undefined && this.selected.node.data.person  !=undefined) {
+            if (this.selected != null
+                && this.selected.node != undefined
+                && this.selected.node.data != undefined
+                && this.selected.node.data.person != undefined) {
                 selectedPersonId = this.selected.node.data.person.PersonId;
             }
 
@@ -255,9 +315,33 @@ Layout.ForceDirected.prototype = {
             } else {
                 return 1;
             }
-        }
+        },
+
+
+    notifyHighLight: function (e) {
+        this.highLightedListeners.forEach(function (obj) {
+            obj(e);
+        });
+    },
+    
+    notifySelection: function (e) {
+        this.selectedListeners.forEach(function (obj) {
+            obj(e);
+        });
+    },
+
+    HighLightedChanged: function (obj) {
+        this.highLightedListeners.push(obj);
+    },
+    SelectedChanged: function (obj) {
+        this.selectedListeners.push(obj);
+    }
 
 };
+
+
+
+
 
 
 var __bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; }; // stolen from coffeescript, thanks jashkenas! ;-)
@@ -272,34 +356,6 @@ Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 	}, window);
 
 
-// start simulation
-//Layout.ForceDirected.prototype.start = function (interval, render, done) {
-//    var t = this;
-
-//    if (this._started) return;
-//    this._started = true;
-
-//    Layout.requestAnimationFrame(function step() {
-//        t.applyCoulombsLaw();
-//        t.applyHookesLaw();
-//        t.attractToCentre();
-//        t.updateVelocity(0.03);
-//        t.updatePosition(0.03);
-
-//        if (typeof (render) !== 'undefined')
-//            render();
-
-//        // stop simulation when energy of the system goes below a threshold
-//        if (t.totalEnergy() < 0.01) {
-//            t._started = false;
-//            if (typeof (done) !== 'undefined') { done(); }
-//        } else {
-
-//            Layout.requestAnimationFrame(step);
-
-//        }
-//    });
-//};
 
 // Find the nearest point to a particular position
 Layout.ForceDirected.prototype.nearestPoint = function (pos) {
@@ -321,11 +377,6 @@ Layout.ForceDirected.prototype.nearestPoint = function (pos) {
 
     return min;
 };
-
-// returns [bottomleft, topright]
-// get boundaries of graph by looping through all the 
-// nodes
-// adds a 5% padding around edge
 
 Layout.ForceDirected.prototype.getBoundingBox = function () {
     var bottomleft = new Vector(-2, -2);
@@ -351,21 +402,6 @@ Layout.ForceDirected.prototype.getBoundingBox = function () {
     return { bottomleft: bottomleft.subtract(padding), topright: topright.add(padding) };
 };
 
-
-
-
-// Point
-Layout.ForceDirected.Point = function (position, mass) {
-    this.p = position; // position
-    this.m = mass; // mass
-    this.v = new Vector(0, 0); // velocity
-    this.a = new Vector(0, 0); // acceleration
-};
-
-Layout.ForceDirected.Point.prototype.applyForce = function (force) {
-    this.a = this.a.add(force.divide(this.m));
-};
-
 // Spring
 Layout.ForceDirected.Spring = function (point1, point2, length, k) {
     this.point1 = point1;
@@ -373,5 +409,4 @@ Layout.ForceDirected.Spring = function (point1, point2, length, k) {
     this.length = length; // spring length at rest
     this.k = k; // spring constant (See Hooke's law) .. how stiff the spring is
 };
-
 

@@ -122,54 +122,7 @@ Graph.prototype = {
 
         this.notify();
     },
-    //merge: function (data) {
-
-    //    /* Merge a list of nodes and edges into the current graph. eg.
-    //    var o = {
-    //    nodes: [
-    //    {id: 123, data: {type: 'user', userid: 123, displayname: 'aaa'}},
-    //    {id: 234, data: {type: 'user', userid: 234, displayname: 'bbb'}}
-    //    ],
-    //    edges: [
-    //    {from: 0, to: 1, type: 'submitted_design', directed: true, data: {weight: }}
-    //    ]
-    //    }
-    //    */
-    //    var nodes = [];
-    //    data.nodes.forEach(function (n) {
-    //        nodes.push(this.addNode(new Node(n.id, n.data)));
-    //    }, this);
-
-    //    data.edges.forEach(function (e) {
-    //        var from = nodes[e.from];
-    //        var to = nodes[e.to];
-
-    //        var id = (e.directed)
-    //        ? (id = e.type + "-" + from.id + "-" + to.id)
-    //        : (from.id < to.id) // normalise id for non-directed edges
-    //        ? e.type + "-" + from.id + "-" + to.id
-    //        : e.type + "-" + to.id + "-" + from.id;
-
-    //        var edge = this.addEdge(new Edge(id, from, to, e.data));
-    //        edge.data.type = e.type;
-    //    }, this);
-    //},
-    //filterNodes: function (fn) {
-    //    var tmpNodes = this.nodes.slice();
-    //    tmpNodes.forEach(function (n) {
-    //        if (!fn(n)) {
-    //            this.removeNode(n);
-    //        }
-    //    }, this);
-    //},
-    //filterEdges: function (fn) {
-    //    var tmpEdges = this.edges.slice();
-    //    tmpEdges.forEach(function (e) {
-    //        if (!fn(e)) {
-    //            this.removeEdge(e);
-    //        }
-    //    }, this);
-    //},
+ 
     addGraphListener: function (obj) {
         this.eventListeners.push(obj);
     },

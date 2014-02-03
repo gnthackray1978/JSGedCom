@@ -7,9 +7,10 @@ $(document).ready(function () {
     var fileLoaded = function (data) {
 
 
-        //svar loader = new DataLoader.GedLoader();
+        //selectorwidget must have loader
 
-        var that = this;
+        var that = this; // this is selectorwidget context
+        
         var selectedId = '';
 
         var descClick = function (id, name) {
@@ -25,11 +26,7 @@ $(document).ready(function () {
         that.loader.processFile(data, function (families, persons) {
 
             selectedId = that.showPersonSelectList(persons, descClick);
-
-            //    var gedPreLoader = new GedPreLoader(loader);
-
-            //   // gedPreLoader.GetGenerations('@I4@');
-            // var ancTreeDiag = null;
+ 
             var treeRunner = null;
             var forceDirect = null;
 
@@ -59,9 +56,46 @@ $(document).ready(function () {
                         if (treeRunner != null)
                             treeRunner.CleanUp();
 
-                        // forceDirect = new ForceDirect(new GedPreLoader(that.loader));
-                        forceDirect = new ForceDirect(that.gedPreLoader);
+                 
+                        forceDirect = new ForceDirect(colourScheme, that.gedPreLoader);
+                        
+                        // the selection widget is trying to be independant of the diags
+
+
+                        //when mouse up happens this gets executed
+                        that.SetMouseDown(function(e) {                            
+                            $.proxy(forceDirect.mouseDown(e), forceDirect);                            
+                        });
+                        
+                        that.SetMouseUp(function (e) {
+                            $.proxy(forceDirect.mouseUp(e), forceDirect);
+                        });
+
+                        that.SetMouseMove(function (e) {
+                            $.proxy(forceDirect.mouseMove(e), forceDirect);
+                        });
+
+
+
+                        that.SetButtonDown(function (e) {
+                            $.proxy(forceDirect.buttonDown(e), forceDirect);
+                        });
+
+                        that.SetButtonUp(function (e) {
+                            $.proxy(forceDirect.buttonUp(e), forceDirect);
+                        });
+ 
+                        forceDirect.HighLightedChanged(function(e) {
+                            console.log('highlighted changed' + e);
+                        });
+                        
+                        forceDirect.SelectedChanged(function (e) {
+                            console.log('selected changed' +e);
+                        });
+                        
                         forceDirect.init(selectedId);
+                        
+
                         break;
 
                     default:

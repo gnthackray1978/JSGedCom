@@ -2,7 +2,7 @@
         
         
         var colourScheme = {
-            mapbackgroundColour: '#0A0A33',
+            mapbackgroundColour: 'white',//'#0A0A33',
 
             normalMainLabelColour: 'white',
             normalMainLabelBackground: '#0A0A33',

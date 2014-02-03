@@ -44,9 +44,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 
 //var AncTreeDiag function (gedAncPreLoader) {
- var ForceDirect = function(gedPreLoader) {
+var ForceDirect = function (colourScheme,gedPreLoader) {
 
-    this.graph = new Graph();
+    
 
     this.stiffness = 400.0;
     this.repulsion = 500.0;
@@ -63,43 +63,36 @@ OTHER DEALINGS IN THE SOFTWARE.
     this.ctx = this.canvas.getContext("2d");
 
     this.tree = null;
-
+    this.combinedRenderer = null;
     this.year = 1670;
-
+    this.layoutList = [];
     this.gedPreLoader = gedPreLoader;
-}
+
+    this.highLighted = null;
+    this.selected = null;
+
+};
 
 ForceDirect.prototype = {
-
-    init: function (id) {
-
-      //  var ancUtils = new AncUtils();
-      //  var params = {};
-   //     params[0] = 'c41dfad2-f3d4-4682-9c52-610851c36dc6';
-        var that = this;
-
+    init: function(id, nodeSelected) {
         this.gedPreLoader.GetGenerations(id, $.proxy(this.run, this));
-
-        //ancUtils.twaGetJSON('/Trees/GetTreeDiag', params, function (data) {
-        //    if (data.Generations.length > 0)
-        //        that.run(data);
-        //});
-
     },
 
-    run: function (data) {
+    run: function(data) {
         var f = JSON.stringify(data);
-        
+
+        var graph = new Graph();
+
         this.tree = new Tree(data);
 
         var that = this;
 
-        var clearFunction = function (map) {
+        var clearFunction = function(map) {
             // var map = this.map;
             that.ctx.clearRect(0, 0, map.graph_width, map.graph_height);
         };
 
-        var drawEdges = function (map, edge, p1, p2) {
+        var drawEdges = function(map, edge, p1, p2) {
 
             //  var map = this.map;
             var _utils = new Utils(map.currentBB, map.graph_width, map.graph_height);
@@ -123,8 +116,9 @@ ForceDirect.prototype = {
             // negate y
             var normal = direction.normal().normalise();
 
-            var from = that.graph.getEdges(edge.source, edge.target);
-            var to = that.graph.getEdges(edge.target, edge.source);
+
+            var from = graph.getEdges(edge.source, edge.target);
+            var to = graph.getEdges(edge.target, edge.source);
 
             var total = from.length + to.length;
 
@@ -140,7 +134,6 @@ ForceDirect.prototype = {
 
             // Figure out how far off center the line should be drawn
             var offset = normal.multiply(-((total - 1) * spacing) / 2.0 + (n * spacing));
-
 
 
             var s1 = map.mapOffset(_utils.toScreen(p1).add(offset));
@@ -159,7 +152,7 @@ ForceDirect.prototype = {
             var arrowWidth;
             var arrowLength;
 
-            var weight = typeof (edge.data.weight) !== 'undefined' ? edge.data.weight : 1.0;
+            var weight = typeof(edge.data.weight) !== 'undefined' ? edge.data.weight : 1.0;
 
             that.ctx.lineWidth = Math.max(weight * 2, 0.1);
             arrowWidth = 10 + that.ctx.lineWidth;
@@ -169,8 +162,7 @@ ForceDirect.prototype = {
             var stroke = '';
             if (edge.data.type == 'data') {
                 stroke = map.colourScheme.infoLineColour;
-            }
-            else {
+            } else {
                 var averagedesc = (edge.source.data.person.currentDescendantCount + edge.target.data.person.currentDescendantCount) / 2;
                 stroke = _utils.getLevel(300, averagedesc, map.colourScheme.normalLineGradient);
             }
@@ -183,7 +175,7 @@ ForceDirect.prototype = {
 
             // arrow
             var distance = s1.distance(s2);
-            var directional = typeof (edge.data.directional) !== 'undefined' ? edge.data.directional : true;
+            var directional = typeof(edge.data.directional) !== 'undefined' ? edge.data.directional : true;
             if (directional && distance > 75) {
                 that.ctx.save();
                 that.ctx.fillStyle = stroke;
@@ -202,13 +194,11 @@ ForceDirect.prototype = {
             }
 
 
-
         };
 
-        var drawNodes = function (map, node, p) {
+        var drawNodes = function(map, node, p) {
 
             // get parent node location if there is a parent node
-
 
 
             //       if (node.data.type != undefined && node.data.type == 'infonode') return;
@@ -247,8 +237,7 @@ ForceDirect.prototype = {
                     _utils.star(map, that.ctx, s.x, s.y, 5, 5, 0.4, false, node.data.type, selectionId);
                 }
 
-            }
-            else {
+            } else {
                 _utils.star(map, that.ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
 
                 if (node.data.person != undefined) {
@@ -277,7 +266,7 @@ ForceDirect.prototype = {
                             dstring = 'Death: ' + dstring;
 
                         _utils.drawText(map, that.ctx, s.x, s.y + 40, dstring, node.data.type, selectionId);
-                        
+
                         //Occupation
                         if (node.data.person.bio.Occupation != '')
                             _utils.drawText(map, that.ctx, s.x, s.y + 40, node.data.person.bio.Occupation, node.data.type, selectionId);
@@ -291,12 +280,9 @@ ForceDirect.prototype = {
         };
 
 
+        var myVar = setInterval(function() { myTimer() }, 3000);
 
-
-
-        var myVar = setInterval(function () { myTimer() }, 3000);
-
-        var layoutList = [];
+        this.layoutList = [];
 
 
         var gidx = 0;
@@ -305,22 +291,22 @@ ForceDirect.prototype = {
         var topYear = 0;
 
         var years = [];
-        
+
         while (gidx < data.Generations.length) {
             var pidx = 0;
-            
+
             while (pidx < data.Generations[gidx].length) {
 
-                if (Number(data.Generations[gidx][pidx].bio.DOB)!=0)
+                if (Number(data.Generations[gidx][pidx].bio.DOB) != 0)
                     years.push(Number(data.Generations[gidx][pidx].bio.DOB));
- 
+
                 pidx++;
             }
-             
+
             gidx++;
         }
 
-        years = years.sort(function (a, b) { return a - b; });
+        years = years.sort(function(a, b) { return a - b; });
 
         if (years.length > 0) {
             botYear = years[0];
@@ -331,10 +317,6 @@ ForceDirect.prototype = {
             botYear = 1695;
             topYear = 1695;
         }
-            
-        
-
-        console.log(botYear);
 
 
         function myTimer() {
@@ -342,26 +324,21 @@ ForceDirect.prototype = {
             $('#map_year').html(botYear);
 
 
-            that.tree.populateGraph(botYear, that.graph);
+            that.tree.populateGraph(botYear, graph);
 
             botYear += 5;
             if (Number(botYear) > topYear) clearInterval(myVar);
         }
 
 
-
-
         $('body').css("background-color", this.colourScheme.mapbackgroundColour);
 
 
+        var parentLayout = this.layout = new Layout.ForceDirected(graph, new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), this.stiffness, this.repulsion, this.damping);
 
-        var parentLayout = this.layout = new Layout.ForceDirected(this.graph, new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), this.stiffness, this.repulsion, this.damping);
+        this.layoutList.push({ layout: parentLayout, edges: drawEdges, nodes: drawNodes, type: 'parent' });
 
-        //layoutList.push(layout);
-
-        layoutList.push({ layout: parentLayout, edges: drawEdges, nodes: drawNodes, type: 'parent' });
-
-        var createSubLayout = function (entry) {
+        var createSubLayout = function(entry) {
 
             var infoGraph = new Graph();
 
@@ -426,63 +403,80 @@ ForceDirect.prototype = {
 
         };
 
-        jQuery(this.canvas).mousedown(function (e) {
+        var that = this;
 
-            layoutList.forEach(function (value, index, ar) {
-                $.proxy(value.layout.mouseDown(e), value);
+
+        if (this.highLighted!=null) {
+            this.layoutList.forEach(function(value, index, ar) {
+                $.proxy(value.layout.HighLightedChanged(that.highLighted), value);
             });
-
-
-            combinedRenderer.start();
-        }).mouseup(function (e) {
-
-            layoutList.forEach(function (value, index, ar) {
-                value.layout.mouseUp(e);
+        }
+        
+        if (this.selected != null) {
+            this.layoutList.forEach(function(value, index, ar) {
+                $.proxy(value.layout.SelectedChanged(that.selected), value);
             });
-        });
+        }
 
-        $(".button_box").mousedown(function (evt) {
-            console.log('button mouse down');
+        that.combinedRenderer = new CombinedRenderer(clearFunction, that.layoutList, createSubLayout, drawEdges, drawNodes);
 
-            //mouseup = false;
-            layoutList.forEach(function (value, index, ar) {
-                $.proxy(value.layout.mouseDown(evt), value);
-            });
- 
-         //   combinedRenderer.start();
-         //   if (evt.target.id == "up") _dir = 'UP';
-         //   if (evt.target.id == "dn") _dir = 'DOWN';
-         //   if (evt.target.id == "we") _dir = 'WEST';
-         //   if (evt.target.id == "no") _dir = 'NORTH';
-         //   if (evt.target.id == "es") _dir = 'EAST';
-         //   if (evt.target.id == "so") _dir = 'SOUTH';
-         //   if (evt.target.id == "de") _dir = 'DEBUG';
-
-        }).mouseup(function (evt) {
-            //mouseup = true;
-            layoutList.forEach(function (value, index, ar) {
-                $.proxy(value.layout.mouseUp(evt), value);
-            });
-        });
-
-
-        jQuery(this.canvas).mousemove(function (e) {
-
-            layoutList.forEach(function (value, index, ar) {
-                $.proxy(value.layout.mouseMove(e), value);
-            });
-            combinedRenderer.start();
-        });
-
-
-
-        var combinedRenderer = new CombinedRenderer(clearFunction, layoutList, createSubLayout,drawEdges, drawNodes);
-
-        combinedRenderer.start();
+        that.combinedRenderer.start();
 
         return this;
+    },
+
+    mouseMove: function(e) {
+
+        this.layoutList.forEach(function(value, index, ar) {
+            $.proxy(value.layout.mouseMove(e), value);
+        });
+
+        this.combinedRenderer.start();
+    },
+
+    mouseDown: function(e) {
+
+        this.layoutList.forEach(function(value, index, ar) {
+            $.proxy(value.layout.mouseDown(e), value);
+        });
+
+
+        this.combinedRenderer.start();
+    },
+
+    mouseUp: function (e) {
+
+        this.layoutList.forEach(function(value, index, ar) {
+            $.proxy(value.layout.mouseUp(e), value);
+        });
+    },
+
+    buttonDown: function(e) {
+
+        this.layoutList.forEach(function(value, index, ar) {
+            $.proxy(value.layout.mouseDown(e), value);
+        });
+    },
+
+    buttonUp: function(e) {
+        this.layoutList.forEach(function(value, index, ar) {
+            $.proxy(value.layout.mouseUp(e), value);
+        });
+
+        this.notify();
+    },
+
+    HighLightedChanged: function(obj) {
+          this.highLighted = obj;
+    },
+    SelectedChanged: function(obj) {
+          this.selected = obj;
     }
 
-}
+ 
+
+
+    
+};
 
 

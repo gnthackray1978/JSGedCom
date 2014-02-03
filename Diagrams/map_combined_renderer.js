@@ -29,7 +29,7 @@ function CombinedRenderer(clear, layouts, createSubLayout, drawEdges,drawNodes) 
 }
 
 CombinedRenderer.prototype = {
-    start: function () {
+    start: function() {
 
         if (this._started) return;
         this._started = true;
@@ -40,7 +40,6 @@ CombinedRenderer.prototype = {
 
             var idx = 0;
 
-         
 
             var onScreenList = [];
 
@@ -49,9 +48,9 @@ CombinedRenderer.prototype = {
 
 
             //// create a list of the new layouts we need to add
-            onScreenList.forEach(function (ovalue, index, ar) {
+            onScreenList.forEach(function(ovalue, index, ar) {
                 var nodePresent = false;
-                that.layouts.forEach(function (value, index, ar) {
+                that.layouts.forEach(function(value, index, ar) {
                     if (value.type == 'child' && value.layout.parentNode.id == ovalue.id) nodePresent = true;
                 });
                 if (!nodePresent)
@@ -64,27 +63,26 @@ CombinedRenderer.prototype = {
 
                 if (that.layouts[i].type == 'child') {
                     var nodePresent = false;
-                    onScreenList.forEach(function (value, index, ar) {
+                    onScreenList.forEach(function(value, index, ar) {
                         if (that.layouts[i].layout.parentNode.id == value.id) nodePresent = true;
                     });
 
                     if (!nodePresent) that.layouts.splice(i, 1);
                 }
-            };
-
-
+            }
+            ;
 
 
             while (idx < that.layouts.length) {
-                
-              //  
+
+                //  
 
                 if (that.layouts[idx].layout.graph.eventListeners.length == 0)
                     that.layouts[idx].layout.graph.addGraphListener(that);
 
 
                 that.layouts[idx].layout.mapHandler.adjustPosition();
-                
+
                 idx++;
             }
 
@@ -92,17 +90,12 @@ CombinedRenderer.prototype = {
             var energyCount = 0;
 
 
-
-
             that.clear(that.layouts[0].layout.mapHandler);
 
             $('#nodes').html(that.layouts[0].layout.mapHandler.countOnscreenNodes());
-            
+
 
             while (idx < that.layouts.length) {
-                
-
-                
 
 
                 that.layouts[idx].layout.applyCoulombsLaw();
@@ -115,35 +108,38 @@ CombinedRenderer.prototype = {
                 var map = that.layouts[idx].layout.mapHandler;
 
                 // render 
-                that.layouts[idx].layout.eachEdge(function (edge, spring) {
+                that.layouts[idx].layout.eachEdge(function(edge, spring) {
 
                     that.layouts[idx].edges(map, edge, spring.point1.p, spring.point2.p);
                 });
 
-                that.layouts[idx].layout.eachNode(function (node, point) {
-                    
+                that.layouts[idx].layout.eachNode(function(node, point) {
+
                     that.layouts[idx].nodes(map, node, point.p);
 
                 });
 
 
-                if (idx==0 && that.layouts[0].layout.nearest != null && that.layouts[0].layout.nearest.node != null) {
+                if (idx == 0 && that.layouts[0].layout.nearest != null && that.layouts[0].layout.nearest.node != null) {
                     var nearestNodePoint = that.layouts[0].layout.nodePoints[that.layouts[0].layout.nearest.node.id];
 
-                    that.layouts[0].nodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
+                    if (nearestNodePoint != null && nearestNodePoint.p != null)
+                        that.layouts[0].nodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
                 }
 
                 energyCount += that.layouts[idx].layout.totalEnergy();
 
                 idx++;
             }
-            
+
             $('#energy').html(energyCount.toFixed(2));
-            
+
             // stop simulation when energy of the system goes below a threshold
             if (energyCount < 0.01) {
                 that._started = false;
-                if (typeof (done) !== 'undefined') { done(); }
+                if (typeof(done) !== 'undefined') {
+                    done();
+                }
             } else {
 
                 CombinedRenderer.requestAnimationFrame(step);
@@ -152,10 +148,10 @@ CombinedRenderer.prototype = {
         });
 
     },
-    done: function () {
+    done: function() {
 
     },
-    graphChanged: function (e) {
+    graphChanged: function(e) {
         this.start();
     }
-}
+};

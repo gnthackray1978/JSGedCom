@@ -232,7 +232,7 @@ function GedPreLoader(loader) {
         isChild = (isChild == undefined) ? true : isChild;
 
 
-        console.log(this.searchDepth + ' ' + person.name + ' ' + person.isFirst);
+       // console.log(this.searchDepth + ' ' + person.name + ' ' + person.isFirst);
 
         //var bio = {
         //    DOB: person.BirthDate.yearDate() != 0 ? person.BirthDate.yearDate() : person.BaptismDate.yearDate(),

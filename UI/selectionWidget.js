@@ -1,7 +1,10 @@
 ﻿/** @constructor */
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
-    this.loader = this.gedPreLoader.gedLoader; 
+    this.loader = this.gedPreLoader.gedLoader;
+    
+
+
 }
 
 
@@ -46,6 +49,67 @@ function SelectorWidget(gedPreLoader) {
         $('#selected_person').html(selectedPerson);
 
         return id;
+    };
+    
+    SelectorWidget.prototype.NodeSelected = function (node) {
+        
+    };
+    
+    SelectorWidget.prototype.NodeHovered = function (node) {
+
+    };
+
+    SelectorWidget.prototype.SetMouseDown = function (action) {
+
+        $('#myCanvas').mousedown(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+        
+    };
+    SelectorWidget.prototype.SetMouseUp = function (action) {
+
+        $('#myCanvas').mouseup(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+
+    };
+    
+    SelectorWidget.prototype.SetMouseMove = function (action) {
+
+        $('#myCanvas').mousemove(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+
+    };
+    
+    SelectorWidget.prototype.SetButtonDown = function (action) {
+
+        $(".button_box").mousedown(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+
+    };
+    SelectorWidget.prototype.SetButtonUp = function (action) {
+
+        $(".button_box").mouseup(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+
     };
 
     SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
