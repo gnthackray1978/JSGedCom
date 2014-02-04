@@ -2,9 +2,11 @@
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
-    
 
-
+    this.showGed = true;
+    this.showMapControls = true;
+    this.showDebug = true;
+    this.showDataControls = true;
 }
 
 
@@ -41,7 +43,6 @@ function SelectorWidget(gedPreLoader) {
 
         document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
     };
-
     SelectorWidget.prototype.showSelectedPerson = function(id, name) {
 
         var selectedPerson = 'Selected Person: ' + id + ' ' + name;
@@ -49,16 +50,13 @@ function SelectorWidget(gedPreLoader) {
         $('#selected_person').html(selectedPerson);
 
         return id;
-    };
-    
+    };    
     SelectorWidget.prototype.NodeSelected = function (node) {
         
-    };
-    
+    };    
     SelectorWidget.prototype.NodeHovered = function (node) {
 
     };
-
     SelectorWidget.prototype.SetMouseDown = function (action) {
 
         $('#myCanvas').mousedown(function (e) {
@@ -78,8 +76,7 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
 
-    };
-    
+    };    
     SelectorWidget.prototype.SetMouseMove = function (action) {
 
         $('#myCanvas').mousemove(function (e) {
@@ -89,8 +86,7 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
 
-    };
-    
+    };    
     SelectorWidget.prototype.SetButtonDown = function (action) {
 
         $(".button_box").mousedown(function (e) {
@@ -111,7 +107,6 @@ function SelectorWidget(gedPreLoader) {
         });
 
     };
-
     SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
         $('#btnRunDiag').click(function(e) {
 
@@ -127,40 +122,70 @@ function SelectorWidget(gedPreLoader) {
 
     SelectorWidget.prototype.InitPanelVisibility = function() {
 
+        $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
+        
         // ok so click on the hide button to hide file options
 
 
         // click on the show to bring it back.
 
-        var newTop = parseInt($('#ged_options').css('height')) + 30;
+     //   var newTop = parseInt($('#ged_options').css('height')) + 30;
 
-        $("#map_control").css('top', newTop + "px");
-        $("#map_message").css('top', newTop + "px");
-
-
-        $('#show_gedOptions').click(function(e) {
-
-            $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
-            $("#minimized_options").removeClass("displayPanel").addClass("hidePanel");
-
-            var newTop = parseInt($('#ged_options').css('height')) + 30;
+      //  $("#map_control").css('top', newTop + "px");
+    //    $("#map_message").css('top', newTop + "px");
 
 
-            $("#map_control").css('top', newTop + "px");
-            $("#map_message").css('top', newTop + "px");
+        $('#show_gedOptions').click(function (e) {
+
+            if (this.showGed) {
+                $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
+                this.showGed = false;
+            } else {
+                $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
+                this.showGed = true;
+            }
+
+       //     var newTop = parseInt($('#ged_options').css('height')) + 30;
+
+
+      //      $("#map_control").css('top', newTop + "px");
+        //    $("#map_message").css('top', newTop + "px");
         });
 
-        $('#hide_gedOptions').click(function(e) {
+        $('#show_controls').click(function (e) {
 
-            $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
-            $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
-            //map_control
-
-            $("#map_control").css('top', "30px");
-            $("#map_message").css('top', "30px");
+            if (this.showMapControls) {
+                $("#map_control").removeClass("hidePanel").addClass("displayPanel");
+                this.showMapControls = false;
+            } else {
+                $("#map_control").removeClass("displayPanel").addClass("hidePanel");
+                this.showMapControls = true;
+            }
         });
 
 
+
+        $('#show_debugbox').click(function (e) {
+
+            if (this.showDebug) {
+                $("#map_message").removeClass("hidePanel").addClass("displayPanel");
+                this.showDebug = false;
+            } else {
+                $("#map_message").removeClass("displayPanel").addClass("hidePanel");
+                this.showDebug = true;
+            }
+        });
+
+        $('#show_databox').click(function (e) {
+
+            if (this.showDataControls) {
+                $("#edit_tools").removeClass("hidePanel").addClass("displayPanel");
+                this.showDataControls = false;
+            } else {
+                $("#edit_tools").removeClass("displayPanel").addClass("hidePanel");
+                this.showDataControls = true;
+            }
+        });       
     };
 
 

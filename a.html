@@ -49,7 +49,12 @@
 </head> 
 <body> 
     
-    
+    <div id ="minimized_options" class ="hidePanel">
+        <input id ="show_gedOptions" class ="options_button" type="submit" value="Load" />
+        <input id ="show_controls" class ="options_button" type="submit" value="Controls" />
+        <input id ="show_debugbox" class ="options_button" type="submit" value="Debug" />
+        <input id ="show_databox" class ="options_button" type="submit" value="Data" />
+    </div>
      
    <div id="ged_options" class ="displayPanel selection_container">
    
@@ -61,7 +66,7 @@
       <input type="file" id="fileinput" />
       <div id="selected_person"></div>
 
-        <input id ="hide_gedOptions" class ="options_button" type="submit" value="Show" /><br />
+      
     </div>
 
     <div class="centerleftcontent">
@@ -138,12 +143,9 @@
     </div>
     
 
-    <div id ="minimized_options" class ="hidePanel">
-        <input id ="show_gedOptions" class ="options_button" type="submit" value="Hide" /><br />
 
-    </div>
 
-    <div id ="map_message">
+    <div id ="map_message" class ="hidePanel">
         <div class = "map_year"><span>Year: </span><span id ="map_year" >1650</span></div> 
         <div class = "map_year"><span>Zoom level: </span><span id ="map_zoom" >0</span></div> 
         <div class = "map_year"><span>X Pos: </span><span id ="map_X" >0</span></div> 
@@ -152,7 +154,7 @@
 
     </div>
 
-    <div id = "map_control">
+    <div id = "map_control" class ="hidePanel">
         <div id = "up" class = "u button_box"><span></span></div>
         <div id = "dn" class = "d button_box"><span></span></div>
         <div id = "we" class = "w button_box"><span></span></div>
@@ -162,9 +164,9 @@
         <div id = "de" class = "debug button_box"><span></span></div>
     </div>
   
-    <canvas id="myCanvas" >
 
 
+    <canvas id="myCanvas" >    
     </canvas>
  
 

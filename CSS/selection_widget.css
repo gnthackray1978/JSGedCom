@@ -1,5 +1,12 @@
 ﻿
 
+canvas {
+    position: absolute;
+    top:0px;
+    left: 0px;
+    z-index:-1;
+}
+
 #defaultFile {
     display: inline;
 
@@ -24,6 +31,8 @@
     height: 145px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    top: 30px;
+    position: relative;
 }
 
 .leftcontent {
