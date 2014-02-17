@@ -122,6 +122,10 @@ function SelectorWidget(gedPreLoader) {
 
     SelectorWidget.prototype.InitPanelVisibility = function() {
 
+
+        var that = this;
+        
+
         $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
         
         // ok so click on the hide button to hide file options
@@ -138,7 +142,10 @@ function SelectorWidget(gedPreLoader) {
         $('#show_gedOptions').click(function (e) {
 
             if (this.showGed) {
-                $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
+                   $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
+                
+             
+                
                 this.showGed = false;
             } else {
                 $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
@@ -154,12 +161,28 @@ function SelectorWidget(gedPreLoader) {
 
         $('#show_controls').click(function (e) {
 
-            if (this.showMapControls) {
-                $("#map_control").removeClass("hidePanel").addClass("displayPanel");
-                this.showMapControls = false;
+            if (that.showMapControls) {
+              //  $("#map_control").removeClass("hidePanel").addClass("displayPanel");
+                
+                $("#map_control").dialog();
+                
+          //   $(".ui-widget-header").css("border", "none" );
+                //   $(".ui-widget-header").css("background", "none");
+             
+                 $(".ui-widget-header").css("height", "7px");
+                
+                 $(".ui-dialog-title").css("position", "absolute");
+                 $(".ui-dialog-title").css("top", "0px");
+                 $(".ui-dialog-title").css("left", "0px");
+                
+                 $('*[aria-describedby="map_control"]').css("width", "120px");
+                 $('*[aria-describedby="map_control"]').css("height", "100px");
+                
+                that.showMapControls = false;
             } else {
-                $("#map_control").removeClass("displayPanel").addClass("hidePanel");
-                this.showMapControls = true;
+             //   $("#map_control").removeClass("displayPanel").addClass("hidePanel");
+                $("#map_control").dialog("close");
+                that.showMapControls = true;
             }
         });
 
@@ -167,12 +190,28 @@ function SelectorWidget(gedPreLoader) {
 
         $('#show_debugbox').click(function (e) {
 
-            if (this.showDebug) {
-                $("#map_message").removeClass("hidePanel").addClass("displayPanel");
-                this.showDebug = false;
+         
+
+             if (that.showDebug) {
+            
+                 $("#map_message").dialog();
+                 
+                 that.showDebug = false;
+                 
+                 $(".ui-widget-header").css("height", "7px");
+
+                 $(".ui-dialog-title").css("position", "absolute");
+                 $(".ui-dialog-title").css("top", "0px");
+                 $(".ui-dialog-title").css("left", "0px");
+
+                 $('*[aria-describedby="map_message"]').css("width", "120px");
+                 $('*[aria-describedby="map_message"]').css("height", "140px");
+
             } else {
-                $("#map_message").removeClass("displayPanel").addClass("hidePanel");
-                this.showDebug = true;
+               
+
+                 $("#map_message").dialog("close");
+              that.showDebug = true;
             }
         });
 
@@ -193,7 +232,7 @@ function SelectorWidget(gedPreLoader) {
     SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
 
 
-        var showPersons = function (data, ancestorFunc) {
+        var showPersons = function(data, ancestorFunc) {
 
             var from = $('#txtFrom').val().yearDate();
             var to = $('#txtTo').val().yearDate();
@@ -201,14 +240,13 @@ function SelectorWidget(gedPreLoader) {
             var tableBody = '';
             var _idx = 0;
 
-            $.each(data, function (source, sourceInfo) {
+            $.each(data, function(source, sourceInfo) {
 
                 var birthYear = sourceInfo.BirthDate.yearDate() == 0 ? sourceInfo.BaptismDate.yearDate() : sourceInfo.BirthDate.yearDate();
 
-                if ((birthYear >= from && birthYear < to) && ((sourceInfo.name.indexOf(surname) != -1) || surname == '') )
-               
+                if ((birthYear >= from && birthYear < to) && ((sourceInfo.name.indexOf(surname) != -1) || surname == ''))
                     tableBody += '<tr><td><a class = "anc_class" id= "' + sourceInfo.id + '" href="" ><span>' + birthYear + ' ' + sourceInfo.name + '</span></a></td>';
-             
+
                 tableBody += '</tr>';
 
 
@@ -218,12 +256,12 @@ function SelectorWidget(gedPreLoader) {
             $('#person_lookup_body').html(tableBody);
 
             $(".anc_class").off("click");
-            $('.anc_class').click(function (e) {
+            $('.anc_class').click(function(e) {
                 ancestorFunc(event.target.parentNode.id, event.target.outerText);
                 e.preventDefault();
             });
 
-        }
+        };
      
         $('#btnFilter').click(function (e) {
             

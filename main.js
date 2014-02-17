@@ -130,7 +130,7 @@ $(document).ready(function () {
 
     diagMode.newFileLoaded($.proxy(fileLoaded, diagMode));
 
-    
+ 
 });
 
 

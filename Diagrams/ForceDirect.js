@@ -463,7 +463,7 @@ ForceDirect.prototype = {
             $.proxy(value.layout.mouseUp(e), value);
         });
 
-        this.notify();
+     //   this.notify();
     },
 
     HighLightedChanged: function(obj) {
