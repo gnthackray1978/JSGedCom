@@ -2,14 +2,19 @@
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
+   
 
     this.showGed = true;
     this.showMapControls = true;
     this.showDebug = true;
     this.showDataControls = true;
+    this.dataLoader = true;
 }
 
 
+    SelectorWidget.prototype.showGedContent = function () {
+        $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
+    };
 
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
 
@@ -53,6 +58,37 @@ function SelectorWidget(gedPreLoader) {
     };    
     SelectorWidget.prototype.NodeSelected = function (node) {
         
+        $('#txtCName').val(node.FirstName);
+        $('#txtSurname').val(node.Surname);
+        $('#txtBirYear').val(node.BirthDate);
+        $('#txtBapDate').val(node.BaptismDate);
+        $('#txtBLocation').val(node.BirthLocation);
+        $('#txtDYear').val(node.DOD);
+        $('#txtDLocation').val(node.DeathLocation);
+        $('#txtOccupationDate').val(node.OccupationDate);
+        $('#txtOccupationPlace').val(node.OccupationPlace);
+        $('#txtOccupationDesc').val(node.Occupation);
+
+        //
+        //Object {DOB: 1670, BirthDate: "BEF 1670", BaptismDate: "", DOD: "", DeathLocation: ""…}
+
+        //BaptismDate: ""
+        //BirthDate: "BEF 1670"
+
+        //BirthLocation: ""                            
+        //DOB: 1670
+
+        //DOD: ""
+        //DeathLocation: ""
+        //FirstName: "William "              
+        //Occupation: ""
+        //OccupationDate: ""
+        //OccupationPlace: ""
+        //Surname: "Thackray"
+
+
+        //Name: "William Thackray"
+        //__proto__: Object
     };    
     SelectorWidget.prototype.NodeHovered = function (node) {
 
@@ -125,39 +161,18 @@ function SelectorWidget(gedPreLoader) {
 
         var that = this;
         
+        var panels = new Panels();
+        
+
+        $('body').on("click", "#chooseFileLnk", $.proxy(function () { panels.masterShowTab('1'); return false; }, panels));
+
+        $('body').on("click", "#selectPersonLnk", $.proxy(function () { panels.masterShowTab('2'); return false; }, panels));
+        
+
+
 
         $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
-        
-        // ok so click on the hide button to hide file options
-
-
-        // click on the show to bring it back.
-
-     //   var newTop = parseInt($('#ged_options').css('height')) + 30;
-
-      //  $("#map_control").css('top', newTop + "px");
-    //    $("#map_message").css('top', newTop + "px");
-
-
-        $('#show_gedOptions').click(function (e) {
-
-            if (this.showGed) {
-                   $("#ged_options").removeClass("hidePanel").addClass("displayPanel");
-                
-             
-                
-                this.showGed = false;
-            } else {
-                $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
-                this.showGed = true;
-            }
-
-       //     var newTop = parseInt($('#ged_options').css('height')) + 30;
-
-
-      //      $("#map_control").css('top', newTop + "px");
-        //    $("#map_message").css('top', newTop + "px");
-        });
+      
 
         $('#show_controls').click(function (e) {
 
@@ -186,6 +201,34 @@ function SelectorWidget(gedPreLoader) {
             }
         });
 
+        $('#show_dataLoader').click(function (e) {
+
+
+
+            if (that.dataLoader) {
+
+                $("#dataLoader").dialog();
+
+                that.dataLoader = false;
+
+                $(".ui-widget-header").css("height", "7px");
+
+                $(".ui-dialog-title").css("position", "absolute");
+                $(".ui-dialog-title").css("top", "0px");
+                $(".ui-dialog-title").css("left", "0px");
+
+                $('*[aria-describedby="dataLoader"]').css("width", "350px");
+                $('*[aria-describedby="dataLoader"]').css("height", "600px");
+                
+                $("#dataLoader").css("padding", "0px");
+
+            } else {
+
+
+                $("#dataLoader").dialog("close");
+                that.dataLoader = true;
+            }
+        });
 
 
         $('#show_debugbox').click(function (e) {
@@ -217,12 +260,25 @@ function SelectorWidget(gedPreLoader) {
 
         $('#show_databox').click(function (e) {
 
-            if (this.showDataControls) {
-                $("#edit_tools").removeClass("hidePanel").addClass("displayPanel");
-                this.showDataControls = false;
+            if (that.showDataControls) {
+                $("#dataInfo").dialog();
+
+                $(".ui-widget-header").css("height", "7px");
+
+                $(".ui-dialog-title").css("position", "absolute");
+                $(".ui-dialog-title").css("top", "0px");
+                $(".ui-dialog-title").css("left", "0px");
+
+                $('*[aria-describedby="dataInfo"]').css("width", "250px");
+             //   $('*[aria-describedby="dataInfo"]').css("height", "600px");
+
+                $("#dataInfo").css("padding", "0px");
+                
+                //font-size: 1.1em; */
+                that.showDataControls = false;
             } else {
-                $("#edit_tools").removeClass("displayPanel").addClass("hidePanel");
-                this.showDataControls = true;
+              
+                that.showDataControls = true;
             }
         });       
     };

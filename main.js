@@ -25,6 +25,8 @@ $(document).ready(function () {
         //receive the tree file here 
         that.loader.processFile(data, function (families, persons) {
 
+            that.showGedContent();
+
             selectedId = that.showPersonSelectList(persons, descClick);
  
             var treeRunner = null;
@@ -87,10 +89,12 @@ $(document).ready(function () {
  
                         forceDirect.HighLightedChanged(function(e) {
                             console.log('highlighted changed' + e);
+                                                    
                         });
                         
                         forceDirect.SelectedChanged(function (e) {
-                            console.log('selected changed' +e);
+                            console.log('selected changed' + e);
+                            that.NodeSelected(e.node.data.person.bio);
                         });
                         
                         forceDirect.init(selectedId);

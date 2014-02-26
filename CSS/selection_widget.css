@@ -7,6 +7,13 @@ canvas {
     z-index:-1;
 }
 
+
+#topbar {
+    display: block;
+    background-color: aliceblue;
+    height: 30px;
+}
+
 #defaultFile {
     display: inline;
 
@@ -14,6 +21,22 @@ canvas {
 
 #fileinput {
     display: inline;
+     width: 250px;
+}
+
+.filterTable
+{
+    /*width: 250px;*/
+  height:75px;
+    max-height: 400px;
+    top: 0px;
+   overflow: auto;
+}
+
+.filterYear
+{
+    width: 70px;
+ 
 }
 
 .filterTable

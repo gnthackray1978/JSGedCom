@@ -509,10 +509,8 @@ QryStrUtils.prototype = {
 }
 
 
-
-
-
-var Panels = function () { }
+var Panels = function() {
+};
 
 
 Panels.prototype = {

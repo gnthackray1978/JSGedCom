@@ -64,97 +64,74 @@
 <body> 
     
     <div id ="minimized_options" class ="hidePanel">
-        <input id ="show_gedOptions" class ="options_button" type="submit" value="Load" />
+        <input id ="show_dataLoader" class ="options_button" type="submit" value="Load Data" />               
         <input id ="show_controls" class ="options_button" type="submit" value="Controls" />
-        <input id ="show_debugbox" class ="options_button" type="submit" value="Debug" />
-        <input id ="show_databox" class ="options_button" type="submit" value="Data" />
+        <input id ="show_debugbox" class ="options_button" type="submit" value="Debug Window" />
+        <input id ="show_databox" class ="options_button" type="submit" value="Data View" />
+
     </div>
      
-   <div id="ged_options" class ="displayPanel selection_container">
-   
-    <div class="leftcontent">
-      
-      Choose Ged file
-        <br/>
-      <input id="defaultFile" type="submit" value="Default" />
-      <input type="file" id="fileinput" />
-      <div id="selected_person"></div>
+    
+    
+    <div id ="dataLoader" class ="hidePanel" title="Load GED Data">
+        <!--<div id ="topbar">  <a id ='chooseFileLnk' href ="">Choose File</a> <a id ='selectPersonLnk' href ="">Select Person</a>  </div>-->
 
-      
-    </div>
-
-    <div class="centerleftcontent">
-
-       <div>       
-        <div><span>Select Default Person</span></div>
-        <div><input id="txtName" type ="text" value = ""/></div>
-        <div><span>Between</span></div>
-        <div class ="filterbardatetext">
-        <input id="txtFrom" type="text" value = "1630" />
-        <input id="txtTo" type ="text" value = "1990"/>
-        <input id="btnFilter" type="submit" value="Filter" />
-        </div>
+        <div id ="panelA" class = "displayPanel">
+            <b>Select file or use default</b>
+            <br/>
+            <input id="defaultFile" type="submit" value="Default" />
+            <input type="file" id="fileinput" />
+            <br/>
+           
+            <div id ="ged-content"  class = "hidePanel" >
+                <br>
+                <b>Select default person and diagram type to run</b>
+                <div id="selected_person"></div>
+                <div>       
+                    <div><span>Name</span></div>
+                    <div><input id="txtName" type ="text" value = ""/></div>
+                    <div><span>Between</span></div>
+                    <div class ="filterbardatetext">
+                        <input id="txtFrom" class ="filterYear" type="text" value = "1630" />
+                        <input id="txtTo"  class ="filterYear" type ="text" value = "1990"/>
+                        <input id="btnFilter" type="submit" value="Filter" />
+                    </div>
    
         
+                </div>
+                <br>
+                Select Person
+                <div class="filterTable">
+                    <table >
+                        <thead></thead>
+                        <tbody id = "person_lookup_body">
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <b>Diagram type</b>
+                <br>
+                <input type="radio" name="type_sel" value="anc">Ancestors
+                <br>
+                <input type="radio" name="type_sel" value="desc_1">Descendants
+                <br>
+                <input type="radio" name="type_sel" value="desc_2">Descendants FD
+                <br>
+                <input id ="btnRunDiag" type="submit" value="Draw" />
+            
+            </div>
+
         </div>
-    </div>
-
-    <div class="centerrightcontent">
-      
-       Select Person
-        <div class="filterTable">
-        <table >
-            <thead></thead>
-            <tbody id = "person_lookup_body">
-            </tbody>
-        </table>
-        </div>
-         
-    </div>
-
-    <div class="rightcontent">
-        <div id ="right_inner">
-            <input type="radio" name="type_sel" value="anc">Ancestors<br>
-            <input type="radio" name="type_sel" value="desc_1">Descendants<br>
-            <input type="radio" name="type_sel" value="desc_2">Descendants FD<br>
-            <input id ="btnRunDiag" type="submit" value="Draw" />
-        </div>
-    </div>
-
-
-    </div>
-    
-    
-    <div id="edit_tools" class ="hidePanel selection_container">
-   
-    <div class="leftcontent">
-      
-      Info
-    
-    </div>
-
-    <div class="centerleftcontent">
-      Selected Node
-        <div id ="selected-information">Animals</div>
-        <div id ="selected-question">the question</div>
-
-    </div>
-
-    <div class="centerrightcontent">
-      
-      Add Question
-      
-         
-    </div>
-
-    <div class="rightcontent">
-      Save
         
+        <div id ="panelB" class = "hidePanel">
+         
+                                                                                                                                                                                       
 
+        </div>
     </div>
-
-
-    </div>
+    
+ 
+ 
     
 
 
@@ -177,7 +154,46 @@
       <!--  <div id = "de" class = "debug button_box"><span></span></div>-->
     </div>
   
+    
+    
+     <div id ="dataInfo" class ="hidePanel" title="Data Info">
+        <b>Data screen</b>
+      
+         <br><b>Christian Name:</b>
+         <br><input id="txtCName" type="text" />
 
+         <br><b>Surname:</b>
+         <br><input id="txtSurname" type="text" />
+       
+         <br><b>Birth Date:</b> 
+         <br><input id="txtBirYear" type="text" />
+        
+         <br><b>Baptism Date:</b> 
+         <br><input id="txtBapDate" type="text" />
+
+         <br><b>Birth Location:</b> 
+         <br><input id="txtBLocation" type="text" />
+         
+         <br><b>Death Year:</b> 
+         <br><input id="txtDYear" type="text" />
+         <br><b>Death Location:</b> 
+         <br><input id="txtDLocation" type="text" />
+         
+         <br><b>Occupation Date:</b> 
+         <br><input id="txtOccupationDate" type="text" />
+         <br><b>Occupation Place:</b> 
+         <br><input id="txtOccupationPlace" type="text" />
+         <br><b>Occupation Description:</b> 
+         <br><input id="txtOccupationDesc" type="text" />
+         <br>
+         
+         
+         
+
+         <input id ="saveNode" type="submit" value="Save" />
+         <input id ="updateNode" type="submit" value="Update" />
+         <input id ="deleteNode" type="submit" value="Delete" />
+     </div>
 
     <canvas id="myCanvas" >    
     </canvas>
