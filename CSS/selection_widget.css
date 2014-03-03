@@ -8,6 +8,21 @@ canvas {
 }
 
 
+
+
+#dataInfo b {
+    display: block;
+    font-size: 8pt;
+}
+
+
+#dataInfo input[type=text] {
+    display: block;
+    height: 18px;
+}
+
+
+
 #topbar {
     display: block;
     background-color: aliceblue;

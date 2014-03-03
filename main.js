@@ -77,8 +77,10 @@ $(document).ready(function () {
                             $.proxy(forceDirect.mouseMove(e), forceDirect);
                         });
 
-
-
+                        that.SetMouseDoubleClick(function (e) {
+                            $.proxy(forceDirect.mouseDoubleClick(e), forceDirect);
+                        });
+                                                                          
                         that.SetButtonDown(function (e) {
                             $.proxy(forceDirect.buttonDown(e), forceDirect);
                         });

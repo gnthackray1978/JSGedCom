@@ -238,13 +238,22 @@ ForceDirect.prototype = {
                 }
 
             } else {
-                _utils.star(map, that.ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
+
+                if (map.layout.nodePoints[node.id].m==1)
+                    _utils.star(map, that.ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
+                else  
+                    _utils.star(map, that.ctx, s.x, s.y, 12, 12, 0.4, false, node.data.type, selectionId);
+
 
                 if (node.data.person != undefined) {
                     if (node.data.person.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.person.bio.DOB, that.year, 20)) {
                         _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name + ' ' + node.data.person.currentDescendantCount, node.data.type, selectionId);
                     }
 
+                    if (selectionId == 3) {
+                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name, node.data.type, selectionId);
+                    }
+                    
                     if (selectionId == 2) {
                         _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name, node.data.type, selectionId);
 
@@ -266,11 +275,14 @@ ForceDirect.prototype = {
                             dstring = 'Death: ' + dstring;
 
                         _utils.drawText(map, that.ctx, s.x, s.y + 40, dstring, node.data.type, selectionId);
+                        //that.layout.nodePoints[node.id].m
 
                         //Occupation
                         if (node.data.person.bio.Occupation != '')
-                            _utils.drawText(map, that.ctx, s.x, s.y + 40, node.data.person.bio.Occupation, node.data.type, selectionId);
+                            _utils.drawText(map, that.ctx, s.x, s.y + 60, node.data.person.bio.Occupation, node.data.type, selectionId);
 
+
+                       // _utils.drawText(map, that.ctx, s.x, s.y + 40, 'mass : ' + that.layout.nodePoints[node.id].m, node.data.type, selectionId);
                     }
                 }
 
@@ -425,6 +437,20 @@ ForceDirect.prototype = {
         return this;
     },
 
+    resetDragList: function() {
+
+        this.layoutList.forEach(function (value, index, ar) {
+            $.proxy(value.layout.resetMasses(), value);
+        });
+    },
+    
+    mouseDoubleClick: function (e) {
+        
+        this.layoutList.forEach(function (value, index, ar) {
+            $.proxy(value.layout.mouseDoubleClick(e), value);
+        });
+    },
+
     mouseMove: function(e) {
 
         this.layoutList.forEach(function(value, index, ar) {
@@ -465,6 +491,9 @@ ForceDirect.prototype = {
 
      //   this.notify();
     },
+
+
+
 
     HighLightedChanged: function(obj) {
           this.highLighted = obj;

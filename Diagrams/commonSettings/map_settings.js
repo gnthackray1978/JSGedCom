@@ -4,24 +4,24 @@
         var colourScheme = {
             mapbackgroundColour: 'white',//'#0A0A33',
 
-            normalMainLabelColour: 'white',
-            normalMainLabelBackground: '#0A0A33',
-            normalMainShapeBackground: 'purple',
+            normalMainLabelColour: 'black',
+            normalMainLabelBackground: 'white',
+            normalMainShapeBackground: 'black',
 
-            selectedMainLabelColour: 'white',
-            selectedMainLabelBackground: '#0A0A33',
-            selectedMainShapeBackground: 'green',
+            selectedMainLabelColour: 'purple',
+            selectedMainLabelBackground: 'white',
+            selectedMainShapeBackground: 'black',
 
-            nearestMainLabelColour: 'white',
-            nearestMainLabelBackground: '#0A0A33',
-            nearestMainShapeBackground: 'yellow',
+            nearestMainLabelColour: 'blue',
+            nearestMainLabelBackground: 'white',
+            nearestMainShapeBackground: 'blue',
 
 
-            normalInfoLabelColour: 'white',
-            normalInfoLabelBackground: '#0A0A33',
+            normalInfoLabelColour: 'black',
+            normalInfoLabelBackground: 'white',
 
-            selectedInfoLabelColour: 'white',
-            selectedInfoLabelBackground: '#0A0A33',
+            selectedInfoLabelColour: 'black',
+            selectedInfoLabelBackground: 'white',
 
             nearestInfoLabelColour: 'white',
             nearestInfoLabelBackground: '#0A0A33',

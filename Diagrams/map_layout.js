@@ -59,7 +59,9 @@ Layout.ForceDirected = function (graph, mapHandler, stiffness, repulsion, dampin
     this.highLightedListeners = [];
     
     this.selectedListeners = [];
+    this.dragList = [];
 
+    this.selectionMass = 0;
 };
 
 Layout.ForceDirected.prototype = {
@@ -194,6 +196,38 @@ Layout.ForceDirected.prototype = {
         return energy;
     },
 
+
+    mouseDoubleClick:function(e) {
+
+        if (e.target.id == "myCanvas") {
+          
+            var pos = $(this.canvasId).offset();
+
+            var p = this.mapHandler.currentPositionFromScreen(pos, e); 
+
+            var newNearest = this.nearestPoint(p);
+ 
+            if (newNearest.node != null) {
+                // find node in dragged list 
+                // remove it
+                // reset its mass
+                var idx = 0;
+
+                while (idx < this.dragList.length) {
+                    if (this.dragList[idx] != null &&
+                        this.dragList[idx].id == newNearest.node.id) {
+                        
+                        this.nodePoints[this.dragList[idx].id].m = this.dragList[idx].m;
+                        this.dragList[idx] = null;
+                    }
+                    idx++;
+                }
+
+
+            }
+        }
+    },
+    
     mouseDown: function (e) {
 
 
@@ -231,7 +265,31 @@ Layout.ForceDirected.prototype = {
             }
 
             if (this.selected.node !== null) {
-                this.dragged.point.m = 10000.0;
+            //    this.selectionMass = this.dragged.point.m;
+
+                if (this.dragged.node.id != -1) {
+                  
+                    var idx = 0;
+                    var found = false;
+                    while (idx < this.dragList.length) {
+                        if (this.dragList[idx] != null &&
+                            this.dragList[idx].id == newNearest.node.id) {
+                            found = true;
+                        }
+                        idx++;
+                    }
+
+                    if (!found) {
+                        this.dragList.push({ id: this.dragged.node.id, m: this.dragged.point.m });
+                        this.dragged.point.m = 10000.0;
+                    }
+
+
+                }
+
+
+                
+
             }
 
            
@@ -251,10 +309,25 @@ Layout.ForceDirected.prototype = {
 
     },
 
+    resetMasses: function (e) {
+
+        var idx = 0;
+        
+        while (idx < this.dragList.length) {
+            if (this.dragList[idx]!=null)
+                this.nodePoints[this.dragList[idx].id].m = this.dragList[idx].m;
+            idx++;
+        }
+
+        this.dragList = [];
+
+
+    },
+    
     mouseUp: function (e) {
 
         if (e.target.id == "myCanvas") {
-
+ 
             this.mapHandler.addToMouseQueue(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
             this.mouseup = true;

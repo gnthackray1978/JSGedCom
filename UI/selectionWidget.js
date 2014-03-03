@@ -38,7 +38,7 @@ function SelectorWidget(gedPreLoader) {
         
         $('#defaultFile').click(function (e) {
 
-            $.get('/JSGedCom/default.ged', function (contents) {
+            $.get('/default.ged', function (contents) {
                 treedate(contents);
             }, 'text');
 
@@ -93,6 +93,30 @@ function SelectorWidget(gedPreLoader) {
     SelectorWidget.prototype.NodeHovered = function (node) {
 
     };
+
+    SelectorWidget.prototype.ResetDraggedMasses = function (action) {
+
+        //$('#myCanvas').dblclick(function (e) {
+
+        //    action(e);
+
+        //    e.preventDefault();
+        //});
+
+    };
+    
+    SelectorWidget.prototype.SetMouseDoubleClick = function (action) {
+
+        $('#myCanvas').dblclick(function (e) {
+
+            action(e);
+
+            e.preventDefault();
+        });
+
+    };
+    
+
     SelectorWidget.prototype.SetMouseDown = function (action) {
 
         $('#myCanvas').mousedown(function (e) {
@@ -103,6 +127,8 @@ function SelectorWidget(gedPreLoader) {
         });
         
     };
+    
+
     SelectorWidget.prototype.SetMouseUp = function (action) {
 
         $('#myCanvas').mouseup(function (e) {
@@ -315,6 +341,7 @@ function SelectorWidget(gedPreLoader) {
             $('.anc_class').click(function(e) {
                 ancestorFunc(event.target.parentNode.id, event.target.outerText);
                 e.preventDefault();
+                return false;
             });
 
         };
