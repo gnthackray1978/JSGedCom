@@ -242,7 +242,7 @@ ForceDirect.prototype = {
                 if (map.layout.nodePoints[node.id].m==1)
                     _utils.star(map, that.ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
                 else  
-                    _utils.star(map, that.ctx, s.x, s.y, 12, 12, 0.4, false, node.data.type, selectionId);
+                    _utils.star(map, that.ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
 
 
                 if (node.data.person != undefined) {
@@ -499,7 +499,20 @@ ForceDirect.prototype = {
           this.highLighted = obj;
     },
     SelectedChanged: function(obj) {
-          this.selected = obj;
+          this.selected = obj;//function
+    },
+    
+    
+    Save: function(bio) {
+        
+    },
+    
+    Add: function (bio) {
+        
+    },
+    
+    Delete: function(id) {
+        
     }
 
  

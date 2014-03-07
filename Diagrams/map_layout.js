@@ -197,6 +197,9 @@ Layout.ForceDirected.prototype = {
     },
 
 
+
+
+
     mouseDoubleClick:function(e) {
 
         if (e.target.id == "myCanvas") {

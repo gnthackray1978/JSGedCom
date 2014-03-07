@@ -99,6 +99,18 @@ $(document).ready(function () {
                             that.NodeSelected(e.node.data.person.bio);
                         });
                         
+                        that.Save(function (bio) {
+                            $.proxy(forceDirect.Save(bio), forceDirect);
+                        });
+
+                        that.Add(function (bio) {
+                            $.proxy(forceDirect.Add(bio), forceDirect);
+                        });
+
+                        that.Delete(function (nodeid) {
+                            $.proxy(forceDirect.Delete(nodeid), forceDirect);
+                        });
+                        
                         forceDirect.init(selectedId);
                         
 

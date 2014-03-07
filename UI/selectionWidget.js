@@ -369,3 +369,29 @@ function SelectorWidget(gedPreLoader) {
     };
 
 
+
+    SelectorWidget.prototype.Save = function (action) {
+
+
+        var bio;// fill out bio
+        var nodeid;//
+        
+        action(nodeid, bio);
+    };
+    
+
+    SelectorWidget.prototype.Add = function (action) {
+
+
+        var bio;// fill out bio
+        var nodeid;//
+
+        action(nodeid, bio);
+    };
+
+    SelectorWidget.prototype.Delete = function (action) {
+     
+        var nodeid;//
+
+        action(nodeid);
+    };
