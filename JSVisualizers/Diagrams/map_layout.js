@@ -73,7 +73,6 @@ Layout.ForceDirected.prototype = {
 
         return this.nodePoints[node.id];
     },
-
     spring: function (edge) {
         if (typeof (this.edgeSprings[edge.id]) === 'undefined') {
             var length = typeof (edge.data.length) !== 'undefined' ? edge.data.length : 1.0;
@@ -116,7 +115,6 @@ Layout.ForceDirected.prototype = {
             callback.call(t, n, t.point(n));
         });
     },
-
     // callback should accept two arguments: Edge, Spring
     eachEdge: function (callback) {
         var t = this;
@@ -124,7 +122,6 @@ Layout.ForceDirected.prototype = {
             callback.call(t, e, t.spring(e));
         });
     },
-
     // callback should accept one argument: Spring
     eachSpring: function (callback) {
         var t = this;
@@ -132,7 +129,6 @@ Layout.ForceDirected.prototype = {
             callback.call(t, t.spring(e));
         });
     },
-
     // Physics stuff
     applyCoulombsLaw: function () {
         this.eachNode(function (n1, point1) {
@@ -149,7 +145,6 @@ Layout.ForceDirected.prototype = {
             });
         });
     },
-
     applyHookesLaw: function () {
         this.eachSpring(function (spring) {
             var d = spring.point2.p.subtract(spring.point1.p); // the direction of the spring
@@ -161,7 +156,6 @@ Layout.ForceDirected.prototype = {
             spring.point2.applyForce(direction.multiply(spring.k * displacement * 0.5));
         });
     },
-
     attractToCentre: function () {
         this.eachNode(function (node, point) {
             var direction = point.p.multiply(-1.0);
@@ -176,7 +170,6 @@ Layout.ForceDirected.prototype = {
             point.a = new Vector(0, 0);
         });
     },
-
     updatePosition: function (timestep) {
         this.eachNode(function (node, point) {
             // Same question as above; along with updateVelocity, is this all of
@@ -184,7 +177,6 @@ Layout.ForceDirected.prototype = {
             point.p = point.p.add(point.v.multiply(timestep));
         });
     },
-
     // Calculate the total kinetic energy of the system
     totalEnergy: function (timestep) {
         var energy = 0.0;
@@ -308,7 +300,7 @@ Layout.ForceDirected.prototype = {
         if (e.target.id == "so") this.mapHandler.moving = 'SOUTH';
         if (e.target.id == "de") this.mapHandler.moving = 'DEBUG';
         
-        //layoutList[0].layout.selected.node.data.person.bio
+        //layoutList[0].layout.selected.node.data.person.RecordLink
 
     },
 
@@ -375,12 +367,12 @@ Layout.ForceDirected.prototype = {
             if (this.selected != null
                 && this.selected.node != undefined
                 && this.selected.node.data != undefined
-                && this.selected.node.data.person != undefined) {
-                selectedPersonId = this.selected.node.data.person.PersonId;
+                && this.selected.node.data.RecordLink != undefined) {
+                selectedPersonId = this.selected.node.data.RecordLink.PersonId;
             }
 
-            if (node.data != undefined && node.data.person != undefined) {
-                nodePersonId = node.data.person.PersonId;
+            if (node.data != undefined && node.data.RecordLink != undefined) {
+                nodePersonId = node.data.RecordLink.PersonId;
             }
 
             if (selectedPersonId == nodePersonId && node.data.type != 'infonode') {
@@ -396,13 +388,13 @@ Layout.ForceDirected.prototype = {
 
     notifyHighLight: function (e) {
         this.highLightedListeners.forEach(function (obj) {
-            obj(e);
+            obj(e.node.data.RecordLink);
         });
     },
     
     notifySelection: function (e) {
         this.selectedListeners.forEach(function (obj) {
-            obj(e);
+            obj(e.node.data.RecordLink);
         });
     },
 

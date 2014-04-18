@@ -70,7 +70,7 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
 
     this.highLighted = null;
     this.selected = null;
-
+    this.graph = null;
 };
 
 ForceDirect.prototype = {
@@ -81,11 +81,13 @@ ForceDirect.prototype = {
     run: function(data) {
         var f = JSON.stringify(data);
 
-        var graph = new Graph();
+        
 
         this.tree = new Tree(data);
 
         var that = this;
+
+        that.graph = new Graph();
 
         var clearFunction = function(map) {
             // var map = this.map;
@@ -117,8 +119,8 @@ ForceDirect.prototype = {
             var normal = direction.normal().normalise();
 
 
-            var from = graph.getEdges(edge.source, edge.target);
-            var to = graph.getEdges(edge.target, edge.source);
+            var from = that.graph.getEdges(edge.source, edge.target);
+            var to = that.graph.getEdges(edge.target, edge.source);
 
             var total = from.length + to.length;
 
@@ -163,7 +165,7 @@ ForceDirect.prototype = {
             if (edge.data.type == 'data') {
                 stroke = map.colourScheme.infoLineColour;
             } else {
-                var averagedesc = (edge.source.data.person.currentDescendantCount + edge.target.data.person.currentDescendantCount) / 2;
+                var averagedesc = (edge.source.data.RecordLink.currentDescendantCount + edge.target.data.RecordLink.currentDescendantCount) / 2;
                 stroke = _utils.getLevel(300, averagedesc, map.colourScheme.normalLineGradient);
             }
 
@@ -245,19 +247,19 @@ ForceDirect.prototype = {
                     _utils.star(map, that.ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
 
 
-                if (node.data.person != undefined) {
-                    if (node.data.person.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.person.bio.DOB, that.year, 20)) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name + ' ' + node.data.person.currentDescendantCount, node.data.type, selectionId);
+                if (node.data.RecordLink != undefined) {
+                    if (node.data.RecordLink.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.RecordLink.DOB, that.year, 20)) {
+                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
                     }
 
                     if (selectionId == 3) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name, node.data.type, selectionId);
+                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name, node.data.type, selectionId);
                     }
                     
                     if (selectionId == 2) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.person.bio.Name, node.data.type, selectionId);
+                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name, node.data.type, selectionId);
 
-                        var bstring = node.data.person.bio.DOB + ' ' + node.data.person.bio.BirthLocation;
+                        var bstring = node.data.RecordLink.DOB + ' ' + node.data.RecordLink.BirthLocation;
 
                         if (bstring == '')
                             bstring = 'Birth Unknown';
@@ -267,7 +269,7 @@ ForceDirect.prototype = {
                         _utils.drawText(map, that.ctx, s.x, s.y + 20, bstring, node.data.type, selectionId);
 
 
-                        var dstring = node.data.person.bio.DOD + ' ' + node.data.person.bio.DeathLocation;
+                        var dstring = node.data.RecordLink.DOD + ' ' + node.data.RecordLink.DeathLocation;
 
                         if (dstring == ' ')
                             dstring = 'Death Unknown';
@@ -278,8 +280,8 @@ ForceDirect.prototype = {
                         //that.layout.nodePoints[node.id].m
 
                         //Occupation
-                        if (node.data.person.bio.Occupation != '')
-                            _utils.drawText(map, that.ctx, s.x, s.y + 60, node.data.person.bio.Occupation, node.data.type, selectionId);
+                        if (node.data.RecordLink.Occupation != '')
+                            _utils.drawText(map, that.ctx, s.x, s.y + 60, node.data.RecordLink.Occupation, node.data.type, selectionId);
 
 
                        // _utils.drawText(map, that.ctx, s.x, s.y + 40, 'mass : ' + that.layout.nodePoints[node.id].m, node.data.type, selectionId);
@@ -309,8 +311,8 @@ ForceDirect.prototype = {
 
             while (pidx < data.Generations[gidx].length) {
 
-                if (Number(data.Generations[gidx][pidx].bio.DOB) != 0)
-                    years.push(Number(data.Generations[gidx][pidx].bio.DOB));
+                if (Number(data.Generations[gidx][pidx].RecordLink.DOB) != 0)
+                    years.push(Number(data.Generations[gidx][pidx].RecordLink.DOB));
 
                 pidx++;
             }
@@ -336,7 +338,7 @@ ForceDirect.prototype = {
             $('#map_year').html(botYear);
 
 
-            that.tree.populateGraph(botYear, graph);
+            that.tree.populateGraph(botYear, that.graph);
 
             botYear += 5;
             if (Number(botYear) > topYear) clearInterval(myVar);
@@ -346,7 +348,7 @@ ForceDirect.prototype = {
         $('body').css("background-color", this.colourScheme.mapbackgroundColour);
 
 
-        var parentLayout = this.layout = new Layout.ForceDirected(graph, new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), this.stiffness, this.repulsion, this.damping);
+        var parentLayout = this.layout = new Layout.ForceDirected(that.graph, new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), this.stiffness, this.repulsion, this.damping);
 
         this.layoutList.push({ layout: parentLayout, edges: drawEdges, nodes: drawNodes, type: 'parent' });
 
@@ -356,54 +358,54 @@ ForceDirect.prototype = {
 
             var centreNode = infoGraph.newNode({
                 label: '',
-                parentId: entry.data.person.PersonId,
+                parentId: entry.data.RecordLink.PersonId,
                 type: 'infonode'
             });
 
-            if (entry.data.person.bio.Name != '') {
+            if (entry.data.RecordLink.Name != '') {
                 var nameNode = infoGraph.newNode({
-                    label: entry.data.person.bio.Name,
-                    parentId: entry.data.person.PersonId,
+                    label: entry.data.RecordLink.Name,
+                    parentId: entry.data.RecordLink.PersonId,
                     type: 'infonode'
                 });
 
                 infoGraph.newEdge(centreNode, nameNode, { type: 'data', directional: false });
             }
 
-            if (entry.data.person.bio.DOB != '') {
+            if (entry.data.RecordLink.DOB != '') {
                 var dobNode = infoGraph.newNode({
-                    label: 'DOB:' + entry.data.person.bio.DOB,
-                    parentId: entry.data.person.PersonId,
+                    label: 'DOB:' + entry.data.RecordLink.DOB,
+                    parentId: entry.data.RecordLink.PersonId,
                     type: 'infonode'
                 });
 
                 infoGraph.newEdge(centreNode, dobNode, { type: 'data', directional: false });
             }
 
-            if (entry.data.person.bio.DOD != '') {
+            if (entry.data.RecordLink.DOD != '') {
                 var dodNode = infoGraph.newNode({
-                    label: 'DOD:' + entry.data.person.bio.DOD,
-                    parentId: entry.data.person.PersonId,
+                    label: 'DOD:' + entry.data.RecordLink.DOD,
+                    parentId: entry.data.RecordLink.PersonId,
                     type: 'infonode'
                 });
 
                 infoGraph.newEdge(centreNode, dodNode, { type: 'data', directional: false });
             }
 
-            if (entry.data.person.bio.BirthLocation != '') {
+            if (entry.data.RecordLink.BirthLocation != '') {
                 var blocNode = infoGraph.newNode({
-                    label: 'Born: ' + entry.data.person.bio.BirthLocation,
-                    parentId: entry.data.person.PersonId,
+                    label: 'Born: ' + entry.data.RecordLink.BirthLocation,
+                    parentId: entry.data.RecordLink.PersonId,
                     type: 'infonode'
                 });
 
                 infoGraph.newEdge(centreNode, blocNode, { type: 'data', directional: false });
             }
 
-            if (entry.data.person.bio.DeathLocation != '') {
+            if (entry.data.RecordLink.DeathLocation != '') {
                 var dlocNode = infoGraph.newNode({
-                    label: 'Died:' + entry.data.person.bio.DeathLocation,
-                    parentId: entry.data.person.PersonId,
+                    label: 'Died:' + entry.data.RecordLink.DeathLocation,
+                    parentId: entry.data.RecordLink.PersonId,
                     type: 'infonode'
                 });
 
@@ -503,16 +505,44 @@ ForceDirect.prototype = {
     },
     
     
-    Save: function(bio) {
+    Save: function(recordLink) {
+        console.log('Saved ' + recordLink.PersonId);
         
+        //this.layout.selected.
+
+        if (this.layout.selected.node.data.RecordLink.PersonId == recordLink.PersonId) {
+            this.layout.selected.node.data.RecordLink.BaptismDate = recordLink.BaptismDate;
+            this.layout.selected.node.data.RecordLink.BirthDate = recordLink.BirthDate;
+            this.layout.selected.node.data.RecordLink.BirthLocation = recordLink.BirthLocation;
+            this.layout.selected.node.data.RecordLink.DOB = recordLink.DOB;
+            this.layout.selected.node.data.RecordLink.DOD = recordLink.DOD;
+            this.layout.selected.node.data.RecordLink.DeathLocation = recordLink.DeathLocation;
+            this.layout.selected.node.data.RecordLink.FirstName = recordLink.FirstName;
+            this.layout.selected.node.data.RecordLink.Name = recordLink.FirstName + ' ' + recordLink.Surname;
+            this.layout.selected.node.data.RecordLink.Occupation = recordLink.Occupation;
+            this.layout.selected.node.data.RecordLink.OccupationDate = recordLink.OccupationDate;
+            this.layout.selected.node.data.RecordLink.OccupationPlace = recordLink.OccupationPlace;
+            this.layout.selected.node.data.RecordLink.PersonId = recordLink.PersonId;
+            this.layout.selected.node.data.RecordLink.Surname = recordLink.Surname;
+        }
+        
+
     },
     
-    Add: function (bio) {
+    Add: function (recordLink) {
+
+        recordLink.PersonId = 1234;
         
+        console.log('Add ' + recordLink.PersonId);
+        
+
+        var nodeLink = this.graph.newNode({ label: 'new one', RecordLink: recordLink, type: 'normal' });
+        
+        this.graph.newEdge(this.layout.selected.node, nodeLink, { type: 'person' });
     },
     
-    Delete: function(id) {
-        
+    Delete: function() {
+        console.log('Delete ' );
     }
 
  

@@ -119,7 +119,7 @@ FakeData.prototype = {
         
 
         var node = {
-                            bio: this.qd.fillQuestionData(personId,'test question','test answer','type 1'),
+                            RecordLink: this.qd.fillQuestionData(personId,'test question','test answer','type 1'),
                             ChildCount: children.length,
                             ChildIdx: idx,
                             ChildIdxLst: [],

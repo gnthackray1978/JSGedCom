@@ -21,7 +21,7 @@ function GedAncPreLoader(gedLoader) {
 
     this.gedLoader = gedLoader;
 
-    this.bioLoader = new Bio();
+    this.RecordLinkLoader = new Bio();
 
 }
 
@@ -212,7 +212,7 @@ function GedAncPreLoader(gedLoader) {
 
       //  console.log(this.searchDepth + ' ' + person.name + ' ' + person.isFirst);
 
-        //var bio = {
+        //var RecordLink = {
         //    DOB: person.BirthDate != '' ? person.BirthDate : person.BaptismDate,
         //    DOD: "",
         //    DeathLocation: "",
@@ -223,7 +223,7 @@ function GedAncPreLoader(gedLoader) {
         //};
 
         var newPerson = {
-            bio: this.bioLoader.fill(person),
+            RecordLink: this.RecordLinkLoader.fill(person),
             ChildCount: 1,
             ChildIdx: idx,
             ChildIdxLst: [],

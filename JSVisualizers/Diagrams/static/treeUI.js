@@ -213,7 +213,7 @@ TreeUI.prototype = {
                     var halfwidth = Math.abs(_person.X2 - _person.X1) / 2;
                     var middlebox = _person.X1 + halfwidth;
 
-                    if (_person.bio.Name == "Jane Thackray") {
+                    if (_person.RecordLink.Name == "Jane Thackray") {
                         console.log("Jane Thackray X1 Y2");
                       
 
@@ -306,7 +306,7 @@ TreeUI.prototype = {
             switch (_person.zoom) {
 
                 case 4: //show name
-                    this.context.fillText("DOB: " + _person.bio.DOB, _person.X1 + xoffset, _y);
+                    this.context.fillText("DOB: " + _person.RecordLink.DOB, _person.X1 + xoffset, _y);
                     _y += linespacing;
                     if (_y <= _person.Y2 - 10) {
                         _y = this.WriteBLocation(_person.X1 + xoffset, _y, _person, 1); //+ linespacing
@@ -317,7 +317,7 @@ TreeUI.prototype = {
                 case 7:
                 case 8:
 
-                    this.context.fillText("Dob: " + _person.bio.DOB, _person.X1 + xoffset, _y);
+                    this.context.fillText("Dob: " + _person.RecordLink.DOB, _person.X1 + xoffset, _y);
                     _y += linespacing;
 
                     if (_y <= _person.Y2 - 10) {
@@ -325,7 +325,7 @@ TreeUI.prototype = {
                     }
 
                     if (_y <= _person.Y2 - 10) {
-                        this.context.fillText("Dod: " + _person.bio.DOD, _person.X1 + xoffset, _y);
+                        this.context.fillText("Dod: " + _person.RecordLink.DOD, _person.X1 + xoffset, _y);
 
                         _y += linespacing;
 
@@ -369,7 +369,7 @@ TreeUI.prototype = {
             this.context.fillStyle = this.textcolour;
         }
 
-        var _textToDisplay = this.MakeArray(_person, _person.bio.Name);
+        var _textToDisplay = this.MakeArray(_person, _person.RecordLink.Name);
         var _y = ypos;
 
         var linespacing = 15;
@@ -392,10 +392,10 @@ TreeUI.prototype = {
         this.context.font = "8pt Calibri";
         this.context.fillStyle = this.textcolour;
 
-        _person.bio.BirthLocation = _person.bio.BirthLocation.replace(",", " ");
-        _person.bio.BirthLocation = _person.bio.BirthLocation.replace("  ", " ");
+        _person.RecordLink.BirthLocation = _person.RecordLink.BirthLocation.replace(",", " ");
+        _person.RecordLink.BirthLocation = _person.RecordLink.BirthLocation.replace("  ", " ");
 
-        var _textToDisplay = this.MakeArray(_person, _person.bio.BirthLocation);
+        var _textToDisplay = this.MakeArray(_person, _person.RecordLink.BirthLocation);
         var _y = ypos;
 
         var linespacing = 15;
@@ -416,7 +416,7 @@ TreeUI.prototype = {
         this.context.font = "8pt Calibri";
         this.context.fillStyle = this.textcolour;
 
-        var _textToDisplay = this.MakeArray(_person, _person.bio.DeathLocation);
+        var _textToDisplay = this.MakeArray(_person, _person.RecordLink.DeathLocation);
 
         var _y = ypos;
 

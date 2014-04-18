@@ -15,7 +15,6 @@ function SelectorWidget(gedPreLoader) {
     SelectorWidget.prototype.showGedContent = function () {
         $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
     };
-
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
 
         var handleFileSelect = function(evt) {
@@ -57,7 +56,8 @@ function SelectorWidget(gedPreLoader) {
         return id;
     };    
     SelectorWidget.prototype.NodeSelected = function (node) {
-        
+        //hidPersonId
+        $('#hidPersonId').val(node.PersonId);
         $('#txtCName').val(node.FirstName);
         $('#txtSurname').val(node.Surname);
         $('#txtBirYear').val(node.BirthDate);
@@ -68,6 +68,7 @@ function SelectorWidget(gedPreLoader) {
         $('#txtOccupationDate').val(node.OccupationDate);
         $('#txtOccupationPlace').val(node.OccupationPlace);
         $('#txtOccupationDesc').val(node.Occupation);
+        
 
         //
         //Object {DOB: 1670, BirthDate: "BEF 1670", BaptismDate: "", DOD: "", DeathLocation: ""…}
@@ -93,7 +94,6 @@ function SelectorWidget(gedPreLoader) {
     SelectorWidget.prototype.NodeHovered = function (node) {
 
     };
-
     SelectorWidget.prototype.ResetDraggedMasses = function (action) {
 
         //$('#myCanvas').dblclick(function (e) {
@@ -103,8 +103,7 @@ function SelectorWidget(gedPreLoader) {
         //    e.preventDefault();
         //});
 
-    };
-    
+    };    
     SelectorWidget.prototype.SetMouseDoubleClick = function (action) {
 
         $('#myCanvas').dblclick(function (e) {
@@ -114,9 +113,7 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
 
-    };
-    
-
+    };   
     SelectorWidget.prototype.SetMouseDown = function (action) {
 
         $('#myCanvas').mousedown(function (e) {
@@ -126,9 +123,7 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
         
-    };
-    
-
+    };   
     SelectorWidget.prototype.SetMouseUp = function (action) {
 
         $('#myCanvas').mouseup(function (e) {
@@ -168,7 +163,7 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
 
-    };
+    };    
     SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
         $('#btnRunDiag').click(function(e) {
 
@@ -177,11 +172,9 @@ function SelectorWidget(gedPreLoader) {
             e.preventDefault();
         });
     };
-
     SelectorWidget.prototype.GetDiagramType = function() {
         return $("input[name='type_sel']:checked").val();
     };
-
     SelectorWidget.prototype.InitPanelVisibility = function() {
 
 
@@ -308,9 +301,6 @@ function SelectorWidget(gedPreLoader) {
             }
         });       
     };
-
-
-
     SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
 
 
@@ -368,30 +358,57 @@ function SelectorWidget(gedPreLoader) {
         //});
     };
 
-
-
     SelectorWidget.prototype.Save = function (action) {
 
+        var that = this;
+        $('#saveNode').click(function (e) {
 
-        var bio;// fill out bio
-        var nodeid;//
-        
-        action(nodeid, bio);
+            
+       
+            action(that.PopulateRecordLink());
+         
+            e.preventDefault();
+        });               
     };
     
-
     SelectorWidget.prototype.Add = function (action) {
+        var that = this;
+        $('#updateNode').click(function (e) {
 
+      
+            action(that.PopulateRecordLink());
 
-        var bio;// fill out bio
-        var nodeid;//
-
-        action(nodeid, bio);
+            e.preventDefault();
+        });
     };
 
     SelectorWidget.prototype.Delete = function (action) {
-     
-        var nodeid;//
-
-        action(nodeid);
+        var that = this;
+        $('#deleteNode').click(function (e) {            
+            action();
+            e.preventDefault();
+        });        
     };
+
+    SelectorWidget.prototype.PopulateRecordLink = function () {
+
+
+        var node = new Bio();
+        
+       node.PersonId = $('#hidPersonId').val();        
+       node.FirstName= $('#txtCName').val();
+       node.Surname= $('#txtSurname').val();
+       node.BirthDate= $('#txtBirYear').val();
+       node.BaptismDate= $('#txtBapDate').val();
+       node.BirthLocation= $('#txtBLocation').val();
+       node.DOD= $('#txtDYear').val();
+       node.DeathLocation= $('#txtDLocation').val();
+       node.OccupationDate= $('#txtOccupationDate').val();
+       node.OccupationPlace= $('#txtOccupationPlace').val();
+       node.Occupation= $('#txtOccupationDesc').val();
+
+
+       return node;
+
+    };
+

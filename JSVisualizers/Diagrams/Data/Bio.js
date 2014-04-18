@@ -18,7 +18,8 @@ Bio.prototype = {
         
 
         try {
-            var bio = {
+            var RecordLink = {
+                PersonId : person.id,
                 DOB: person.BirthDate.yearDate() != 0 ? person.BirthDate.yearDate() : person.BaptismDate.yearDate(),
                 BirthDate: person.BirthDate,
                 BaptismDate: person.BaptismDate,
@@ -38,8 +39,8 @@ Bio.prototype = {
             var n = person.name.split("/");
 
             if (n.length == 3) {
-                bio.FirstName = n[0];
-                bio.Surname = n[1];
+                RecordLink.FirstName = n[0];
+                RecordLink.Surname = n[1];
                 
 
             }            
@@ -49,7 +50,7 @@ Bio.prototype = {
 
          
 
-        return bio;
+        return RecordLink;
 
     },
     
@@ -57,7 +58,7 @@ Bio.prototype = {
 
  
         try {
-            var bio = {
+            var RecordLink = {
                 DOB:1700,
                 BirthDate: '',
                 BaptismDate: '',
@@ -83,7 +84,7 @@ Bio.prototype = {
 
 
 
-        return bio;
+        return RecordLink;
 
     }
 };

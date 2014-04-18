@@ -34,7 +34,7 @@ Tree.prototype = {
 
                     try
                     {
-                        _dob = this.data.Generations[genIdx][personIdx].bio.DOB;
+                        _dob = this.data.Generations[genIdx][personIdx].RecordLink.DOB;
                     }
                     catch(e)
                     {
@@ -54,34 +54,17 @@ Tree.prototype = {
 
                         if (!personPresent) {
 
-                            if (this.data.Generations[genIdx][personIdx].nodeLink == undefined || this.data.Generations[genIdx][personIdx].nodeLink == null) {
-
-
-
+                            if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
+                                this.data.Generations[genIdx][personIdx].nodeLink == null) {
                                 this.addedPeople.push(this.data.Generations[genIdx][personIdx].PersonId);
-
-
-
-                                this.data.Generations[genIdx][personIdx].nodeLink = mygraph.newNode({ label: descriptor, person: this.data.Generations[genIdx][personIdx], type: 'normal' });
-
-
+                                this.data.Generations[genIdx][personIdx].nodeLink =
+                                    mygraph.newNode({ label: descriptor, RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, type: 'normal' });
 
                             }
-
 
                             if (genIdx > 0) {
                                 var fatherNode = this.data.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
                                 mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
-
-
-                                //                                    var nameNode = graph.newNode({
-                                //                                        label: currentPerson.Name,
-                                //                                        parentId: currentPerson.PersonId,
-                                //                                        type: 'infonode'
-                                //                                    });
-                                //                                    
-                                //                                    graph.newEdge(currentPerson.nodeLink, nameNode, { type: 'data', directional: false });
-
                             }
 
                         }
@@ -93,7 +76,7 @@ Tree.prototype = {
 
                     // count how many desendants this person has in the diagram already.
                     if (this.data.Generations[genIdx][personIdx].nodeLink != undefined)
-                        this.data.Generations[genIdx][personIdx].nodeLink.data.person.currentDescendantCount = this.countDescendants(this.data, genIdx, personIdx);
+                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount = this.countDescendants(this.data, genIdx, personIdx);
                 }
 
                 personIdx++;

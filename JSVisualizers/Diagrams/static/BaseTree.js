@@ -677,14 +677,14 @@ TreeBase.prototype = {
 
             while (this.generations[idx].length > personidx) {
 
-                if (this.generations[idx][personidx].bio.Name == "Jane Thackray") {
+                if (this.generations[idx][personidx].RecordLink.Name == "Jane Thackray") {
                     console.log("Jane Thackray X1 Y2");
                     console.log(this.generations[idx][personidx].X1);
                     console.log(this.generations[idx][personidx].Y1);
 
                 }
 
-                if (this.generations[idx][personidx].bio.Name == "William Talbot") {
+                if (this.generations[idx][personidx].RecordLink.Name == "William Talbot") {
                     console.log("William Talbot X1 Y2");
                     console.log(this.generations[idx][personidx].X1);
                     console.log(this.generations[idx][personidx].Y1);
