@@ -161,7 +161,7 @@ FakeData.prototype = {
 
     },
     
-    processFile: function(file, newloader) {
+    processFile: function(file,progressFunction, newloader) {
 
         newloader([], 'life');
     },

@@ -23,7 +23,7 @@ $(document).ready(function () {
 
 
         //receive the tree file here 
-        that.loader.processFile(data, function (families, persons) {
+        that.loader.processFile(data,that.showGedLoading, function (families, persons) {
 
             
             if(persons == undefined || persons == null || persons.length ==0){

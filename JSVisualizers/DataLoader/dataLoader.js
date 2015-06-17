@@ -1,6 +1,3 @@
-﻿
-
-
 
 var DataLoader = {};
 
@@ -63,7 +60,7 @@ var DataLoader = {};
             return gRow;
         },
 
-        processFile: function(file, newloader) {
+        processFile: function(file,progressFunction, newloader) {
 
 
             //  $('#result').html(file);
@@ -78,6 +75,9 @@ var DataLoader = {};
                 newloader();
             }
 
+
+            progressFunction('parsing persons',true);
+            
             while (idx < results.length) {
 
                 // are we an id.
@@ -192,7 +192,9 @@ var DataLoader = {};
 
             var famChildIdx = 0;
             var famidx = 0;
-
+            
+            progressFunction('parsing families',true);
+            
             try {
                 idx = 0;
                 while (idx < this.persons.length) {
@@ -257,8 +259,11 @@ var DataLoader = {};
                 return a.date - b.date;
             });
 
-
+            progressFunction('finished',false);
+            
             newloader(this.families, this.persons);
+           
+           
             //searchFams(findPerson('@I4@'));
 
 

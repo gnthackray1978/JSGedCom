@@ -15,15 +15,30 @@ function SelectorWidget(gedPreLoader) {
     SelectorWidget.prototype.showGedContent = function () {
         
         $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
+        $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
         $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
+        
         
     };
     SelectorWidget.prototype.showGedError = function (message) {
         
         $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
+        $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
         $("#ged-error").removeClass("hidePanel").addClass("displayPanel");
+        
+        
         $("#errormessage").html(message);
     };
+    SelectorWidget.prototype.showGedLoading = function (message, show) {
+        
+        if(!show)
+            $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
+        else
+            $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
+            
+        $("#loadingmessage").html(message);
+    };
+    
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
         
         var that =this;
