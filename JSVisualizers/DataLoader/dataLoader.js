@@ -74,7 +74,7 @@ var DataLoader = {};
 
             var currentId = {};
 
-            if(results.length ==0){
+            if(results == null || results.length ==0){
                 newloader();
             }
 
