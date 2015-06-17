@@ -39,7 +39,7 @@ function SelectorWidget(gedPreLoader) {
         
         $('#defaultFile').click(function (e) {
 
-            $.get(this.defaultGed, function (contents) {
+            $.get(that.defaultGed, function (contents) {
                 treedate(contents);
             }, 'text');
 
