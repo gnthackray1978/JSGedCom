@@ -25,6 +25,13 @@ $(document).ready(function () {
         //receive the tree file here 
         that.loader.processFile(data, function (families, persons) {
 
+            
+            if(persons == undefined || persons == null || persons.length ==0){
+                
+                that.showGedError("Could not obtain list of persons");
+                return;
+            }
+
             that.showGedContent();
 
             selectedId = that.showPersonSelectList(persons, descClick);

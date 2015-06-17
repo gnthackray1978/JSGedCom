@@ -1,4 +1,4 @@
-﻿/** @constructor */
+/** @constructor */
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
@@ -13,7 +13,16 @@ function SelectorWidget(gedPreLoader) {
 
 
     SelectorWidget.prototype.showGedContent = function () {
+        
+        $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
         $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
+        
+    };
+    SelectorWidget.prototype.showGedError = function (message) {
+        
+        $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
+        $("#ged-error").removeClass("hidePanel").addClass("displayPanel");
+        $("#errormessage").html(message);
     };
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
         
