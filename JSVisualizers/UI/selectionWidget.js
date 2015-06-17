@@ -2,7 +2,7 @@
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
-    this.defaultGed = '/basicvis/samples/default.ged';
+    this.defaultGed = '/basicvis/samples/default.txt';
 
     this.showGed = true;
     this.showMapControls = true;
