@@ -74,6 +74,10 @@ var DataLoader = {};
 
             var currentId = {};
 
+            if(results.length ==0){
+                newloader();
+            }
+
             while (idx < results.length) {
 
                 // are we an id.
