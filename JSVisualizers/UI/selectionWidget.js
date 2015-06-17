@@ -2,7 +2,7 @@
 function SelectorWidget(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
-   
+    this.defaultGed = '/JSVisualizers/samples/default.ged';
 
     this.showGed = true;
     this.showMapControls = true;
@@ -16,7 +16,9 @@ function SelectorWidget(gedPreLoader) {
         $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
     };
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
-
+        
+        var that =this;
+        
         var handleFileSelect = function(evt) {
             var files = evt.target.files; // FileList object
             // Loop through the FileList and render image files as thumbnails.
@@ -37,7 +39,7 @@ function SelectorWidget(gedPreLoader) {
         
         $('#defaultFile').click(function (e) {
 
-            $.get('/default.ged', function (contents) {
+            $.get(this.defaultGed, function (contents) {
                 treedate(contents);
             }, 'text');
 
