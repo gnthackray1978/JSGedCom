@@ -217,11 +217,8 @@ function SelectorWidget(gedPreLoader) {
         $('body').on("click", "#selectPersonLnk", $.proxy(function () { panels.masterShowTab('2'); return false; }, panels));
         
 
-
-
         $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
       
-
         $('#show_controls').click(function (e) {
 
             if (that.showMapControls) {
@@ -264,9 +261,11 @@ function SelectorWidget(gedPreLoader) {
                 $(".ui-dialog-title").css("position", "absolute");
                 $(".ui-dialog-title").css("top", "0px");
                 $(".ui-dialog-title").css("left", "0px");
-
+                
+                $('*[aria-describedby="dataLoader"]').css("top", "90px");
+                $('*[aria-describedby="dataLoader"]').css("left", "70px");
                 $('*[aria-describedby="dataLoader"]').css("width", "350px");
-                $('*[aria-describedby="dataLoader"]').css("height", "600px");
+              //  $('*[aria-describedby="dataLoader"]').css("height", "600px");
                 
                 $("#dataLoader").css("padding", "0px");
 
@@ -277,7 +276,6 @@ function SelectorWidget(gedPreLoader) {
                 that.dataLoader = true;
             }
         });
-
 
         $('#show_debugbox').click(function (e) {
 
