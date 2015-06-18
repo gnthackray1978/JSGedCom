@@ -249,21 +249,15 @@ var DataLoader = {};
 
 
            
-            progressFunction('parsing persons',true);
+            progressFunction('parsing ged file',true);
             
             
             asynch.acall(makeLists, function(){
-                progressFunction('parsing 1',true);
+                progressFunction('parsing persons',true);
                 asynch.acall(parseSpouses, function(){
-                    progressFunction('parsing 2',true);
+                    progressFunction('parsing families',true);
                     asynch.acall(parseChildren, function(){
-                        
-                        asynch.acall(function(){
-                            progressFunction('parsing 3',true);
-                        }, function(){
-                            newloader(that.families, that.persons);
-                        });
-                        
+                        newloader(that.families, that.persons);
                     });
                 });
             });
