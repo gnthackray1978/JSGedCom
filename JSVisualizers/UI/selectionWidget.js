@@ -9,433 +9,287 @@ function SelectorWidget(gedPreLoader) {
     this.showDebug = true;
     this.showDataControls = true;
     this.dataLoader = true;
+    this.selectedId =0;
+    this.selectedName= '';
 }
 
 
-    SelectorWidget.prototype.showGedContent = function () {
-        
-        $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
+SelectorWidget.prototype.showGedContent = function () {
+    
+    $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
+    $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
+    $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
+    
+    
+};
+SelectorWidget.prototype.showGedError = function (message) {
+    
+    $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
+    $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
+    $("#ged-error").removeClass("hidePanel").addClass("displayPanel");
+    
+    
+    $("#errormessage").html(message);
+};
+SelectorWidget.prototype.showGedLoading = function (message, show) {
+    
+  
+    if(!show)
         $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
-        $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
+    else
+        $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
         
-        
-    };
-    SelectorWidget.prototype.showGedError = function (message) {
-        
-        $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
-        $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
-        $("#ged-error").removeClass("hidePanel").addClass("displayPanel");
-        
-        
-        $("#errormessage").html(message);
-    };
-    SelectorWidget.prototype.showGedLoading = function (message, show) {
-        
-      
-        if(!show)
-            $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
-        else
-            $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
-            
-        $("#loadingmessage").html(message);
-   
-        
+    $("#loadingmessage").html(message);
+
+    
+};
+SelectorWidget.prototype.newFileLoaded = function (treedate) {
+    
+    var that =this;
+    
+    var handleFileSelect = function(evt) {
+        var files = evt.target.files; // FileList object
+        // Loop through the FileList and render image files as thumbnails.
+        for (var i = 0, f; f = files[i]; i++) {
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    // loader.processFile(e.target.result);
+
+                    treedate(e.target.result);
+                };
+            })(f);
+            // Read in the image file as a data URL.
+            reader.readAsText(f);
+        }
     };
     
-    SelectorWidget.prototype.newFileLoaded = function (treedate) {
-        
-        var that =this;
-        
-        var handleFileSelect = function(evt) {
-            var files = evt.target.files; // FileList object
-            // Loop through the FileList and render image files as thumbnails.
-            for (var i = 0, f; f = files[i]; i++) {
-                var reader = new FileReader();
-                // Closure to capture the file information.
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                        // loader.processFile(e.target.result);
+    $('#defaultFile').click(function (e) {
 
-                        treedate(e.target.result);
-                    };
-                })(f);
-                // Read in the image file as a data URL.
-                reader.readAsText(f);
-            }
-        };
-        
-        $('#defaultFile').click(function (e) {
+        $.get(that.defaultGed, function (contents) {
+            treedate(contents);
+        }, 'text');
 
-            $.get(that.defaultGed, function (contents) {
-                treedate(contents);
-            }, 'text');
-
-            e.preventDefault();
-        });
+        e.preventDefault();
+    });
 
 
-        document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
-    };
-    SelectorWidget.prototype.showSelectedPerson = function(id, name) {
+    document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
+};
+SelectorWidget.prototype.showSelectedPerson = function(id, name) {
 
-        var selectedPerson = 'Selected Person: ' + id + ' ' + name;
+    var selectedPerson = 'Selected Person: ' + id + ' ' + name;
 
-        $('#selected_person').html(selectedPerson);
+    $('#selected_person').html(selectedPerson);
 
-        return id;
-    };    
-    SelectorWidget.prototype.NodeSelected = function (node) {
-        //hidPersonId
-        $('#hidPersonId').val(node.PersonId);
-        $('#txtCName').val(node.FirstName);
-        $('#txtSurname').val(node.Surname);
-        $('#txtBirYear').val(node.BirthDate);
-        $('#txtBapDate').val(node.BaptismDate);
-        $('#txtBLocation').val(node.BirthLocation);
-        $('#txtDYear').val(node.DOD);
-        $('#txtDLocation').val(node.DeathLocation);
-        $('#txtOccupationDate').val(node.OccupationDate);
-        $('#txtOccupationPlace').val(node.OccupationPlace);
-        $('#txtOccupationDesc').val(node.Occupation);
-        
+    return id;
+};    
+SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
+    $('#btnRunDiag').click(function(e) {
 
-        //
-        //Object {DOB: 1670, BirthDate: "BEF 1670", BaptismDate: "", DOD: "", DeathLocation: ""…}
+        action(personId);
 
-        //BaptismDate: ""
-        //BirthDate: "BEF 1670"
+        e.preventDefault();
+    });
+};
 
-        //BirthLocation: ""                            
-        //DOB: 1670
+SelectorWidget.prototype.PersonClicked = function(ancestorFunc) {
+    var that = this;
+    
+    $(".anc_class").off("click");
+    $('.anc_class').click(function(e) {
+        ancestorFunc(event.target.parentNode.id, event.target.outerText);
+        that.selectedId = event.target.parentNode.id;
+        that.selectedName= event.target.outerText;
+        e.preventDefault();
+        return false;
+    });
+};
 
-        //DOD: ""
-        //DeathLocation: ""
-        //FirstName: "William "              
-        //Occupation: ""
-        //OccupationDate: ""
-        //OccupationPlace: ""
-        //Surname: "Thackray"
+SelectorWidget.prototype.GetDiagramType = function() {
+    return $("input[name='type_sel']:checked").val();
+};
+SelectorWidget.prototype.InitPanelVisibility = function() {
 
 
-        //Name: "William Thackray"
-        //__proto__: Object
-    };    
-    SelectorWidget.prototype.NodeHovered = function (node) {
+    var that = this;
+    
+    var panels = new Panels();
+    
 
-    };
-    SelectorWidget.prototype.ResetDraggedMasses = function (action) {
+    $('body').on("click", "#chooseFileLnk", $.proxy(function () { panels.masterShowTab('1'); return false; }, panels));
 
-        //$('#myCanvas').dblclick(function (e) {
+    $('body').on("click", "#selectPersonLnk", $.proxy(function () { panels.masterShowTab('2'); return false; }, panels));
+    
 
-        //    action(e);
+    $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
+  
+    $('#show_controls').click(function (e) {
 
-        //    e.preventDefault();
-        //});
-
-    };    
-    SelectorWidget.prototype.SetMouseDoubleClick = function (action) {
-
-        $('#myCanvas').dblclick(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-
-    };   
-    SelectorWidget.prototype.SetMouseDown = function (action) {
-
-        $('#myCanvas').mousedown(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-        
-    };   
-    SelectorWidget.prototype.SetMouseUp = function (action) {
-
-        $('#myCanvas').mouseup(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-
-    };    
-    SelectorWidget.prototype.SetMouseMove = function (action) {
-
-        $('#myCanvas').mousemove(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-
-    };    
-    SelectorWidget.prototype.SetButtonDown = function (action) {
-
-        $(".button_box").mousedown(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-
-    };
-    SelectorWidget.prototype.SetButtonUp = function (action) {
-
-        $(".button_box").mouseup(function (e) {
-
-            action(e);
-
-            e.preventDefault();
-        });
-
-    };    
-    SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
-        $('#btnRunDiag').click(function(e) {
-
-            action(personId);
-
-            e.preventDefault();
-        });
-    };
-    SelectorWidget.prototype.GetDiagramType = function() {
-        return $("input[name='type_sel']:checked").val();
-    };
-    SelectorWidget.prototype.InitPanelVisibility = function() {
-
-
-        var that = this;
-        
-        var panels = new Panels();
-        
-
-        $('body').on("click", "#chooseFileLnk", $.proxy(function () { panels.masterShowTab('1'); return false; }, panels));
-
-        $('body').on("click", "#selectPersonLnk", $.proxy(function () { panels.masterShowTab('2'); return false; }, panels));
-        
-
-        $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
-      
-        $('#show_controls').click(function (e) {
-
-            if (that.showMapControls) {
-              //  $("#map_control").removeClass("hidePanel").addClass("displayPanel");
-                
-                $("#map_control").dialog();
-                
-          //   $(".ui-widget-header").css("border", "none" );
-                //   $(".ui-widget-header").css("background", "none");
-             
-                 $(".ui-widget-header").css("height", "7px");
-                
-                 $(".ui-dialog-title").css("position", "absolute");
-                 $(".ui-dialog-title").css("top", "0px");
-                 $(".ui-dialog-title").css("left", "0px");
-                
-                 $('*[aria-describedby="map_control"]').css("width", "120px");
-                 $('*[aria-describedby="map_control"]').css("height", "100px");
-                
-                that.showMapControls = false;
-            } else {
-             //   $("#map_control").removeClass("displayPanel").addClass("hidePanel");
-                $("#map_control").dialog("close");
-                that.showMapControls = true;
-            }
-        });
-
-        $('#show_dataLoader').click(function (e) {
-
-
-
-            if (that.dataLoader) {
-
-                $("#dataLoader").dialog();
-
-                that.dataLoader = false;
-
-                $(".ui-widget-header").css("height", "7px");
-
-                $(".ui-dialog-title").css("position", "absolute");
-                $(".ui-dialog-title").css("top", "0px");
-                $(".ui-dialog-title").css("left", "0px");
-                
-                $('*[aria-describedby="dataLoader"]').css("top", "90px");
-                $('*[aria-describedby="dataLoader"]').css("left", "70px");
-                $('*[aria-describedby="dataLoader"]').css("width", "350px");
-              //  $('*[aria-describedby="dataLoader"]').css("height", "600px");
-                
-                $("#dataLoader").css("padding", "0px");
-
-            } else {
-
-
-                $("#dataLoader").dialog("close");
-                that.dataLoader = true;
-            }
-        });
-
-        $('#show_debugbox').click(function (e) {
-
+        if (that.showMapControls) {
+          //  $("#map_control").removeClass("hidePanel").addClass("displayPanel");
+            
+            $("#map_control").dialog();
+            
+      //   $(".ui-widget-header").css("border", "none" );
+            //   $(".ui-widget-header").css("background", "none");
          
-
-             if (that.showDebug) {
+             $(".ui-widget-header").css("height", "7px");
             
-                 $("#map_message").dialog();
-                 
-                 that.showDebug = false;
-                 
-                 $(".ui-widget-header").css("height", "7px");
+             $(".ui-dialog-title").css("position", "absolute");
+             $(".ui-dialog-title").css("top", "0px");
+             $(".ui-dialog-title").css("left", "0px");
+            
+             $('*[aria-describedby="map_control"]').css("width", "120px");
+             $('*[aria-describedby="map_control"]').css("height", "100px");
+            
+            that.showMapControls = false;
+        } else {
+         //   $("#map_control").removeClass("displayPanel").addClass("hidePanel");
+            $("#map_control").dialog("close");
+            that.showMapControls = true;
+        }
+    });
 
-                 $(".ui-dialog-title").css("position", "absolute");
-                 $(".ui-dialog-title").css("top", "0px");
-                 $(".ui-dialog-title").css("left", "0px");
-
-                 $('*[aria-describedby="map_message"]').css("width", "120px");
-                 $('*[aria-describedby="map_message"]').css("height", "140px");
-
-            } else {
-               
-
-                 $("#map_message").dialog("close");
-              that.showDebug = true;
-            }
-        });
-
-        $('#show_databox').click(function (e) {
-
-            if (that.showDataControls) {
-                $("#dataInfo").dialog();
-
-                $(".ui-widget-header").css("height", "7px");
-
-                $(".ui-dialog-title").css("position", "absolute");
-                $(".ui-dialog-title").css("top", "0px");
-                $(".ui-dialog-title").css("left", "0px");
-
-                $('*[aria-describedby="dataInfo"]').css("width", "250px");
-             //   $('*[aria-describedby="dataInfo"]').css("height", "600px");
-
-                $("#dataInfo").css("padding", "0px");
-                
-                //font-size: 1.1em; */
-                that.showDataControls = false;
-            } else {
-              
-                that.showDataControls = true;
-            }
-        });       
-    };
-    SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
+    $('#show_dataLoader').click(function (e) {
 
 
-        var showPersons = function(data, ancestorFunc) {
 
-            var from = $('#txtFrom').val().yearDate();
-            var to = $('#txtTo').val().yearDate();
-            var surname = $('#txtName').val();
-            var tableBody = '';
-            var _idx = 0;
+        if (that.dataLoader) {
 
-            $.each(data, function(source, sourceInfo) {
+            $("#dataLoader").dialog();
 
-                var birthYear = sourceInfo.BirthDate.yearDate() == 0 ? sourceInfo.BaptismDate.yearDate() : sourceInfo.BirthDate.yearDate();
+            that.dataLoader = false;
 
-                if ((birthYear >= from && birthYear < to) && ((sourceInfo.name.indexOf(surname) != -1) || surname == ''))
-                    tableBody += '<tr><td><a class = "anc_class" id= "' + sourceInfo.id + '" href="" ><span>' + birthYear + ' ' + sourceInfo.name + '</span></a></td>';
+            $(".ui-widget-header").css("height", "7px");
 
-                tableBody += '</tr>';
+            $(".ui-dialog-title").css("position", "absolute");
+            $(".ui-dialog-title").css("top", "0px");
+            $(".ui-dialog-title").css("left", "0px");
+            
+            $('*[aria-describedby="dataLoader"]').css("top", "90px");
+            $('*[aria-describedby="dataLoader"]').css("left", "70px");
+            $('*[aria-describedby="dataLoader"]').css("width", "350px");
+          //  $('*[aria-describedby="dataLoader"]').css("height", "600px");
+            
+            $("#dataLoader").css("padding", "0px");
+
+        } else {
 
 
-                _idx++;
-            });
+            $("#dataLoader").dialog("close");
+            that.dataLoader = true;
+        }
+    });
 
-            $('#person_lookup_body').html(tableBody);
+    $('#show_debugbox').click(function (e) {
 
-            $(".anc_class").off("click");
-            $('.anc_class').click(function(e) {
-                ancestorFunc(event.target.parentNode.id, event.target.outerText);
-                e.preventDefault();
-                return false;
-            });
-
-        };
      
-        $('#btnFilter').click(function (e) {
+
+         if (that.showDebug) {
+        
+             $("#map_message").dialog();
+             
+             that.showDebug = false;
+             
+             $(".ui-widget-header").css("height", "7px");
+
+             $(".ui-dialog-title").css("position", "absolute");
+             $(".ui-dialog-title").css("top", "0px");
+             $(".ui-dialog-title").css("left", "0px");
+
+             $('*[aria-describedby="map_message"]').css("width", "120px");
+             $('*[aria-describedby="map_message"]').css("height", "140px");
+
+        } else {
+           
+
+             $("#map_message").dialog("close");
+          that.showDebug = true;
+        }
+    });
+
+    $('#show_databox').click(function (e) {
+
+        if (that.showDataControls) {
+            $("#dataInfo").dialog();
+
+            $(".ui-widget-header").css("height", "7px");
+
+            $(".ui-dialog-title").css("position", "absolute");
+            $(".ui-dialog-title").css("top", "0px");
+            $(".ui-dialog-title").css("left", "0px");
+
+            $('*[aria-describedby="dataInfo"]').css("width", "250px");
+         //   $('*[aria-describedby="dataInfo"]').css("height", "600px");
+
+            $("#dataInfo").css("padding", "0px");
             
-            showPersons(data, ancestorFunc);
+            //font-size: 1.1em; */
+            that.showDataControls = false;
+        } else {
+          
+            that.showDataControls = true;
+        }
+    });       
+};
+SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
 
-            e.preventDefault();
+    var that = this;
+    
+    var showPersons = function(data, ancestorFunc) {
+
+        var from = $('#txtFrom').val().yearDate();
+        var to = $('#txtTo').val().yearDate();
+        var surname = $('#txtName').val();
+        var tableBody = '';
+        var _idx = 0;
+
+        $.each(data, function(source, sourceInfo) {
+
+            var birthYear = sourceInfo.BirthDate.yearDate() == 0 ? sourceInfo.BaptismDate.yearDate() : sourceInfo.BirthDate.yearDate();
+
+            if ((birthYear >= from && birthYear < to) && ((sourceInfo.name.indexOf(surname) != -1) || surname == ''))
+                tableBody += '<tr><td><a class = "anc_class" id= "' + sourceInfo.id + '" href="" ><span>' + birthYear + ' ' + sourceInfo.name + '</span></a></td>';
+
+            tableBody += '</tr>';
+
+
+            _idx++;
         });
-      
 
+        $('#person_lookup_body').html(tableBody);
+
+        // $(".anc_class").off("click");
+        // $('.anc_class').click(function(e) {
+        //     ancestorFunc(event.target.parentNode.id, event.target.outerText);
+        //     that.selectedId = event.target.parentNode.id;
+        //     that.selectedName= event.target.outerText;
+        //     e.preventDefault();
+        //     return false;
+        // });
+
+    };
+ 
+    $('#btnFilter').click(function (e) {
+        
         showPersons(data, ancestorFunc);
 
-        return 0;
-        //$('.dec_class').click(function (e) {
-        //    decendantFunc(e.target.parentNode.id);
-        //    e.preventDefault();
-        //});
+        e.preventDefault();
+    });
+  
 
-        //$('.decfd_class').click(function (e) {
-        //    decendantFunc2(e.target.parentNode.id);
-        //    e.preventDefault();
-        //});
-    };
+    showPersons(data, ancestorFunc);
 
-    SelectorWidget.prototype.Save = function (action) {
+    return 0;
+    //$('.dec_class').click(function (e) {
+    //    decendantFunc(e.target.parentNode.id);
+    //    e.preventDefault();
+    //});
 
-        var that = this;
-        $('#saveNode').click(function (e) {
-
-            
-       
-            action(that.PopulateRecordLink());
-         
-            e.preventDefault();
-        });               
-    };
-    
-    SelectorWidget.prototype.Add = function (action) {
-        var that = this;
-        $('#updateNode').click(function (e) {
-
-      
-            action(that.PopulateRecordLink());
-
-            e.preventDefault();
-        });
-    };
-
-    SelectorWidget.prototype.Delete = function (action) {
-        var that = this;
-        $('#deleteNode').click(function (e) {            
-            action();
-            e.preventDefault();
-        });        
-    };
-
-    SelectorWidget.prototype.PopulateRecordLink = function () {
-
-
-        var node = new Bio();
-        
-       node.PersonId = $('#hidPersonId').val();        
-       node.FirstName= $('#txtCName').val();
-       node.Surname= $('#txtSurname').val();
-       node.BirthDate= $('#txtBirYear').val();
-       node.BaptismDate= $('#txtBapDate').val();
-       node.BirthLocation= $('#txtBLocation').val();
-       node.DOD= $('#txtDYear').val();
-       node.DeathLocation= $('#txtDLocation').val();
-       node.OccupationDate= $('#txtOccupationDate').val();
-       node.OccupationPlace= $('#txtOccupationPlace').val();
-       node.Occupation= $('#txtOccupationDesc').val();
-
-
-       return node;
-
-    };
-
+    //$('.decfd_class').click(function (e) {
+    //    decendantFunc2(e.target.parentNode.id);
+    //    e.preventDefault();
+    //});
+};

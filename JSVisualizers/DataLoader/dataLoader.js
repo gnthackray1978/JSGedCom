@@ -64,8 +64,6 @@ var DataLoader = {};
 
             var asynch = new Asynch();
             
-            //  $('#result').html(file);
-
             var results = file.match(/[^\n]+(?:\r?\n|$)/g);
 
             if(results == null || results.length ==0){
@@ -74,10 +72,7 @@ var DataLoader = {};
             }
 
             var that = this;
-            
 
-            
-           
             var makeLists = function(){
                 var idx =0;
                 var currentId = {};
@@ -246,9 +241,6 @@ var DataLoader = {};
                 });
             };
 
-
-
-           
             progressFunction('parsing ged file',true);
             
             

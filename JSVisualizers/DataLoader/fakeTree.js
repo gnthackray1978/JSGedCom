@@ -1,4 +1,3 @@
-﻿
 
 var FakeData = function () {
 
