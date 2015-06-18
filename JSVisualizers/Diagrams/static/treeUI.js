@@ -34,11 +34,11 @@ var TreeUI = function (modelCode, callback) {
     }
 
   
-    this.docClose.src = '/basicvis/Images/icons/24x24/plus.png';
+    this.docClose.src = '../images/icons/24x24/plus.png';
 
     var that = this;
     this.docClose.onload = function () {
-        that.docNew.src = '/basicvis/Images/icons/24x24/minus.png';
+        that.docNew.src = '../images/icons/24x24/minus.png';
         
         that.docNew.onload = function () {
             callback(that);
