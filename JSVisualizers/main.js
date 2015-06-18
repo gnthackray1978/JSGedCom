@@ -6,7 +6,7 @@ $(document).ready(function () {
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
     } else {
-        diagMode = new SelectorWidget(new GedPreLoader());
+        diagMode = new ComplexLoaderUI(new GedPreLoader());
     }
 
 

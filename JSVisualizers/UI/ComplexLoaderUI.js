@@ -1,5 +1,5 @@
 /** @constructor */
-function SelectorWidget(gedPreLoader) {       
+function ComplexLoaderUI(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
     this.loader = this.gedPreLoader.gedLoader;
     this.defaultGed = '/basicvis/samples/default.txt';
@@ -14,8 +14,7 @@ function SelectorWidget(gedPreLoader) {
     this.onPersonSelected;
 }
 
-
-SelectorWidget.prototype.showGedContent = function () {
+ComplexLoaderUI.prototype.showGedContent = function () {
     
     $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
@@ -23,7 +22,7 @@ SelectorWidget.prototype.showGedContent = function () {
     
     
 };
-SelectorWidget.prototype.showGedError = function (message) {
+ComplexLoaderUI.prototype.showGedError = function (message) {
     
     $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
@@ -32,7 +31,7 @@ SelectorWidget.prototype.showGedError = function (message) {
     
     $("#errormessage").html(message);
 };
-SelectorWidget.prototype.showGedLoading = function (message, show) {
+ComplexLoaderUI.prototype.showGedLoading = function (message, show) {
     
   
     if(!show)
@@ -44,7 +43,7 @@ SelectorWidget.prototype.showGedLoading = function (message, show) {
 
     
 };
-SelectorWidget.prototype.newFileLoaded = function (treedate) {
+ComplexLoaderUI.prototype.newFileLoaded = function (treedate) {
     
     var that =this;
     
@@ -78,7 +77,7 @@ SelectorWidget.prototype.newFileLoaded = function (treedate) {
 
     document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
 };
-SelectorWidget.prototype.showSelectedPerson = function(id, name) {
+ComplexLoaderUI.prototype.showSelectedPerson = function(id, name) {
 
     var selectedPerson = 'Selected Person: ' + id + ' ' + name;
 
@@ -86,7 +85,7 @@ SelectorWidget.prototype.showSelectedPerson = function(id, name) {
 
     return id;
 };    
-SelectorWidget.prototype.RunDiagClicked = function( action) {
+ComplexLoaderUI.prototype.RunDiagClicked = function( action) {
     var that = this;
     $('#btnRunDiag').click(function(e) {
 
@@ -95,15 +94,13 @@ SelectorWidget.prototype.RunDiagClicked = function( action) {
         e.preventDefault();
     });
 };
-
-SelectorWidget.prototype.PersonClicked = function(ancestorFunc) {
+ComplexLoaderUI.prototype.PersonClicked = function(ancestorFunc) {
     this.onPersonSelected = ancestorFunc;
 };
-
-SelectorWidget.prototype.GetDiagramType = function() {
+ComplexLoaderUI.prototype.GetDiagramType = function() {
     return $("input[name='type_sel']:checked").val();
 };
-SelectorWidget.prototype.InitPanelVisibility = function() {
+ComplexLoaderUI.prototype.InitPanelVisibility = function() {
 
 
     var that = this;
@@ -227,7 +224,7 @@ SelectorWidget.prototype.InitPanelVisibility = function() {
         }
     });       
 };
-SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
+ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
 
     var that = this;
     
