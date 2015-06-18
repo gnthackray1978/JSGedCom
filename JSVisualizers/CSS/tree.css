@@ -3,43 +3,6 @@ body
   
 }
 
-#xxxx {
-    border-style: none;
-    filter: alpha(opacity=90);
-    border-radius: 10px;
-    width: 100px;
-        
-       /* top: -30px; 
-    height: 100px;
-    position: absolute;
-   right: 30px;
-    */
-}#xxx {
-    border-style: none;
-    filter: alpha(opacity=90);
-    border-radius: 10px;
-    width: 100px;
-        
-       /* top: -30px; 
-    height: 100px;
-    position: absolute;
-   right: 30px;
-    */
-}#x {
-    border-style: none;
-    filter: alpha(opacity=90);
-    border-radius: 10px;
-    width: 100px;
-        
-       /* top: -30px; 
-    height: 100px;
-    position: absolute;
-   right: 30px;
-    */
-}
-
-
-
 .map_year {
     color: slateblue;
     font-size: small;
