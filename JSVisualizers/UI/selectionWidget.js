@@ -11,6 +11,7 @@ function SelectorWidget(gedPreLoader) {
     this.dataLoader = true;
     this.selectedId =0;
     this.selectedName= '';
+    this.onPersonSelected;
 }
 
 
@@ -96,16 +97,7 @@ SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
 };
 
 SelectorWidget.prototype.PersonClicked = function(ancestorFunc) {
-    var that = this;
-    
-    $(".anc_class").off("click");
-    $('.anc_class').click(function(e) {
-        ancestorFunc(event.target.parentNode.id, event.target.outerText);
-        that.selectedId = event.target.parentNode.id;
-        that.selectedName= event.target.outerText;
-        e.preventDefault();
-        return false;
-    });
+    this.onPersonSelected = ancestorFunc;
 };
 
 SelectorWidget.prototype.GetDiagramType = function() {
@@ -261,6 +253,18 @@ SelectorWidget.prototype.showPersonSelectList = function (data, ancestorFunc) {
         });
 
         $('#person_lookup_body').html(tableBody);
+
+        $(".anc_class").off("click");
+        
+        $('.anc_class').click(function(e) {
+            if(that.onPersonSelected)
+                that.onPersonSelected(event.target.parentNode.id, event.target.outerText);
+                
+            that.selectedId = event.target.parentNode.id;
+            that.selectedName= event.target.outerText;
+            e.preventDefault();
+            return false;
+        });
 
         // $(".anc_class").off("click");
         // $('.anc_class').click(function(e) {
