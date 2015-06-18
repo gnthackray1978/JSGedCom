@@ -81,7 +81,7 @@ var DataLoader = {};
             while (idx < results.length) {
 
                 // are we an id.
-
+                progressFunction('parsing persons: ' + idx + " of " + results.length,true);
 
                 var gLine = this.parseLine(results[idx]);
 
@@ -198,7 +198,9 @@ var DataLoader = {};
             try {
                 idx = 0;
                 while (idx < this.persons.length) {
-
+                    
+                    progressFunction('parsing families: ' + idx + ' of ' + this.persons.length ,true);
+                    
                     famidx = 0;
 
                     while (famidx < this.families.length) {
