@@ -264,7 +264,6 @@ var DataLoader = {};
                             newloader(that.families, that.persons);
                         });
                         
-                        newloader(that.families, that.persons);
                     });
                 });
             });
