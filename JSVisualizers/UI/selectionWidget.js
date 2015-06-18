@@ -31,14 +31,14 @@ function SelectorWidget(gedPreLoader) {
     };
     SelectorWidget.prototype.showGedLoading = function (message, show) {
         
-        setTimeout(function(){
-            if(!show)
-                $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
-            else
-                $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
-                
-            $("#loadingmessage").html(message);
-        });
+      
+        if(!show)
+            $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
+        else
+            $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
+            
+        $("#loadingmessage").html(message);
+   
         
     };
     

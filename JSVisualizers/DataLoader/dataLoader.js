@@ -75,6 +75,8 @@ var DataLoader = {};
                 newloader();
             }
 
+            var that = this;
+            
 
             progressFunction('parsing persons',true);
             
@@ -83,110 +85,114 @@ var DataLoader = {};
                 // are we an id.
                 progressFunction('parsing persons: ' + idx + " of " + results.length,true);
 
-                var gLine = this.parseLine(results[idx]);
-
-                try {
-
-
-                    if (gLine.id != '') {
-                        currentId = {};
-                        currentId.type = gLine.tag;
-                        currentId.id = gLine.id;
-                        currentId.children = [];
-                        currentId.generation = -1;
-                        currentId.date = 0;
-                        currentId.BaptismPlace = '';
-                        currentId.BirthPlace = '';
-                        currentId.BirthDate = '';
-                        currentId.BaptismDate = '';
-                        currentId.husbId = '0';
-                        currentId.wifeId = '0';
-                        currentId.isFirst = false;
-                        currentId.OccupationDate= '';
-                        currentId.OccupationPlace= '';
-                        currentId.Occupation = '';
-                        currentId.DeathLocation = '';
-                        currentId.name = '';
-
-                        if (currentId.type == 'FAM') this.families.push(currentId);
-
-                        if (currentId.type == 'INDI') this.persons.push(currentId);
-                    } else {
-
-                        if (currentId.type == 'FAM') {
-
-
-                            if (gLine.tag == 'HUSB') currentId.husbId = gLine.value;
-                            if (gLine.tag == 'WIFE') currentId.wifeId = gLine.value;
-
-                            if (gLine.tag == 'CHIL') currentId.children.push(gLine.value);
-
-                        }
-
-
-                        if (currentId.type == 'INDI') {
-
-
-                            if (gLine.tag == 'NAME') currentId.name = gLine.value;
-                            if (gLine.tag == 'FAMS') currentId.famId = gLine.value;                    
-                    
-                   
-                        }
-
-
-                        if (idx <= results.length) {
-                            var nextLine = this.parseLine(results[idx + 1]);
-
-                            while (idx <= results.length && nextLine.level > 1) {
-
-                                if (gLine.tag == 'BAPL' || gLine.tag == 'BAPM' || gLine.tag == 'CHR') {
-                                    if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
-                                    if (nextLine.tag == 'DATE') currentId.BaptismDate = nextLine.value;
-                                    if (nextLine.tag == 'PLAC') currentId.BaptismPlace = nextLine.value;
-                                }
-
-                                if (gLine.tag == 'BIRT') {
-                                    if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
-                                    if (nextLine.tag == 'DATE') currentId.BirthDate = nextLine.value;
-                                    if (nextLine.tag == 'PLAC') currentId.BirthPlace = nextLine.value;
-                                }
-
-                                if (gLine.tag == 'MARR') {
-                                    if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
-                                    if (nextLine.tag == 'DATE') currentId.MarDate = nextLine.value;
-                                    if (nextLine.tag == 'PLAC') currentId.MarPlace = nextLine.value;
-                                }
-
-                                if (gLine.tag == 'OCCU') {
-
-                                    currentId.Occupation = gLine.value;
-
-                                    if (nextLine.tag == 'DATE') currentId.OccupationDate = nextLine.value;
-                                    if (nextLine.tag == 'PLAC') currentId.OccupationPlace = nextLine.value;
-                                }
-
-                                if (gLine.tag == 'DEAT') {
-
-                                    if (nextLine.tag == 'DATE') currentId.DeathDate = nextLine.value;
-                                    if (nextLine.tag == 'PLAC') currentId.DeathPlace = nextLine.value;
-                                }
-
-                                results.splice(idx + 1, 1);
-                                nextLine = this.parseLine(results[idx + 1]);
-
-                                //because we have take a row out of the array dont need to increment anything
+                setTimeout(function(){
+                    var gLine = that.parseLine(results[idx]);
+    
+                    try {
+    
+    
+                        if (gLine.id != '') {
+                            currentId = {};
+                            currentId.type = gLine.tag;
+                            currentId.id = gLine.id;
+                            currentId.children = [];
+                            currentId.generation = -1;
+                            currentId.date = 0;
+                            currentId.BaptismPlace = '';
+                            currentId.BirthPlace = '';
+                            currentId.BirthDate = '';
+                            currentId.BaptismDate = '';
+                            currentId.husbId = '0';
+                            currentId.wifeId = '0';
+                            currentId.isFirst = false;
+                            currentId.OccupationDate= '';
+                            currentId.OccupationPlace= '';
+                            currentId.Occupation = '';
+                            currentId.DeathLocation = '';
+                            currentId.name = '';
+    
+                            if (currentId.type == 'FAM') that.families.push(currentId);
+    
+                            if (currentId.type == 'INDI') that.persons.push(currentId);
+                        } else {
+    
+                            if (currentId.type == 'FAM') {
+    
+    
+                                if (gLine.tag == 'HUSB') currentId.husbId = gLine.value;
+                                if (gLine.tag == 'WIFE') currentId.wifeId = gLine.value;
+    
+                                if (gLine.tag == 'CHIL') currentId.children.push(gLine.value);
+    
                             }
-                        }
-                    }             
+    
+    
+                            if (currentId.type == 'INDI') {
+    
+    
+                                if (gLine.tag == 'NAME') currentId.name = gLine.value;
+                                if (gLine.tag == 'FAMS') currentId.famId = gLine.value;                    
+                        
+                       
+                            }
+    
+    
+                            if (idx <= results.length) {
+                                var nextLine = that.parseLine(results[idx + 1]);
+    
+                                while (idx <= results.length && nextLine.level > 1) {
+    
+                                    if (gLine.tag == 'BAPL' || gLine.tag == 'BAPM' || gLine.tag == 'CHR') {
+                                        if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
+                                        if (nextLine.tag == 'DATE') currentId.BaptismDate = nextLine.value;
+                                        if (nextLine.tag == 'PLAC') currentId.BaptismPlace = nextLine.value;
+                                    }
+    
+                                    if (gLine.tag == 'BIRT') {
+                                        if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
+                                        if (nextLine.tag == 'DATE') currentId.BirthDate = nextLine.value;
+                                        if (nextLine.tag == 'PLAC') currentId.BirthPlace = nextLine.value;
+                                    }
+    
+                                    if (gLine.tag == 'MARR') {
+                                        if (nextLine.tag == 'DATE') currentId.date = nextLine.value.yearDate();
+                                        if (nextLine.tag == 'DATE') currentId.MarDate = nextLine.value;
+                                        if (nextLine.tag == 'PLAC') currentId.MarPlace = nextLine.value;
+                                    }
+    
+                                    if (gLine.tag == 'OCCU') {
+    
+                                        currentId.Occupation = gLine.value;
+    
+                                        if (nextLine.tag == 'DATE') currentId.OccupationDate = nextLine.value;
+                                        if (nextLine.tag == 'PLAC') currentId.OccupationPlace = nextLine.value;
+                                    }
+    
+                                    if (gLine.tag == 'DEAT') {
+    
+                                        if (nextLine.tag == 'DATE') currentId.DeathDate = nextLine.value;
+                                        if (nextLine.tag == 'PLAC') currentId.DeathPlace = nextLine.value;
+                                    }
+    
+                                    results.splice(idx + 1, 1);
+                                    nextLine = that.parseLine(results[idx + 1]);
+    
+                                    //because we have take a row out of the array dont need to increment anything
+                                }
+                            }
+                        }             
+    
+    
+                    } catch(err) {
+                    }
 
-
-                } catch(err) {
-                }
-
-
+                });
                 idx++;
 
             }
+
+
+
 
             // we need to have the families ordered by the birth of their children
 
@@ -197,25 +203,25 @@ var DataLoader = {};
             
             try {
                 idx = 0;
-                while (idx < this.persons.length) {
+                while (idx < that.persons.length) {
                     
-                    progressFunction('parsing families: ' + idx + ' of ' + this.persons.length ,true);
+                    progressFunction('parsing families: ' + idx + ' of ' + that.persons.length ,true);
                     
                     famidx = 0;
 
-                    while (famidx < this.families.length) {
+                    while (famidx < that.families.length) {
 
-                        if (this.families[famidx].husbId == this.persons[idx].id) this.families[famidx].husband = this.persons[idx];
+                        if (that.families[famidx].husbId == that.persons[idx].id) that.families[famidx].husband = that.persons[idx];
 
-                        if (this.families[famidx].wifeId == this.persons[idx].id) this.families[famidx].wife = this.persons[idx];
+                        if (that.families[famidx].wifeId == that.persons[idx].id) that.families[famidx].wife = that.persons[idx];
 
                         famChildIdx = 0;
-                        while (famChildIdx < this.families[famidx].children.length) {
-                            if (this.families[famidx].children[famChildIdx] == this.persons[idx].id) {
-                                this.families[famidx].children[famChildIdx] = this.persons[idx];
+                        while (famChildIdx < that.families[famidx].children.length) {
+                            if (that.families[famidx].children[famChildIdx] == that.persons[idx].id) {
+                                that.families[famidx].children[famChildIdx] = that.persons[idx];
 
-                                if (this.families[famidx].date != undefined)
-                                    this.families[famidx].date = this.persons[idx].BirthDate.yearDate();
+                                if (that.families[famidx].date != undefined)
+                                    that.families[famidx].date = that.persons[idx].BirthDate.yearDate();
 
                                 break;
                             }
@@ -237,33 +243,33 @@ var DataLoader = {};
 
             // sort family children 
             famidx = 0;
-            while (famidx < this.families.length) {
+            while (famidx < that.families.length) {
 
-                this.families[famidx].children.sort(function(a, b) {
+                that.families[famidx].children.sort(function(a, b) {
                     return a.date - b.date;
                 });
         
 
-                if (this.families[famidx].husbId != '0')
-                    this.families[famidx].husband.children = this.families[famidx].children;
+                if (that.families[famidx].husbId != '0')
+                    that.families[famidx].husband.children = that.families[famidx].children;
 
-                if (this.families[famidx].wifeId != '0')
-                    this.families[famidx].wife.children = this.families[famidx].children;
+                if (that.families[famidx].wifeId != '0')
+                    that.families[famidx].wife.children = that.families[famidx].children;
 
-                if (this.families[famidx].husband == undefined) this.families[famidx].husband = { id: 0 };
-                if (this.families[famidx].wife == undefined) this.families[famidx].wife = { id: 0 };
+                if (that.families[famidx].husband == undefined) that.families[famidx].husband = { id: 0 };
+                if (that.families[famidx].wife == undefined) that.families[famidx].wife = { id: 0 };
 
                 famidx++;
             }
 
             // sort families
-            this.families.sort(function(a, b) {
+            that.families.sort(function(a, b) {
                 return a.date - b.date;
             });
 
             progressFunction('finished',false);
             
-            newloader(this.families, this.persons);
+            newloader(that.families, that.persons);
            
            
             //searchFams(findPerson('@I4@'));
