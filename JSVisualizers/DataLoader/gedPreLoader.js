@@ -145,7 +145,9 @@ function GedPreLoader(loader) {
 
 
         var familyFound = $.grep(this.families, function (e) {
-
+            if(startperson == null) return false;
+            if(e.husband == null && e.wife == null) return false;
+            
             return  e.husband.id == startperson.id || e.wife.id == startperson.id;
 
         }).length > 0 ? true : false;
