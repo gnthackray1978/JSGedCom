@@ -257,7 +257,13 @@ var DataLoader = {};
                 asynch.acall(parseSpouses, function(){
                     progressFunction('parsing 2',true);
                     asynch.acall(parseChildren, function(){
-                        progressFunction('parsing 3',true);
+                        
+                        asynch.acall(function(){
+                            progressFunction('parsing 3',true);
+                        }, function(){
+                            newloader(that.families, that.persons);
+                        });
+                        
                         newloader(that.families, that.persons);
                     });
                 });
