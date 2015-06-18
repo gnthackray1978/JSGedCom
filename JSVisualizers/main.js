@@ -12,11 +12,11 @@ $(document).ready(function () {
 
     diagMode.InitPanelVisibility();
 
-    diagMode.RunDiagClicked(0, function (id) {
+    diagMode.RunDiagClicked( function (id) {
 
         var treeRunner = null;
         var forceDirect = null;
-        var selectedId = diagUI.diagUI;
+        var selectedId = id;
 
         switch (diagMode.GetDiagramType()) {
             case 'anc':

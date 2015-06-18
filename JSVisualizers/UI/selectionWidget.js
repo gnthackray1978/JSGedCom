@@ -86,9 +86,10 @@ SelectorWidget.prototype.showSelectedPerson = function(id, name) {
     return id;
 };    
 SelectorWidget.prototype.RunDiagClicked = function(personId, action) {
+    var that = this;
     $('#btnRunDiag').click(function(e) {
 
-        action(personId);
+        action(that.selectedId);
 
         e.preventDefault();
     });
