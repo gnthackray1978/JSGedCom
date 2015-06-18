@@ -31,12 +31,15 @@ function SelectorWidget(gedPreLoader) {
     };
     SelectorWidget.prototype.showGedLoading = function (message, show) {
         
-        if(!show)
-            $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
-        else
-            $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
-            
-        $("#loadingmessage").html(message);
+        setTimeout(function(){
+            if(!show)
+                $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
+            else
+                $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
+                
+            $("#loadingmessage").html(message);
+        });
+        
     };
     
     SelectorWidget.prototype.newFileLoaded = function (treedate) {
