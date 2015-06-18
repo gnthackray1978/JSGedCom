@@ -70,6 +70,7 @@ var DataLoader = {};
 
             if(results == null || results.length ==0){
                 newloader();
+                return;
             }
 
             var that = this;
@@ -257,6 +258,7 @@ var DataLoader = {};
                     progressFunction('parsing 2',true);
                     asynch.acall(parseChildren, function(){
                         progressFunction('parsing 3',true);
+                        newloader(that.families, that.persons);
                     });
                 });
             });
@@ -264,7 +266,7 @@ var DataLoader = {};
             
             
             
-            newloader(that.families, that.persons);
+            
            
            
            
