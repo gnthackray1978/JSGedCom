@@ -75,23 +75,7 @@ var DataLoader = {};
             var that = this;
             
 
-            progressFunction('parsing persons',true);
             
-            
-            asynch.acall(makeLists, function(){
-                progressFunction('parsing 1',true);
-                asynch.acall(parseSpouses, function(){
-                    progressFunction('parsing 2',true);
-                    asynch.acall(parseChildren, function(){
-                        progressFunction('parsing 3',true);
-                    });
-                });
-            });
-            
-            
-            
-            
-            newloader(that.families, that.persons);
            
             var makeLists = function(){
                 var idx =0;
@@ -264,7 +248,23 @@ var DataLoader = {};
 
 
            
-           
+            progressFunction('parsing persons',true);
+            
+            
+            asynch.acall(makeLists, function(){
+                progressFunction('parsing 1',true);
+                asynch.acall(parseSpouses, function(){
+                    progressFunction('parsing 2',true);
+                    asynch.acall(parseChildren, function(){
+                        progressFunction('parsing 3',true);
+                    });
+                });
+            });
+            
+            
+            
+            
+            newloader(that.families, that.persons);
            
            
            
