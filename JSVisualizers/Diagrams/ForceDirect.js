@@ -22,26 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
-
-//$(document).ready(function () {
-//    // var jsMaster = new JSMaster();
-
-
-//    // jsMaster.connectfacebook(function () {
-
-//    var forceDirect = new ForceDirect();
-
-//    forceDirect.init();
-
-
-
-
-//    //  });
-
-//});
-
-
+ 
 
 //var AncTreeDiag function (gedAncPreLoader) {
 var ForceDirect = function (colourScheme,gedPreLoader) {

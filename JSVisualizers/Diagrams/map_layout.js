@@ -431,16 +431,16 @@ Layout.ForceDirected.prototype = {
 
 
 
-var __bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; }; // stolen from coffeescript, thanks jashkenas! ;-)
+// var __bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; }; // stolen from coffeescript, thanks jashkenas! ;-)
 
-Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	window.oRequestAnimationFrame ||
-	window.msRequestAnimationFrame ||
-	function (callback, element) {
-	    window.setTimeout(callback, 10);
-	}, window);
+// Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
+// 	window.webkitRequestAnimationFrame ||
+// 	window.mozRequestAnimationFrame ||
+// 	window.oRequestAnimationFrame ||
+// 	window.msRequestAnimationFrame ||
+// 	function (callback, element) {
+// 	    window.setTimeout(callback, 10);
+// 	}, window);
 
 
 
