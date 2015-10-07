@@ -1,5 +1,6 @@
 /*global ForceDirected*/
 
+
 // Spring
 ForceDirected.Spring = function (point1, point2, length, k) {
     this.point1 = point1;
