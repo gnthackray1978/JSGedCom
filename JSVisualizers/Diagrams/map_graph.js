@@ -1,4 +1,4 @@
-﻿
+
 var Graph = function () {
     this.nodeSet = {};
     this.nodes = [];

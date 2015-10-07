@@ -1,4 +1,4 @@
-﻿
+/*global Tree*/
 
 Tree = function (data) {
     this.data = data;
