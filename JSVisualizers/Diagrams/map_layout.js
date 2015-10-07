@@ -1,6 +1,7 @@
 /*global Node */
 /*global Point */
 /*global Vector */
+/*global ForceDirected */
 
 var Layout = {};
 
@@ -64,7 +65,7 @@ Layout.ForceDirected.prototype = {
             }, this);
 
             if (existingSpring !== false) {
-                return new Layout.ForceDirected.Spring(existingSpring.point1, existingSpring.point2, 0.0, 0.0);
+                return new ForceDirected.Spring(existingSpring.point1, existingSpring.point2, 0.0, 0.0);
             }
 
             var to = this.graph.getEdges(edge.target, edge.source);
@@ -75,10 +76,10 @@ Layout.ForceDirected.prototype = {
             }, this);
 
             if (existingSpring !== false) {
-                return new Layout.ForceDirected.Spring(existingSpring.point2, existingSpring.point1, 0.0, 0.0);
+                return new ForceDirected.Spring(existingSpring.point2, existingSpring.point1, 0.0, 0.0);
             }
 
-            this.edgeSprings[edge.id] = new Layout.ForceDirected.Spring(
+            this.edgeSprings[edge.id] = new ForceDirected.Spring(
             this.point(edge.source), this.point(edge.target), length, this.stiffness
             );
         }
@@ -446,11 +447,4 @@ Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 
 
 
-// Spring
-Layout.ForceDirected.Spring = function (point1, point2, length, k) {
-    this.point1 = point1;
-    this.point2 = point2;
-    this.length = length; // spring length at rest
-    this.k = k; // spring constant (See Hooke's law) .. how stiff the spring is
-};
 
