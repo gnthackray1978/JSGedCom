@@ -221,7 +221,7 @@ Layout.ForceDirected.prototype = {
                     this.selected.point.m = 1;
                     this.selected = newNearest;
                     
-                   // console.log('selected changed: ' + this.selected);
+                    console.log('selected changed: ' + this.selected);
 
                     this.notifySelection(this.selected);
                 }
