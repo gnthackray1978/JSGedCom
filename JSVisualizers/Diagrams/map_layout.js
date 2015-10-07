@@ -240,7 +240,9 @@ Layout.ForceDirected.prototype = {
 
             if (this.selected.node !== null) {
             //    this.selectionMass = this.dragged.point.m;
-
+                
+                this.resetMasses();
+                
                 if (this.dragged.node.id != -1) {
                   
                     var idx = 0;
@@ -304,6 +306,9 @@ Layout.ForceDirected.prototype = {
  
             this.mapHandler.addToMouseQueue(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
+            
+            
+            
             this.mouseup = true;
         } else {
             this.mapHandler.moving = '';
