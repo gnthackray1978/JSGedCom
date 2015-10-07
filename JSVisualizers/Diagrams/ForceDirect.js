@@ -335,7 +335,7 @@ ForceDirect.prototype = {
 
 
 
-        this.layoutList.push({ layout: parentLayout, edges: drawEdges, nodes: drawNodes, type: 'parent' });
+        this.layoutList.push({ layout: parentLayout, drawEdges: drawEdges, drawNodes: drawNodes, type: 'parent' });
 
         
 

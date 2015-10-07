@@ -50,7 +50,7 @@ CombinedRenderer.prototype = {
                     if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
                 });
                 if (!nodePresent)
-                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), edges: that.drawEdges, nodes: that.drawNodes, type: 'child' });
+                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), drawEdges: that.drawEdges, drawNodes: that.drawNodes, type: 'child' });
             });
 
             ////remove the layouts for nodes that are no longer on the screen
@@ -100,12 +100,12 @@ CombinedRenderer.prototype = {
                 // render 
                 layout.layout.eachEdge(function(edge, spring) {
 
-                    layout.edges(map, edge, spring.point1.p, spring.point2.p);
+                    layout.drawEdges(map, edge, spring.point1.p, spring.point2.p);
                 });
 
                 layout.layout.eachNode(function(node, point) {
 
-                    layout.nodes(map, node, point.p);
+                    layout.drawNodes(map, node, point.p);
 
                 });
 
@@ -114,7 +114,7 @@ CombinedRenderer.prototype = {
                     var nearestNodePoint = that.layouts[0].layout.nearestNodePoint();
                     
                     if (nearestNodePoint != null && nearestNodePoint.p != null)
-                        that.layouts[0].nodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
+                        that.layouts[0].drawNodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
                 }
 
                 energyCount += layout.layout.totalEnergy();
