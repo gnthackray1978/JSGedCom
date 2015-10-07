@@ -217,8 +217,12 @@ Layout.ForceDirected.prototype = {
 
             if (newNearest.node != null) {
                 
+                console.log('mouse down: ' + newNearest.node.id + ' ' + this.selected.node.id)
+                
                 if (newNearest.node.id != this.selected.node.id) {
                     this.selected.point.m = 1;
+                    this.resetMasses();
+                    
                     this.selected = newNearest;
                     
                     console.log('selected changed: ' + this.selected);
@@ -241,7 +245,7 @@ Layout.ForceDirected.prototype = {
             if (this.selected.node !== null) {
             //    this.selectionMass = this.dragged.point.m;
                 
-                this.resetMasses();
+                
                 
                 if (this.dragged.node.id != -1) {
                   
