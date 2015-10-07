@@ -399,6 +399,20 @@ Layout.ForceDirected.prototype = {
 
         return min;
     },
+    
+    nearestNodeId : function (pos) {
+        if(this.nearest.node != null) {
+            return this.nearest.node.id;
+        }
+        else
+        {
+            console.log('nearest node null');   
+            return -1;
+        }
+    },
+    
+
+
 
     getBoundingBox : function () {
         var bottomleft = new Vector(-2, -2);

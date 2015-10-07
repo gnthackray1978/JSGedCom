@@ -423,8 +423,8 @@ ForceDirect.prototype = {
         }
 
         return new Layout.ForceDirected(infoGraph, 
-            new mapHandler(that.colourScheme, 200, 200), that.stiffness, 
-            that.repulsion, that.damping, entry, parentLayout, centreNode);
+            new mapHandler(this.colourScheme, 200, 200), this.stiffness, 
+            this.repulsion, this.damping, entry, parentLayout, centreNode);
     },
 
     
