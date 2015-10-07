@@ -1,4 +1,4 @@
-﻿
+
 /**
 Copyright (c) 2010 Dennis Hotson
 
@@ -22,9 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/*global TreeLinker*/
  
-
-//var AncTreeDiag function (gedAncPreLoader) {
 var ForceDirect = function (colourScheme,gedPreLoader) {
 
     
@@ -43,7 +42,7 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
 
     this.ctx = this.canvas.getContext("2d");
 
-    this.tree = null;
+    this.treeLinker = null;
     this.combinedRenderer = null;
     this.year = 1670;
     this.layoutList = [];
@@ -60,11 +59,9 @@ ForceDirect.prototype = {
     },
 
     run: function(data) {
-        var f = JSON.stringify(data);
+        //var f = JSON.stringify(data);
 
-        
-
-        this.tree = new Tree(data);
+        this.treeLinker = new TreeLinker(data);
 
         var that = this;
 
@@ -200,7 +197,8 @@ ForceDirect.prototype = {
 
             if (map.layout.parentNode != undefined && map.layout.parentLayout != undefined) {
                 // get parent location
-                var _tp = new Utils(map.layout.parentLayout.mapHandler.currentBB, map.layout.parentLayout.mapHandler.graph_width, map.layout.parentLayout.mapHandler.graph_height);
+                var _tp = new Utils(map.layout.parentLayout.mapHandler.currentBB, 
+                    map.layout.parentLayout.mapHandler.graph_width, map.layout.parentLayout.mapHandler.graph_height);
                 var pV = map.layout.parentLayout.nodePoints[map.layout.parentNode.id];
                 pV = map.layout.parentLayout.mapHandler.mapOffset(_tp.toScreen(pV.p));
 
@@ -229,16 +227,19 @@ ForceDirect.prototype = {
 
 
                 if (node.data.RecordLink != undefined) {
+                    var name = node.data.RecordLink.Name;
+                    var m = map.layout.nodePoints[node.id].m;
+                    
                     if (node.data.RecordLink.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.RecordLink.DOB, that.year, 20)) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
+                        _utils.drawText(map, that.ctx, s.x, s.y, name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
                     }
 
                     if (selectionId == 3) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name, node.data.type, selectionId);
+                        _utils.drawText(map, that.ctx, s.x, s.y, name + ' ' + m , node.data.type, selectionId);
                     }
                     
                     if (selectionId == 2) {
-                        _utils.drawText(map, that.ctx, s.x, s.y, node.data.RecordLink.Name, node.data.type, selectionId);
+                        _utils.drawText(map, that.ctx, s.x, s.y, name + ' ' + m, node.data.type, selectionId);
 
                         var bstring = node.data.RecordLink.DOB + ' ' + node.data.RecordLink.BirthLocation;
 
@@ -278,51 +279,20 @@ ForceDirect.prototype = {
         var myVar = setInterval(function() { myTimer() }, 3000);
 
         this.layoutList = [];
+        
+        that.treeLinker.calculateTreeRange();
 
-
-        var gidx = 0;
-        //var topYear = 0;
-        var botYear = 0;
-        var topYear = 0;
-
-        var years = [];
-
-        while (gidx < data.Generations.length) {
-            var pidx = 0;
-
-            while (pidx < data.Generations[gidx].length) {
-
-                if (Number(data.Generations[gidx][pidx].RecordLink.DOB) != 0)
-                    years.push(Number(data.Generations[gidx][pidx].RecordLink.DOB));
-
-                pidx++;
-            }
-
-            gidx++;
-        }
-
-        years = years.sort(function(a, b) { return a - b; });
-
-        if (years.length > 0) {
-            botYear = years[0];
-            topYear = years[years.length - 1];
-        }
-
-        if (botYear == 0) {
-            botYear = 1695;
-            topYear = 1695;
-        }
-
-
+        var botYear = that.treeLinker.bottomYear;
+        
         function myTimer() {
 
             $('#map_year').html(botYear);
 
-
-            that.tree.populateGraph(botYear, that.graph);
+            that.treeLinker.populateGraph(botYear, that.graph);
 
             botYear += 5;
-            if (Number(botYear) > topYear) clearInterval(myVar);
+            
+            if (Number(botYear) > that.treeLinker.topYear) clearInterval(myVar);
         }
 
 
@@ -333,14 +303,7 @@ ForceDirect.prototype = {
             new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
             this.stiffness, this.repulsion, this.damping);
 
-
-
         this.layoutList.push({ layout: parentLayout, drawEdges: drawEdges, drawNodes: drawNodes, type: 'parent' });
-
-        
-
-        var that = this;
-
 
         if (this.highLighted!=null) {
             this.layoutList.forEach(function(value, index, ar) {

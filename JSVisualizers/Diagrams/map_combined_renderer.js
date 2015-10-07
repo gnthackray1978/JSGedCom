@@ -33,10 +33,6 @@ CombinedRenderer.prototype = {
         var that = this;
 
         CombinedRenderer.requestAnimationFrame(function step() {
-
-            var idx = 0;
-
-
             var onScreenList = [];
 
             if (that.layouts[0].layout.mapHandler.zoompercentage > 8500)
@@ -75,7 +71,7 @@ CombinedRenderer.prototype = {
                 layout.layout.mapHandler.adjustPosition();
             });
  
-            var idx = 0;
+            //var idx = 0;
             var energyCount = 0;
 
 
@@ -83,11 +79,7 @@ CombinedRenderer.prototype = {
 
             $('#nodes').html(that.layouts[0].layout.mapHandler.countOnscreenNodes());
 
-            
             that.layouts.forEach(function(layout,idx) {
-    
-    //        while (idx < that.layouts.length) {
-
 
                 layout.layout.applyCoulombsLaw();
                 layout.layout.applyHookesLaw();
@@ -110,7 +102,7 @@ CombinedRenderer.prototype = {
 
                 });
 
-
+                // what was this for? it was fixing something but i cant remember what!
                 // if (idx == 0 && that.layouts[0].layout.hasNearestNode()) {
                 //     var nearestNodePoint = that.layouts[0].layout.nearestNodePoint();
                     
@@ -122,8 +114,6 @@ CombinedRenderer.prototype = {
 
                 idx++;
             });
-
-
 
             $('#energy').html(energyCount.toFixed(2));
 
