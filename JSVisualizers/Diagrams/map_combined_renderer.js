@@ -50,7 +50,7 @@ CombinedRenderer.prototype = {
                     if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
                 });
                 if (!nodePresent)
-                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0], node), edges: that.drawEdges, nodes: that.drawNodes, type: 'child' });
+                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), edges: that.drawEdges, nodes: that.drawNodes, type: 'child' });
             });
 
             ////remove the layouts for nodes that are no longer on the screen
