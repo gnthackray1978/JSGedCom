@@ -16,16 +16,12 @@ CombinedRenderer.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 	}, window);
 
 
-function CombinedRenderer(clear, layouts, createSubLayout, drawEdges,drawNodes) {
-  //  this.interval = interval;
-    this.layouts = layouts;
+function CombinedRenderer(forceDirect, clear, drawEdges,drawNodes) {
+    this.forceDirect =forceDirect;
+    this.layouts = forceDirect.layoutList;
     this.clear = clear;
-    this.createSubLayout = createSubLayout;
     this.drawEdges = drawEdges;
     this.drawNodes = drawNodes;
-   
-
-
 }
 
 CombinedRenderer.prototype = {
@@ -48,13 +44,13 @@ CombinedRenderer.prototype = {
 
 
             //// create a list of the new layouts we need to add
-            onScreenList.forEach(function(ovalue, index, ar) {
+            onScreenList.forEach(function(node, index, ar) {
                 var nodePresent = false;
                 that.layouts.forEach(function(value, index, ar) {
-                    if (value.type == 'child' && value.layout.parentNode.id == ovalue.id) nodePresent = true;
+                    if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
                 });
                 if (!nodePresent)
-                    that.layouts.push({ layout: that.createSubLayout(ovalue), edges: that.drawEdges, nodes: that.drawNodes, type: 'child' });
+                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0], node), edges: that.drawEdges, nodes: that.drawNodes, type: 'child' });
             });
 
             ////remove the layouts for nodes that are no longer on the screen
@@ -69,26 +65,15 @@ CombinedRenderer.prototype = {
 
                     if (!nodePresent) that.layouts.splice(i, 1);
                 }
-            }
-            ;
+            };
 
-            that.layouts.forEach(function(ovalue, index, ar) {
-              console.log('fe test: ' + index)  ;
+            that.layouts.forEach(function(layout, index, ar) {
+                if (layout.layout.graph.eventListeners.length == 0)
+                    layout.layout.graph.addGraphListener(that);
+
+                layout.layout.mapHandler.adjustPosition();
             });
-
-            while (idx < that.layouts.length) {
-
-                //  
-
-                if (that.layouts[idx].layout.graph.eventListeners.length == 0)
-                    that.layouts[idx].layout.graph.addGraphListener(that);
-
-
-                that.layouts[idx].layout.mapHandler.adjustPosition();
-
-                idx++;
-            }
-
+ 
             var idx = 0;
             var energyCount = 0;
 

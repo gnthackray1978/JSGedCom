@@ -329,74 +329,15 @@ ForceDirect.prototype = {
         $('body').css("background-color", this.colourScheme.mapbackgroundColour);
 
 
-        var parentLayout = this.layout = new Layout.ForceDirected(that.graph, new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), this.stiffness, this.repulsion, this.damping);
+        var parentLayout = this.layout = new Layout.ForceDirected(that.graph, 
+            new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
+            this.stiffness, this.repulsion, this.damping);
+
+
 
         this.layoutList.push({ layout: parentLayout, edges: drawEdges, nodes: drawNodes, type: 'parent' });
 
-        var createSubLayout = function(entry) {
-
-            var infoGraph = new Graph();
-
-            var centreNode = infoGraph.newNode({
-                label: '',
-                parentId: entry.data.RecordLink.PersonId,
-                type: 'infonode'
-            });
-
-            if (entry.data.RecordLink.Name != '') {
-                var nameNode = infoGraph.newNode({
-                    label: entry.data.RecordLink.Name,
-                    parentId: entry.data.RecordLink.PersonId,
-                    type: 'infonode'
-                });
-
-                infoGraph.newEdge(centreNode, nameNode, { type: 'data', directional: false });
-            }
-
-            if (entry.data.RecordLink.DOB != '') {
-                var dobNode = infoGraph.newNode({
-                    label: 'DOB:' + entry.data.RecordLink.DOB,
-                    parentId: entry.data.RecordLink.PersonId,
-                    type: 'infonode'
-                });
-
-                infoGraph.newEdge(centreNode, dobNode, { type: 'data', directional: false });
-            }
-
-            if (entry.data.RecordLink.DOD != '') {
-                var dodNode = infoGraph.newNode({
-                    label: 'DOD:' + entry.data.RecordLink.DOD,
-                    parentId: entry.data.RecordLink.PersonId,
-                    type: 'infonode'
-                });
-
-                infoGraph.newEdge(centreNode, dodNode, { type: 'data', directional: false });
-            }
-
-            if (entry.data.RecordLink.BirthLocation != '') {
-                var blocNode = infoGraph.newNode({
-                    label: 'Born: ' + entry.data.RecordLink.BirthLocation,
-                    parentId: entry.data.RecordLink.PersonId,
-                    type: 'infonode'
-                });
-
-                infoGraph.newEdge(centreNode, blocNode, { type: 'data', directional: false });
-            }
-
-            if (entry.data.RecordLink.DeathLocation != '') {
-                var dlocNode = infoGraph.newNode({
-                    label: 'Died:' + entry.data.RecordLink.DeathLocation,
-                    parentId: entry.data.RecordLink.PersonId,
-                    type: 'infonode'
-                });
-
-                infoGraph.newEdge(centreNode, dlocNode, { type: 'data', directional: false });
-            }
-
-            return new Layout.ForceDirected(infoGraph, new mapHandler(that.colourScheme, 200, 200), that.stiffness, that.repulsion, that.damping, entry, parentLayout, centreNode);
-
-
-        };
+        
 
         var that = this;
 
@@ -413,12 +354,81 @@ ForceDirect.prototype = {
             });
         }
 
-        that.combinedRenderer = new CombinedRenderer(clearFunction, that.layoutList, createSubLayout, drawEdges, drawNodes);
+        that.combinedRenderer = new CombinedRenderer(that,clearFunction, drawEdges, drawNodes);
 
         that.combinedRenderer.start();
 
         return this;
     },
+
+
+    createSubLayout : function(parentLayout, entry) {
+
+        var infoGraph = new Graph();
+
+        var centreNode = infoGraph.newNode({
+            label: '',
+            parentId: entry.data.RecordLink.PersonId,
+            type: 'infonode'
+        });
+
+        if (entry.data.RecordLink.Name != '') {
+            var nameNode = infoGraph.newNode({
+                label: entry.data.RecordLink.Name,
+                parentId: entry.data.RecordLink.PersonId,
+                type: 'infonode'
+            });
+
+            infoGraph.newEdge(centreNode, nameNode, { type: 'data', directional: false });
+        }
+
+        if (entry.data.RecordLink.DOB != '') {
+            var dobNode = infoGraph.newNode({
+                label: 'DOB:' + entry.data.RecordLink.DOB,
+                parentId: entry.data.RecordLink.PersonId,
+                type: 'infonode'
+            });
+
+            infoGraph.newEdge(centreNode, dobNode, { type: 'data', directional: false });
+        }
+
+        if (entry.data.RecordLink.DOD != '') {
+            var dodNode = infoGraph.newNode({
+                label: 'DOD:' + entry.data.RecordLink.DOD,
+                parentId: entry.data.RecordLink.PersonId,
+                type: 'infonode'
+            });
+
+            infoGraph.newEdge(centreNode, dodNode, { type: 'data', directional: false });
+        }
+
+        if (entry.data.RecordLink.BirthLocation != '') {
+            var blocNode = infoGraph.newNode({
+                label: 'Born: ' + entry.data.RecordLink.BirthLocation,
+                parentId: entry.data.RecordLink.PersonId,
+                type: 'infonode'
+            });
+
+            infoGraph.newEdge(centreNode, blocNode, { type: 'data', directional: false });
+        }
+
+        if (entry.data.RecordLink.DeathLocation != '') {
+            var dlocNode = infoGraph.newNode({
+                label: 'Died:' + entry.data.RecordLink.DeathLocation,
+                parentId: entry.data.RecordLink.PersonId,
+                type: 'infonode'
+            });
+
+            infoGraph.newEdge(centreNode, dlocNode, { type: 'data', directional: false });
+        }
+
+        return new Layout.ForceDirected(infoGraph, 
+            new mapHandler(that.colourScheme, 200, 200), that.stiffness, 
+            that.repulsion, that.damping, entry, parentLayout, centreNode);
+    },
+
+    
+
 
     resetDragList: function() {
 
