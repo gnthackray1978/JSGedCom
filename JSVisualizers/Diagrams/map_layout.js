@@ -1,29 +1,6 @@
-﻿
-// Layout.ForceDirected.Spring.prototype.distanceToPoint = function(point)
-// {
-// 	// hardcore vector arithmetic.. ohh yeah!
-// 	// .. see http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment/865080#865080
-// 	var n = this.point2.p.subtract(this.point1.p).normalise().normal();
-// 	var ac = point.p.subtract(this.point1.p);
-// 	return Math.abs(ac.x * n.x + ac.y * n.y);
-// };
-
-// -----------
-
-
-
-// Point
-Point = function (position, mass) {
-    this.p = position; // position
-    this.m = mass; // mass
-    this.v = new Vector(0, 0); // velocity
-    this.a = new Vector(0, 0); // acceleration
-};
-
-Point.prototype.applyForce = function (force) {
-    this.a = this.a.add(force.divide(this.m));
-};
-
+/*global Node */
+/*global Point */
+/*global Vector */
 
 var Layout = {};
 
@@ -403,6 +380,48 @@ Layout.ForceDirected.prototype = {
     },
     SelectedChanged: function (obj) {
         this.selectedListeners.push(obj);
+    },
+
+    //Find the nearest point to a particular position
+    nearestPoint : function (pos) {
+        var min = { node: null, point: null, distance: 1 };
+        var t = this;
+        this.graph.nodes.forEach(function (n) {
+            if (n.data.type == 'normal') {
+                var point = t.point(n);
+                var distance = point.p.subtract(pos).magnitude();
+    
+                if (min.distance === null || distance < min.distance) {
+                    min = { node: n, point: point, distance: distance };
+                }
+            }
+        });
+
+        return min;
+    },
+
+    getBoundingBox : function () {
+        var bottomleft = new Vector(-2, -2);
+        var topright = new Vector(2, 2);
+    
+        this.eachNode(function (n, point) {
+            if (point.p.x < bottomleft.x) {
+                bottomleft.x = point.p.x;
+            }
+            if (point.p.y < bottomleft.y) {
+                bottomleft.y = point.p.y;
+            }
+            if (point.p.x > topright.x) {
+                topright.x = point.p.x;
+            }
+            if (point.p.y > topright.y) {
+                topright.y = point.p.y;
+            }
+        });
+    
+        var padding = topright.subtract(bottomleft).multiply(0.07); // ~5% padding
+    
+        return { bottomleft: bottomleft.subtract(padding), topright: topright.add(padding) };
     }
 
 };
@@ -425,50 +444,7 @@ Layout.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 
 
 
-// Find the nearest point to a particular position
-Layout.ForceDirected.prototype.nearestPoint = function (pos) {
 
-    var min = { node: null, point: null, distance: 1 };
-    var t = this;
-    this.graph.nodes.forEach(function (n) {
-        if (n.data.type == 'normal') {
-            var point = t.point(n);
-            var distance = point.p.subtract(pos).magnitude();
-
-            if (min.distance === null || distance < min.distance) {
-                min = { node: n, point: point, distance: distance };
-            }
-        }
-    });
-
-
-
-    return min;
-};
-
-Layout.ForceDirected.prototype.getBoundingBox = function () {
-    var bottomleft = new Vector(-2, -2);
-    var topright = new Vector(2, 2);
-
-    this.eachNode(function (n, point) {
-        if (point.p.x < bottomleft.x) {
-            bottomleft.x = point.p.x;
-        }
-        if (point.p.y < bottomleft.y) {
-            bottomleft.y = point.p.y;
-        }
-        if (point.p.x > topright.x) {
-            topright.x = point.p.x;
-        }
-        if (point.p.y > topright.y) {
-            topright.y = point.p.y;
-        }
-    });
-
-    var padding = topright.subtract(bottomleft).multiply(0.07); // ~5% padding
-
-    return { bottomleft: bottomleft.subtract(padding), topright: topright.add(padding) };
-};
 
 // Spring
 Layout.ForceDirected.Spring = function (point1, point2, length, k) {
