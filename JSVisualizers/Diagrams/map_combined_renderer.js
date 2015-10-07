@@ -59,7 +59,7 @@ CombinedRenderer.prototype = {
 
             ////remove the layouts for nodes that are no longer on the screen
 
-            for (i = that.layouts.length - 1; i >= 0; i--) {
+            for (var i = that.layouts.length - 1; i >= 0; i--) {
 
                 if (that.layouts[i].type == 'child') {
                     var nodePresent = false;
@@ -72,6 +72,9 @@ CombinedRenderer.prototype = {
             }
             ;
 
+            that.layouts.forEach(function(ovalue, index, ar) {
+              console.log('fe test: ' + index)  ;
+            });
 
             while (idx < that.layouts.length) {
 
