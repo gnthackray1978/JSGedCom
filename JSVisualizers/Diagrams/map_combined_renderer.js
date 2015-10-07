@@ -50,7 +50,8 @@ CombinedRenderer.prototype = {
                     if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
                 });
                 if (!nodePresent)
-                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), drawEdges: that.drawEdges, drawNodes: that.drawNodes, type: 'child' });
+                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), 
+                                drawEdges: that.drawEdges, drawNodes: that.drawNodes, type: 'child' });
             });
 
             ////remove the layouts for nodes that are no longer on the screen
@@ -110,12 +111,12 @@ CombinedRenderer.prototype = {
                 });
 
 
-                if (idx == 0 && that.layouts[0].layout.hasNearestNode()) {
-                    var nearestNodePoint = that.layouts[0].layout.nearestNodePoint();
+                // if (idx == 0 && that.layouts[0].layout.hasNearestNode()) {
+                //     var nearestNodePoint = that.layouts[0].layout.nearestNodePoint();
                     
-                    if (nearestNodePoint != null && nearestNodePoint.p != null)
-                        that.layouts[0].drawNodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
-                }
+                //     if (nearestNodePoint != null && nearestNodePoint.p != null)
+                //         that.layouts[0].drawNodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
+                // }
 
                 energyCount += layout.layout.totalEnergy();
 
