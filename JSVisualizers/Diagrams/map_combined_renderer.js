@@ -82,28 +82,30 @@ CombinedRenderer.prototype = {
 
             $('#nodes').html(that.layouts[0].layout.mapHandler.countOnscreenNodes());
 
-
-            while (idx < that.layouts.length) {
-
-
-                that.layouts[idx].layout.applyCoulombsLaw();
-                that.layouts[idx].layout.applyHookesLaw();
-                that.layouts[idx].layout.attractToCentre();
-                that.layouts[idx].layout.updateVelocity(0.03);
-                that.layouts[idx].layout.updatePosition(0.03);
+            
+            that.layouts.forEach(function(layout,idx) {
+    
+    //        while (idx < that.layouts.length) {
 
 
-                var map = that.layouts[idx].layout.mapHandler;
+                layout.layout.applyCoulombsLaw();
+                layout.layout.applyHookesLaw();
+                layout.layout.attractToCentre();
+                layout.layout.updateVelocity(0.03);
+                layout.layout.updatePosition(0.03);
+
+
+                var map = layout.layout.mapHandler;
 
                 // render 
-                that.layouts[idx].layout.eachEdge(function(edge, spring) {
+                layout.layout.eachEdge(function(edge, spring) {
 
-                    that.layouts[idx].edges(map, edge, spring.point1.p, spring.point2.p);
+                    layout.edges(map, edge, spring.point1.p, spring.point2.p);
                 });
 
-                that.layouts[idx].layout.eachNode(function(node, point) {
+                layout.layout.eachNode(function(node, point) {
 
-                    that.layouts[idx].nodes(map, node, point.p);
+                    layout.nodes(map, node, point.p);
 
                 });
 
@@ -115,10 +117,12 @@ CombinedRenderer.prototype = {
                         that.layouts[0].nodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
                 }
 
-                energyCount += that.layouts[idx].layout.totalEnergy();
+                energyCount += layout.layout.totalEnergy();
 
                 idx++;
-            }
+            });
+
+
 
             $('#energy').html(energyCount.toFixed(2));
 
