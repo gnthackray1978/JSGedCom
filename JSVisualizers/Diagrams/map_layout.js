@@ -1,7 +1,6 @@
 /*global Node */
 /*global Point */
 /*global Vector */
-/*global ForceDirected */
 
 var Layout = {};
 
