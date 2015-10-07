@@ -218,7 +218,9 @@ Layout.ForceDirected.prototype = {
             if (newNearest.node != null) {
                 
                 if (newNearest.node.id != this.selected.node.id) {
+                    this.selected.point.m = 1;
                     this.selected = newNearest;
+                    
                    // console.log('selected changed: ' + this.selected);
 
                     this.notifySelection(this.selected);
@@ -253,7 +255,7 @@ Layout.ForceDirected.prototype = {
 
                     if (!found) {
                         this.dragList.push({ id: this.dragged.node.id, m: this.dragged.point.m });
-                        this.dragged.point.m = 1;
+                        this.dragged.point.m = 10000;
                     }
 
 
