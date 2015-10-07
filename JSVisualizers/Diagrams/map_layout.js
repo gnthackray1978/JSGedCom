@@ -253,7 +253,7 @@ Layout.ForceDirected.prototype = {
 
                     if (!found) {
                         this.dragList.push({ id: this.dragged.node.id, m: this.dragged.point.m });
-                        this.dragged.point.m = 10000.0;
+                        this.dragged.point.m = 1;
                     }
 
 
