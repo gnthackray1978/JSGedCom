@@ -400,9 +400,17 @@ Layout.ForceDirected.prototype = {
         return min;
     },
     
-    nearestNodeId : function (pos) {
+    hasNearestNode :function(){
+        if (this.nearest != null && this.nearest.node != null)
+            return true;
+        else
+            return false;
+        
+    },
+    
+    nearestNodePoint : function () {
         if(this.nearest.node != null) {
-            return this.nearest.node.id;
+            return this.nodePoints[this.nearest.node.id];
         }
         else
         {

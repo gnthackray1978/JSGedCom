@@ -110,9 +110,9 @@ CombinedRenderer.prototype = {
                 });
 
 
-                if (idx == 0 && that.layouts[0].layout.nearest != null && that.layouts[0].layout.nearest.node != null) {
-                    var nearestNodePoint = that.layouts[0].layout.nodePoints[that.layouts[0].layout.nearest.node.id];
-
+                if (idx == 0 && that.layouts[0].layout.hasNearestNode()) {
+                    var nearestNodePoint = that.layouts[0].layout.nearestNodePoint();
+                    
                     if (nearestNodePoint != null && nearestNodePoint.p != null)
                         that.layouts[0].nodes(map, that.layouts[0].layout.nearest.node, nearestNodePoint.p);
                 }
