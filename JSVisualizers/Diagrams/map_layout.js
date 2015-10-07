@@ -65,7 +65,7 @@ Layout.ForceDirected.prototype = {
             }, this);
 
             if (existingSpring !== false) {
-                return new ForceDirected.Spring(existingSpring.point1, existingSpring.point2, 0.0, 0.0);
+                return new Spring(existingSpring.point1, existingSpring.point2, 0.0, 0.0);
             }
 
             var to = this.graph.getEdges(edge.target, edge.source);
@@ -76,10 +76,10 @@ Layout.ForceDirected.prototype = {
             }, this);
 
             if (existingSpring !== false) {
-                return new ForceDirected.Spring(existingSpring.point2, existingSpring.point1, 0.0, 0.0);
+                return new Spring(existingSpring.point2, existingSpring.point1, 0.0, 0.0);
             }
 
-            this.edgeSprings[edge.id] = new ForceDirected.Spring(
+            this.edgeSprings[edge.id] = new Spring(
             this.point(edge.source), this.point(edge.target), length, this.stiffness
             );
         }
