@@ -1,3 +1,5 @@
+/*global requestAnimationFrame*/
+
 var TreeBase,TreeUI;
 
 
@@ -52,6 +54,10 @@ DescTree.prototype = {
     },
 
     DrawTree: function () {
+       requestAnimationFrame($.proxy(this.DrawTreeInner, this) ); 
+    },
+
+    DrawTreeInner: function () {
 
 
 

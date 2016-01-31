@@ -23,6 +23,10 @@ var AncTree = function () {
 AncTree.prototype = {
 
     DrawTree :function () {
+        requestAnimationFrame($.proxy(this.DrawTreeInner, this) ); 
+    },
+    
+    DrawTreeInner :function () {
 
            var canvas = document.getElementById("myCanvas");
            var context = canvas.getContext("2d");

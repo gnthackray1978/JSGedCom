@@ -39,7 +39,7 @@ CombinedRenderer.prototype = {
                 onScreenList = that.layouts[0].layout.mapHandler.onscreenNodes(20);
 
 
-            //// create a list of the new layouts we need to add
+            // create a list of the new layouts we need to add
             onScreenList.forEach(function(node, index, ar) {
                 var nodePresent = false;
                 that.layouts.forEach(function(value, index, ar) {
@@ -50,8 +50,7 @@ CombinedRenderer.prototype = {
                                 drawEdges: that.drawEdges, drawNodes: that.drawNodes, type: 'child' });
             });
 
-            ////remove the layouts for nodes that are no longer on the screen
-
+            //remove the layouts for nodes that are no longer on the screen
             for (var i = that.layouts.length - 1; i >= 0; i--) {
 
                 if (that.layouts[i].type == 'child') {
@@ -71,7 +70,7 @@ CombinedRenderer.prototype = {
                 layout.layout.mapHandler.adjustPosition();
             });
  
-            //var idx = 0;
+           
             var energyCount = 0;
 
 
