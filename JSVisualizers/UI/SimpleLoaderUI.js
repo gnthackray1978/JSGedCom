@@ -13,7 +13,7 @@ SimpleLoaderUI.prototype.GetDiagramType = function () {
 
 
 SimpleLoaderUI.prototype.RunDiagClicked = function (action) {
-    action(this.treeRunner);
+    action(0,this.treeRunner);
 };
 
 SimpleLoaderUI.prototype.showSelectedPerson = function (id, name) {
