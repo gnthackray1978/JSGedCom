@@ -44,7 +44,7 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
 
     this.treeLinker = null;
     this.combinedRenderer = null;
-    this.year = 1670;
+    
     this.layoutList = [];
     this.gedPreLoader = gedPreLoader;
 
@@ -52,10 +52,19 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
     this.selected = null;
     this.graph = null;
     this.yearTimer;
+    
+    this.speed =3000;
+    this.increment =5;
+    this.year = 1670;
 };
 
 ForceDirect.prototype = {
-    init: function(id, nodeSelected) {
+    init: function(id, params) {
+        
+        this.speed =params.sp;
+        this.increment =params.im;
+        this.year = params.sy;
+        
         this.gedPreLoader.GetGenerations(id, $.proxy(this.run, this));
     },
     
@@ -297,21 +306,23 @@ ForceDirect.prototype = {
         };
 
 
-        this.yearTimer = setInterval(function() { myTimer() }, 3000);
+        this.yearTimer = setInterval(function() { myTimer() }, that.speed);
 
         this.layoutList = [];
         
         that.treeLinker.calculateTreeRange();
+        
+        
 
         function myTimer() {
 
-            $('#map_year').html(that.treeLinker.currentYear);
+            $('#map_year').html(that.year);
 
-            that.treeLinker.populateGraph(that.treeLinker.currentYear, that.graph);
+            that.treeLinker.populateGraph(that.year, that.graph);
 
-            that.treeLinker.currentYear += 5;
+            that.year += that.increment;
             
-            if (Number(that.treeLinker.currentYear) > that.treeLinker.topYear) clearInterval(that.yearTimer);
+            if (Number(that.year) > that.treeLinker.topYear) clearInterval(that.yearTimer);
         }
 
 
