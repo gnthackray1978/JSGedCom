@@ -68,6 +68,7 @@ ForceDirect.prototype = {
         this.treeLinker = null;
         this.combinedRenderer = null;
         this.layout = null;
+        this.gedPreLoader.generations =[];
         
         if(this.yearTimer)
             clearInterval(this.yearTimer)
