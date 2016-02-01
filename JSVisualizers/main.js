@@ -141,13 +141,14 @@ $(document).ready(function () {
     diagMode.newFileLoaded($.proxy(function (data) {
         var that = this; // this is selectorwidget context
         //receive the tree file here 
-        that.loader.processFile(data,that.showGedLoading, function (families, persons) {
+        that.loader.processFile(data,that.showGedLoading, function (families, persons,range) {
             if(persons == undefined || persons == null || persons.length ==0){
                 that.showGedError("Could not obtain list of persons");
                 return;
             }
             that.showGedContent();
             that.showPersonSelectList(persons);
+            
         });
     }, diagMode));
 

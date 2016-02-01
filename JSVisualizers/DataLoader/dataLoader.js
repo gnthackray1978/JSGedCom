@@ -249,7 +249,10 @@ var DataLoader = {};
                 asynch.acall(parseSpouses, function(){
                     progressFunction('parsing families',true);
                     asynch.acall(parseChildren, function(){
-                        newloader(that.families, that.persons);
+                        
+                        var rng = that.findDateRange();
+                        
+                        newloader(that.families, that.persons, rng);
                     });
                 });
             });
@@ -304,6 +307,29 @@ var DataLoader = {};
             }
 
             return null;
+        },
+        
+        findDateRange: function() {
+
+            var startDate =2000;
+            var endDate =0;
+            
+            var idx = 0;
+            while (idx < this.persons.length) {
+                var date = this.persons[idx].date;
+                
+                if (date && date < startDate && date !=0) {
+                    startDate = date;
+                }
+                
+                if (date && date > endDate && date !=0) {
+                    endDate = date;
+                }
+                
+                idx++;
+            }
+
+            return {s:startDate, e:endDate};
         },
         
         SetForAncLoader: function() {
