@@ -57,7 +57,9 @@ $(document).ready(function () {
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
 
-         
+                if(that.forceDirect)
+                    that.forceDirect.kill();
+                
                 that.forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
                 
                  
