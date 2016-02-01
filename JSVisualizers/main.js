@@ -12,9 +12,9 @@ $(document).ready(function () {
 
     diagMode.InitPanelVisibility();
 
-    diagMode.RunDiagClicked( function (id) {
+    diagMode.RunDiagClicked( function (id, runner) {
 
-        var treeRunner = this.treeRunner;
+        var treeRunner = runner;
         
         var forceDirect = null;
         var selectedId = id;
