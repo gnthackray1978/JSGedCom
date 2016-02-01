@@ -116,7 +116,7 @@ $(document).ready(function () {
                 
                 
                 
-                that.forceDirect.init(selectedId, diagUI.GetFDParams());
+                that.forceDirect.init(selectedId, that.diagUI.GetFDParams());
                 
 
                 break;
