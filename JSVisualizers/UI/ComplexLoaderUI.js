@@ -328,9 +328,9 @@ ComplexLoaderUI.prototype.setFDDefaults = function (start,increment,speed) {
 ComplexLoaderUI.prototype.GetFDParams = function() {
     
     var params ={
-        sy: $("#txtStartYear").val(),
-        im: $("#txtIncrementSize").val(),
-        sp: $("#txtSpeed").val()
+        sy: Number($("#txtStartYear").val()),
+        im: Number($("#txtIncrementSize").val()),
+        sp: Number($("#txtSpeed").val())
     };
     
     return params;
