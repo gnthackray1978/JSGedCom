@@ -51,13 +51,24 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
     this.highLighted = null;
     this.selected = null;
     this.graph = null;
+  
 };
 
 ForceDirect.prototype = {
     init: function(id, nodeSelected) {
         this.gedPreLoader.GetGenerations(id, $.proxy(this.run, this));
     },
-
+    
+    kill: function() {
+        this.layoutList = [];
+        this.gedPreLoader = undefined;
+        this.highLighted = null;
+        this.selected = null;
+        this.graph = null;
+        this.treeLinker = null;
+        this.combinedRenderer = null;
+    },
+    
     run: function(data) {
         //var f = JSON.stringify(data);
 
@@ -282,17 +293,15 @@ ForceDirect.prototype = {
         
         that.treeLinker.calculateTreeRange();
 
-        var botYear = that.treeLinker.bottomYear;
-        
         function myTimer() {
 
-            $('#map_year').html(botYear);
+            $('#map_year').html(that.treeLinker.currentYear);
 
-            that.treeLinker.populateGraph(botYear, that.graph);
+            that.treeLinker.populateGraph(that.treeLinker.currentYear, that.graph);
 
-            botYear += 5;
+            that.treeLinker.currentYear += 5;
             
-            if (Number(botYear) > that.treeLinker.topYear) clearInterval(myVar);
+            if (Number(that.treeLinker.currentYear) > that.treeLinker.topYear) clearInterval(myVar);
         }
 
 

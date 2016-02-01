@@ -6,6 +6,7 @@ var TreeLinker = function (data) {
     this.addedPeople = new Array();
     this.topYear=0;
     this.bottomYear =0;
+    this.currentYear =0;
 };
 
 TreeLinker.prototype = {
@@ -161,6 +162,6 @@ TreeLinker.prototype = {
     
         this.topYear=topYear;
         this.bottomYear =botYear;
-
+        this.currentYear = botYear;
     }
 }

@@ -29,7 +29,10 @@ $(document).ready(function () {
 
         switch (diagMode.GetDiagramType()) {
             case 'anc':
-                that.forceDirect = undefined;
+                
+                if(that.forceDirect)
+                    that.forceDirect.kill();
+                
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -38,7 +41,8 @@ $(document).ready(function () {
                 break;
             case 'desc_1':
                 
-                that.forceDirect = undefined;
+                if(that.forceDirect)
+                    that.forceDirect.kill();
                 
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
