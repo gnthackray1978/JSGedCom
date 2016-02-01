@@ -1,5 +1,5 @@
-﻿
-var JSMaster, AncUtils, QryStrUtils, AncTree, Tree;
+
+var JSMaster, AncTree, Tree;
 
 
 
@@ -149,7 +149,7 @@ TreeRunner.prototype = {
 
 
        
-        var _zoomLevel = 100;//this.qryStrUtils.getParameterByName('zoom', '');
+        var _zoomLevel = 100; 
 
 
 

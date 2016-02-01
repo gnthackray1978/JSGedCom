@@ -567,6 +567,8 @@ AncTree.prototype = {
                 if (!isFirstParent && !isLastParent) {
                     isSingleParent = true;
                 }
+                
+                
                 if (isFirstParent) {
                     this.newX1 = childCentrePoint - (adjustedDistanceApart / 2) - adjustedBoxWidth;
 

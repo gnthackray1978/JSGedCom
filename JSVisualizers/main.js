@@ -14,7 +14,8 @@ $(document).ready(function () {
 
     diagMode.RunDiagClicked( function (id) {
 
-        var treeRunner = null;
+        var treeRunner = this.treeRunner;
+        
         var forceDirect = null;
         var selectedId = id;
 

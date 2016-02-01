@@ -12,6 +12,7 @@ function ComplexLoaderUI(gedPreLoader) {
     this.selectedId =0;
     this.selectedName= '';
     this.onPersonSelected;
+    this.treeRunner = null;
 }
 
 ComplexLoaderUI.prototype.showGedContent = function () {
