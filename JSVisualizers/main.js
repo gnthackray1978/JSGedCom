@@ -1,4 +1,12 @@
 
+/*global TreeRunner*/
+/*global SimpleLoaderUI*/
+/*global FakeData*/
+/*global ComplexLoaderUI*/
+/*global GedPreLoader*/
+/*global VisControlsUI*/
+
+
 $(document).ready(function () {
 
     var diagMode = null;
@@ -12,17 +20,16 @@ $(document).ready(function () {
 
     diagMode.InitPanelVisibility();
 
-    diagMode.RunDiagClicked( function (id, context) {
+    diagMode.RunDiagClicked( function (id) {
         
         var that = diagMode;
 
-        //var treeRunner = that.treeRunner;
-        
-        var forceDirect = null;
+        //var forceDirect = null;
         var selectedId = id;
 
         switch (diagMode.GetDiagramType()) {
             case 'anc':
+                that.forceDirect = undefined;
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -30,7 +37,9 @@ $(document).ready(function () {
 
                 break;
             case 'desc_1':
-
+                
+                that.forceDirect = undefined;
+                
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -43,59 +52,59 @@ $(document).ready(function () {
                     that.treeRunner.CleanUp();
 
          
-                forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
+                that.forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
                 
                  
                 var diagUI = new VisControlsUI();
                 
                 //when mouse up happens this gets executed
                 diagUI.SetMouseDown(function(e) {                            
-                    $.proxy(forceDirect.mouseDown(e), forceDirect);                            
+                    $.proxy(that.forceDirect.mouseDown(e), that.forceDirect);                            
                 });
                 
                 diagUI.SetMouseUp(function (e) {
-                    $.proxy(forceDirect.mouseUp(e), forceDirect);
+                    $.proxy(that.forceDirect.mouseUp(e), that.forceDirect);
                 });
 
                 diagUI.SetMouseMove(function (e) {
-                    $.proxy(forceDirect.mouseMove(e), forceDirect);
+                    $.proxy(that.forceDirect.mouseMove(e), that.forceDirect);
                 });
 
                 diagUI.SetMouseDoubleClick(function (e) {
-                    $.proxy(forceDirect.mouseDoubleClick(e), forceDirect);
+                    $.proxy(that.forceDirect.mouseDoubleClick(e), that.forceDirect);
                 });
                                                                   
                 diagUI.SetButtonDown(function (e) {
-                    $.proxy(forceDirect.buttonDown(e), forceDirect);
+                    $.proxy(that.forceDirect.buttonDown(e), that.forceDirect);
                 });
 
                 diagUI.SetButtonUp(function (e) {
-                    $.proxy(forceDirect.buttonUp(e), forceDirect);
+                    $.proxy(that.forceDirect.buttonUp(e), that.forceDirect);
                 });
 
-                forceDirect.HighLightedChanged(function(e) {
+                that.forceDirect.HighLightedChanged(function(e) {
                     console.log('highlighted changed' + e);
                                             
                 });
                 
-                forceDirect.SelectedChanged(function (e) {
+                that.forceDirect.SelectedChanged(function (e) {
                     console.log('selected changed' + e);
                     diagUI.NodeSelected(e);
                 });
                 
                 diagUI.Save(function (recordLink) {
-                    $.proxy(forceDirect.Save(recordLink), forceDirect);
+                    $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
                 });
 
                 diagUI.Add(function (recordLink) {
-                    $.proxy(forceDirect.Add(recordLink), forceDirect);
+                    $.proxy(that.forceDirect.Add(recordLink), that.forceDirect);
                 });
 
                 diagUI.Delete(function () {
-                    $.proxy(forceDirect.Delete(), forceDirect);
+                    $.proxy(that.forceDirect.Delete(), that.forceDirect);
                 });
                 
-                forceDirect.init(selectedId);
+                that.forceDirect.init(selectedId);
                 
 
                 break;

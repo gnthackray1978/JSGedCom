@@ -4,6 +4,7 @@ function SimpleLoaderUI(loader) {
     this.loader = loader;
     this.gedPreLoader = loader;
     this.treeRunner = null;
+    this.forceDirect;
 }
 
 
