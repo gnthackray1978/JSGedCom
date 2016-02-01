@@ -36,7 +36,8 @@ function GedPreLoader(loader) {
 
     
     GedPreLoader.prototype.SearchFurthestAncestor = function (startperson) {        
-
+        
+        var that = this;
 
         var getPersonName = function(personId) {
            
@@ -52,7 +53,7 @@ function GedPreLoader(loader) {
                 idx++;
             }
            
-            return ancUtils.getNameParts(person.name).Surname;;
+            return person.name;
 
         };
 
@@ -95,21 +96,18 @@ function GedPreLoader(loader) {
         }
 
 
-        console.log(nextGeneration);
+        console.log(getPersonName(nextGeneration));
 
         return nextGeneration;
     },
 
     GedPreLoader.prototype.GetGenerations = function (personId,newGeneration) {
-        //'@I4@'
-
-        // this.generations = [];
-        // this.searchDepth = 0;
- 
-        console.log('getgenerations: ' + this.generations.length);
- 
+  
+        var initPerson = personId;
+        
         personId = this.SearchFurthestAncestor(personId);
 
+        console.log('GetGenerations: ' + initPerson + ' ' + personId);
 
         var idx = 0;
    
