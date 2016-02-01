@@ -38,24 +38,7 @@ function GedPreLoader(loader) {
     GedPreLoader.prototype.SearchFurthestAncestor = function (startperson) {        
         
         var that = this;
-
-        var getPersonName = function(personId) {
-           
-            
-            var idx = 0;
-            var person = {name: ''};
-            while (that.persons.length < idx) {
-
-                if (that.persons[idx].id == startperson) {
-                    person = that.persons[idx];
-                }
-                
-                idx++;
-            }
-           
-            return person.name;
-
-        };
+ 
 
           
         // get start person ,
@@ -95,8 +78,9 @@ function GedPreLoader(loader) {
             
         }
 
-
-        console.log(getPersonName(nextGeneration));
+        var p = this.gedLoader.findPerson(nextGeneration);
+        
+        console.log(p.name);
 
         return nextGeneration;
     },
