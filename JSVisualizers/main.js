@@ -10,7 +10,7 @@
 $(document).ready(function () {
 
     var diagMode = null;
-    var diagUI =null;
+     
     
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
@@ -34,8 +34,6 @@ $(document).ready(function () {
                 if(that.forceDirect)
                     that.forceDirect.kill();
                 
-                diagUI = undefined;
-                
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -47,8 +45,7 @@ $(document).ready(function () {
                 if(that.forceDirect)
                     that.forceDirect.kill();
                 
-                diagUI = undefined;
-                
+               
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -64,7 +61,7 @@ $(document).ready(function () {
                 that.forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
                 
                  
-                diagUI = new VisControlsUI();
+                var diagUI = new VisControlsUI();
                 
                 //when mouse up happens this gets executed
                 diagUI.SetMouseDown(function(e) {                            

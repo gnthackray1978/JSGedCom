@@ -51,7 +51,7 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
     this.highLighted = null;
     this.selected = null;
     this.graph = null;
-  
+    this.yearTimer;
 };
 
 ForceDirect.prototype = {
@@ -68,6 +68,9 @@ ForceDirect.prototype = {
         this.treeLinker = null;
         this.combinedRenderer = null;
         this.layout = null;
+        
+        if(this.yearTimer)
+            clearInterval(this.yearTimer)
     },
     
     run: function(data) {
@@ -288,7 +291,7 @@ ForceDirect.prototype = {
         };
 
 
-        var myVar = setInterval(function() { myTimer() }, 3000);
+        this.yearTimer = setInterval(function() { myTimer() }, 3000);
 
         this.layoutList = [];
         
@@ -302,7 +305,7 @@ ForceDirect.prototype = {
 
             that.treeLinker.currentYear += 5;
             
-            if (Number(that.treeLinker.currentYear) > that.treeLinker.topYear) clearInterval(myVar);
+            if (Number(that.treeLinker.currentYear) > that.treeLinker.topYear) clearInterval(that.yearTimer);
         }
 
 
@@ -422,8 +425,9 @@ ForceDirect.prototype = {
         this.layoutList.forEach(function(value, index, ar) {
             $.proxy(value.layout.mouseMove(e), value);
         });
-
-        this.combinedRenderer.start();
+        
+        if(this.combinedRenderer) // hack until i can be bothered add bus in for the events
+            this.combinedRenderer.start();
     },
 
     mouseDown: function(e) {
@@ -432,8 +436,8 @@ ForceDirect.prototype = {
             $.proxy(value.layout.mouseDown(e), value);
         });
 
-
-        this.combinedRenderer.start();
+        if(this.combinedRenderer) // hack until i can be bothered add bus in for the events
+            this.combinedRenderer.start();
     },
 
     mouseUp: function (e) {

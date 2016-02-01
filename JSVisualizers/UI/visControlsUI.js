@@ -54,6 +54,7 @@ VisControlsUI.prototype.SetMouseDown = function (action) {
         action(e);
         e.preventDefault();
     });
+ 
 };
 
 VisControlsUI.prototype.SetMouseUp = function (action) {
