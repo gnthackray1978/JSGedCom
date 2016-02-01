@@ -10,7 +10,8 @@
 $(document).ready(function () {
 
     var diagMode = null;
-
+    var diagUI =null;
+    
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
     } else {
@@ -33,6 +34,8 @@ $(document).ready(function () {
                 if(that.forceDirect)
                     that.forceDirect.kill();
                 
+                diagUI = undefined;
+                
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
@@ -43,6 +46,8 @@ $(document).ready(function () {
                 
                 if(that.forceDirect)
                     that.forceDirect.kill();
+                
+                diagUI = undefined;
                 
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
@@ -59,7 +64,7 @@ $(document).ready(function () {
                 that.forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
                 
                  
-                var diagUI = new VisControlsUI();
+                diagUI = new VisControlsUI();
                 
                 //when mouse up happens this gets executed
                 diagUI.SetMouseDown(function(e) {                            
@@ -85,16 +90,6 @@ $(document).ready(function () {
                 diagUI.SetButtonUp(function (e) {
                     $.proxy(that.forceDirect.buttonUp(e), that.forceDirect);
                 });
-
-                that.forceDirect.HighLightedChanged(function(e) {
-                    console.log('highlighted changed' + e);
-                                            
-                });
-                
-                that.forceDirect.SelectedChanged(function (e) {
-                    console.log('selected changed' + e);
-                    diagUI.NodeSelected(e);
-                });
                 
                 diagUI.Save(function (recordLink) {
                     $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
@@ -107,6 +102,20 @@ $(document).ready(function () {
                 diagUI.Delete(function () {
                     $.proxy(that.forceDirect.Delete(), that.forceDirect);
                 });
+                
+                
+                
+                that.forceDirect.HighLightedChanged(function(e) {
+                    console.log('highlighted changed' + e);
+                                            
+                });
+                
+                that.forceDirect.SelectedChanged(function (e) {
+                    console.log('selected changed' + e);
+                    diagUI.NodeSelected(e);
+                });
+                
+                
                 
                 that.forceDirect.init(selectedId);
                 

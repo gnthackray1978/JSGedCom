@@ -67,6 +67,7 @@ ForceDirect.prototype = {
         this.graph = null;
         this.treeLinker = null;
         this.combinedRenderer = null;
+        this.layout = null;
     },
     
     run: function(data) {
