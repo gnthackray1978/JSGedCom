@@ -12,33 +12,35 @@ $(document).ready(function () {
 
     diagMode.InitPanelVisibility();
 
-    diagMode.RunDiagClicked( function (id, runner) {
+    diagMode.RunDiagClicked( function (id, context) {
+        
+        var that = context;
 
-        var treeRunner = runner;
+        //var treeRunner = that.treeRunner;
         
         var forceDirect = null;
         var selectedId = id;
 
         switch (diagMode.GetDiagramType()) {
             case 'anc':
-                if (treeRunner != null)
-                    treeRunner.CleanUp();
-                treeRunner = new TreeRunner();
-                treeRunner.run(selectedId, diagMode.loader, new AncTree());
+                if (that.treeRunner != null)
+                    that.treeRunner.CleanUp();
+                that.treeRunner = new TreeRunner();
+                that.treeRunner.run(selectedId, diagMode.loader, new AncTree());
 
                 break;
             case 'desc_1':
 
-                if (treeRunner != null)
-                    treeRunner.CleanUp();
-                treeRunner = new TreeRunner();
-                treeRunner.run(selectedId, diagMode.loader, new DescTree());
+                if (that.treeRunner != null)
+                    that.treeRunner.CleanUp();
+                that.treeRunner = new TreeRunner();
+                that.treeRunner.run(selectedId, diagMode.loader, new DescTree());
                 break;
 
             case 'desc_2':
 
-                if (treeRunner != null)
-                    treeRunner.CleanUp();
+                if (that.treeRunner != null)
+                    that.treeRunner.CleanUp();
 
          
                 forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);

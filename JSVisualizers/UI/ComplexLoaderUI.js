@@ -90,7 +90,7 @@ ComplexLoaderUI.prototype.RunDiagClicked = function( action) {
     var that = this;
     $('#btnRunDiag').click(function(e) {
 
-        action(that.selectedId, that.treeRunner);
+        action(that.selectedId, that);
 
         e.preventDefault();
     });
