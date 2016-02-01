@@ -16,14 +16,22 @@ function ComplexLoaderUI(gedPreLoader) {
     this.forceDirect;
 }
 
+
+ComplexLoaderUI.prototype.toggleFDOptions = function (visible) {
+    
+    if(visible)
+        $("#fdoptions").removeClass("hidePanel").addClass("displayPanel");
+    else
+        $("#fdoptions").removeClass("displayPanel").addClass("hidePanel");
+};
+
 ComplexLoaderUI.prototype.showGedContent = function () {
     
     $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
-    
-    
 };
+
 ComplexLoaderUI.prototype.showGedError = function (message) {
     
     $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
@@ -108,6 +116,17 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
     var that = this;
     
     var panels = new Panels();
+    
+    
+    $('input[type=radio][name=type_sel]').change(function() {
+        if (this.value == 'desc_2') {
+            that.toggleFDOptions(true);
+        }
+        else {
+            that.toggleFDOptions(false);
+        }
+    });
+    
     
 
     $('body').on("click", "#chooseFileLnk", $.proxy(function () { panels.masterShowTab('1'); return false; }, panels));
