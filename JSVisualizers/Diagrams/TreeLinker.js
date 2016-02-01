@@ -38,6 +38,17 @@ TreeLinker.prototype = {
                     try
                     {
                         _dob = this.data.Generations[genIdx][personIdx].RecordLink.DOB;
+                        
+                        if(_dob == 0)//try estimate dob if there is a father
+                        {
+                            var tpFIDX = this.data.Generations[genIdx][personIdx].FatherIdx;
+                            
+                            if(genIdx > 0 && tpFIDX){
+                                if(this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
+                                    _dob = this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
+                                }
+                            }
+                        }
                     }
                     catch(e)
                     {
@@ -46,7 +57,7 @@ TreeLinker.prototype = {
 
                     //if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
                     
-                    if (_dob < year) {
+                    if (_dob < year && _dob != 0) {
                         
                         var personPresent = false;
                         var that = this;
@@ -69,7 +80,15 @@ TreeLinker.prototype = {
 
                             if (genIdx > 0) {
                                 var fatherNode = this.data.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
-                                mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
+                                
+                                if(!fatherNode) 
+                                    console.log(fatherNode.PersonId + 'father node missing nodelink');
+                                
+                                if(!currentPerson.nodeLink) 
+                                    console.log(currentPerson.PersonId + 'current node missing nodelink');
+                                    
+                                if(fatherNode && currentPerson.nodeLink)
+                                    mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
                             }
 
                         }
