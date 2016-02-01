@@ -44,10 +44,10 @@ function GedPreLoader(loader) {
             
             var idx = 0;
             var person = {name: ''};
-            while (this.persons.length < idx) {
+            while (that.persons.length < idx) {
 
-                if (this.persons[idx].id == startperson) {
-                    person = this.persons[idx];
+                if (that.persons[idx].id == startperson) {
+                    person = that.persons[idx];
                 }
                 
                 idx++;
