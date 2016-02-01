@@ -106,6 +106,8 @@ function GedPreLoader(loader) {
         // this.generations = [];
         // this.searchDepth = 0;
  
+        console.log('getgenerations: ' + this.generations.length);
+ 
         personId = this.SearchFurthestAncestor(personId);
 
 

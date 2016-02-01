@@ -61,6 +61,9 @@ ForceDirect.prototype = {
     
     kill: function() {
         this.layoutList = [];
+        if(this.gedPreLoader)
+            this.gedPreLoader.generations =[];
+            
         this.gedPreLoader = undefined;
         this.highLighted = null;
         this.selected = null;
@@ -68,7 +71,7 @@ ForceDirect.prototype = {
         this.treeLinker = null;
         this.combinedRenderer = null;
         this.layout = null;
-        this.gedPreLoader.generations =[];
+        
         
         if(this.yearTimer)
             clearInterval(this.yearTimer)
