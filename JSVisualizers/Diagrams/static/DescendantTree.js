@@ -671,7 +671,7 @@ DescTree.prototype = {
         var innerIdx = 0;
         var prevPerson = null;
 
-        console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
+       // console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
 
         while (idx < this.generations[genidx].length) {
 
