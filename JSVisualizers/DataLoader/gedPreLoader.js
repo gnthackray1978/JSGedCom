@@ -103,7 +103,9 @@ function GedPreLoader(loader) {
     GedPreLoader.prototype.GetGenerations = function (personId,newGeneration) {
         //'@I4@'
 
-
+        this.generations = [];
+        this.searchDepth = 0;
+ 
         personId = this.SearchFurthestAncestor(personId);
 
 
