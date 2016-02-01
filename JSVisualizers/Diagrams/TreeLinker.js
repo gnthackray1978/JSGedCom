@@ -44,8 +44,10 @@ TreeLinker.prototype = {
                         console.log(e);
                     }
 
-                    if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
-
+                    //if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
+                    
+                    if (_dob < year) {
+                        
                         var personPresent = false;
                         var that = this;
                         this.addedPeople.forEach(function (entry) {
