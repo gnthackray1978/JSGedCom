@@ -316,3 +316,10 @@ ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
     //    e.preventDefault();
     //});
 };
+
+ComplexLoaderUI.prototype.setFDDefaults = function (start,increment,speed) {
+    
+    $("#txtStartYear").val(start);
+    $("#txtIncrementSize").val(increment);
+    $("#txtSpeed").val(speed);
+};

@@ -148,7 +148,7 @@ $(document).ready(function () {
             }
             that.showGedContent();
             that.showPersonSelectList(persons);
-            
+            that.setFDDefaults(Number(range.s)+50,5,3000);
         });
     }, diagMode));
 
