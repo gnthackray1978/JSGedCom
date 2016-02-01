@@ -61,8 +61,8 @@ ForceDirect.prototype = {
     
     kill: function() {
         this.layoutList = [];
-        if(this.gedPreLoader)
-            this.gedPreLoader.generations =[];
+        // if(this.gedPreLoader)
+        //     this.gedPreLoader.generations =[];
             
         this.gedPreLoader = undefined;
         this.highLighted = null;
