@@ -93,6 +93,15 @@ function GedPreLoader(applicationGedLoader) {
    
         while (idx < this.WorkingFamilies.length) {
 
+            if(idx == 97){
+                console.log('97');
+            }
+            
+            if(idx == 108){
+                console.log('108');
+            }
+            
+
             if (this.WorkingFamilies[idx].husband != undefined) this.WorkingFamilies[idx].husband.generation = -1;
             if (this.WorkingFamilies[idx].wife != undefined) this.WorkingFamilies[idx].wife.generation = -1;
             
@@ -214,6 +223,19 @@ function GedPreLoader(applicationGedLoader) {
         if(person.id == '@P1924@')
         {
             console.log(person.id + ' found');
+            
+            try
+            {
+                var _tpMid = this.generations[this.searchDepth - 1][idx].MotherId;
+                var _tpFid = this.generations[this.searchDepth - 1][idx].FatherId;
+                
+                console.log(person.id + ' parents: ' + _tpMid + ' ' + _tpFid);
+            }
+            catch(err){
+                console.log(err);
+            }
+            
+            
         }
 
         var newPerson = {
