@@ -12,9 +12,9 @@ function GedPreLoader(loader) {
 
     this.generations = [];
 
-    //this.families = loader.families;
+    this.WorkingFamilies = loader.families;
     
-    this.families = JSON.parse(JSON.stringify(loader.families));//loader.families;
+    //this.WorkingFamilies = JSON.parse(JSON.stringify(loader.families));//loader.families;
     
     this.persons;
    
@@ -45,7 +45,7 @@ function GedPreLoader(loader) {
         while (isSearching) {
             
             // is start person amongst families children
-            var familyi = $.grep(this.families, function (e) {
+            var familyi = $.grep(this.WorkingFamilies, function (e) {
                 var innerresult = $.grep(e.children, function (a) {
                     return a.id == nextGeneration;
                 });
@@ -90,10 +90,10 @@ function GedPreLoader(loader) {
         
         var idx = 0;
    
-        while (idx < this.families.length) {
+        while (idx < this.WorkingFamilies.length) {
 
-            if (this.families[idx].husband != undefined) this.families[idx].husband.generation = -1;
-            if (this.families[idx].wife != undefined) this.families[idx].wife.generation = -1;
+            if (this.WorkingFamilies[idx].husband != undefined) this.WorkingFamilies[idx].husband.generation = -1;
+            if (this.WorkingFamilies[idx].wife != undefined) this.WorkingFamilies[idx].wife.generation = -1;
             
             idx++;
         }
@@ -119,7 +119,7 @@ function GedPreLoader(loader) {
         var idx = 0;
         var famidx = 0;
 
-        var familyFound = $.grep(this.families, function (e) {
+        var familyFound = $.grep(this.WorkingFamilies, function (e) {
             if(startperson == null) return false;
             if(e.husband == null && e.wife == null) return false;
             
@@ -141,7 +141,7 @@ function GedPreLoader(loader) {
                 if (person != undefined &&
                     person.id == startperson.id) {
 
-                    if (state.families[idx].children.length > 0) state.families[idx].children[0].isFirst = true;
+                    if (state.WorkingFamilies[idx].children.length > 0) state.WorkingFamilies[idx].children[0].isFirst = true;
 
                     if (person.generation == -1) {
                         person.generation = state.searchDepth;
@@ -164,8 +164,8 @@ function GedPreLoader(loader) {
 
                 if (addChild) {
                     famidx = 0;
-                    while (famidx < state.families[idx].children.length) {
-                        state.searchFams(state.families[idx].children[famidx]);
+                    while (famidx < state.WorkingFamilies[idx].children.length) {
+                        state.searchFams(state.WorkingFamilies[idx].children[famidx]);
                         state.searchDepth--;
                         famidx++;
                     }
@@ -179,11 +179,11 @@ function GedPreLoader(loader) {
 
         };
 
-        while (idx < this.families.length && familyFound) {
+        while (idx < this.WorkingFamilies.length && familyFound) {
 
-            addPersonIf( this, this.families[idx].husband, this.families[idx].wife);
+            addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife);
 
-            addPersonIf(this, this.families[idx].wife, this.families[idx].husband);
+            addPersonIf(this, this.WorkingFamilies[idx].wife, this.WorkingFamilies[idx].husband);
 
             idx++;
         }
