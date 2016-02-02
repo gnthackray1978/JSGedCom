@@ -5,7 +5,7 @@ var JSMaster, AncTree, Tree;
 
 
 var TreeRunner = function () {
-    this.ancTree = null;
+    this._tree = null;
     this.ancUtils = new AncUtils();
     this.treeUI = null;
     this._moustQueue = [];
@@ -15,7 +15,7 @@ var TreeRunner = function () {
 };
 
 TreeRunner.prototype = {
-    run: function (id,gedPreLoader, treeModel) {
+    run: function (id,applicationGedLoader, tree) {
      
             var type = $("input[name='type_sel']:checked").val();
         
@@ -26,13 +26,13 @@ TreeRunner.prototype = {
             var int;
        
             var that = this;
-            this.ancTree = treeModel;
+            this._tree = tree;
             
-            this.loader = gedPreLoader;
+            this.applicationGedLoader = applicationGedLoader;
         
-            this.ancTree.selectedPersonId = id;
-            this.ancTree.selectedPersonX = 0;
-            this.ancTree.selectedPersonY = 0;
+            this._tree.selectedPersonId = id;
+            this._tree.selectedPersonX = 0;
+            this._tree.selectedPersonY = 0;
 
 
             var getData = function (context,personId,x,y) {
@@ -40,20 +40,20 @@ TreeRunner.prototype = {
 
 
                 if (type == 'anc') {
-                    context.ancTree = new AncTree();
-                    context.ancTree.treeUI = treeUI;
-                    context.loader.SetForAncLoader();
+                    context._tree = new AncTree();
+                    context._tree.treeUI = treeUI;
+                    context.applicationGedLoader.SetForAncLoader();
                 } else {
-                    context.ancTree = new DescTree();
-                    context.ancTree.treeUI = treeUI;
-                    context.loader.SetForDescLoader();
+                    context._tree = new DescTree();
+                    context._tree.treeUI = treeUI;
+                    context.applicationGedLoader.SetForDescLoader();
                 }
 
-                context.ancTree.selectedPersonY = y;
-                context.ancTree.selectedPersonX = x;
-                context.ancTree.selectedPersonId = personId;
+                context._tree.selectedPersonY = y;
+                context._tree.selectedPersonX = x;
+                context._tree.selectedPersonId = personId;
 
-                context.loader.GetGenerations(personId, $.proxy(context.processData, context));
+                context.applicationGedLoader.GetGenerations(personId, $.proxy(context.processData, context));
 
             };
 
@@ -69,11 +69,8 @@ TreeRunner.prototype = {
                 if (evt.target.id == "so") _dir = 'SOUTH';
                 if (evt.target.id == "de") _dir = 'DEBUG';
 
-                if (that.ancTree !== null) {
-
-                    int = setInterval(function () { that.ancTree.MoveTree(_dir); }, 100);
-
-                 
+                if (that._tree !== null) {
+                    int = setInterval(function () { that._tree.MoveTree(_dir); }, 100);
                 }
 
             }).mouseup(function () {
@@ -83,21 +80,17 @@ TreeRunner.prototype = {
 
             setTimeout($.proxy(this.GameLoop, this), 1000 / 50);
 
-
-
             $("#myCanvas").mousedown(function (evt) {
                 evt.preventDefault();
-                if (that.ancTree !== null) {
+                if (that._tree !== null) {
                     evt.originalEvent.preventDefault();
                     that._mouseDown = true;
                 }
             });
 
-
-
             $("#myCanvas").mouseup(function (evt) {
                 evt.preventDefault();
-                if (that.ancTree !== null) {
+                if (that._tree !== null) {
                     that._mouseDown = false;
 
                     var _point = new Array(1000000, 1000000);
@@ -107,30 +100,31 @@ TreeRunner.prototype = {
             });
 
             $("#myCanvas").click(function (evt) {
-                if (that.ancTree !== null) {
+                if (that._tree !== null) {
                 
                     var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
  
-                    that.ancTree.PerformClick(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
+                    that._tree.PerformClick(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
                 
-                    that.ancTree.UpdateGenerationState();
+                    that._tree.UpdateGenerationState();
 
-                    if (that.ancTree.refreshData) {                    
-                        getData(that, that.ancTree.selectedPersonId, that.ancTree.selectedPersonX, that.ancTree.selectedPersonY);                    
+                    if (that._tree.refreshData) {                    
+                        getData(that, that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);                    
                     }
             
 
                     that._moustQueue[that._moustQueue.length] = new Array(1000000, 1000000);
                 }
             });
+            
             $("#myCanvas").mousemove(function (evt) {
-                if (that.ancTree !== null) {
+                if (that._tree !== null) {
                 
                     var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
 
                     var _point = new Array(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
                 
-                    that.ancTree.SetMouse(_point[0], _point[1]);
+                    that._tree.SetMouse(_point[0], _point[1]);
                     if (that._mouseDown) {
                         that._moustQueue.push(_point);
                     }
@@ -139,7 +133,7 @@ TreeRunner.prototype = {
 
             $("#ml .message").html('<span>Downloading Descendant Tree</span>');
 
-            getData(this, this.ancTree.selectedPersonId, 0, 0);
+            getData(this, this._tree.selectedPersonId, 0, 0);
         
         }, this));
 
@@ -153,22 +147,22 @@ TreeRunner.prototype = {
 
 
 
-        this.ancTree.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
+        this._tree.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
         //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
         //    var _zoomLevel = 100;
         //    var _xpos = 750.0;
         //    var _ypos = 100.0;
 
-        this.ancTree.generations = data.Generations;
+        this._tree.generations = data.Generations;
 
         
         
-        this.ancTree.UpdateGenerationState();
+        this._tree.UpdateGenerationState();
 
-        this.ancTree.RelocateToSelectedPerson();
+        this._tree.RelocateToSelectedPerson();
          
-        this.ancTree.refreshData = false;
+        this._tree.refreshData = false;
     },
 
     CleanUp: function () {
@@ -176,10 +170,10 @@ TreeRunner.prototype = {
         $("#myCanvas").unbind();
         $(".button_box").unbind();
 
-        this.ancTree.generations = null;
-        this.loader.RefreshData();
-        this.ancTree.familySpanLines = null;
-        this.ancTree.childlessMarriages = null;
+        this._tree.generations = null;
+        this.applicationGedLoader.RefreshData();
+        this._tree.familySpanLines = null;
+        this._tree.childlessMarriages = null;
     },
 
     GameLoop: function () {
@@ -188,8 +182,8 @@ TreeRunner.prototype = {
             var _point = this._moustQueue.shift();
 
 
-            this.ancTree.SetCentrePoint(_point[0], _point[1]);
-            this.ancTree.DrawTree();
+            this._tree.SetCentrePoint(_point[0], _point[1]);
+            this._tree.DrawTree();
         }
 
         setTimeout($.proxy(this.GameLoop, this));
