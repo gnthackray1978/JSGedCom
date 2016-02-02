@@ -74,9 +74,9 @@ function GedPreLoader(loader) {
             
         }
 
-        var p = this.gedLoader.findPerson(nextGeneration);
+        // var p = this.gedLoader.findPerson(nextGeneration);
         
-        console.log(p.name);
+        // console.log(p.name);
 
         return nextGeneration;
     },
@@ -101,9 +101,23 @@ function GedPreLoader(loader) {
             idx++;
         }
 
-        this.searchFams(this.gedLoader.findPerson(personId));
+        
 
+        var findPerson = function(person) {
+            
+            var idx = 0;
+            while (idx < this.persons.length) {
 
+                if (this.persons[idx].id == person) {
+                    return this.persons[idx];
+                }
+                idx++;
+            }
+
+            return null;
+        };
+        
+        this.searchFams(this.findPerson(personId));
 
         var payload = {Generations : this.generations};
          
