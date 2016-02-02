@@ -204,7 +204,8 @@ function GedPreLoader(loader) {
         //    Occupation: "",
         //    BirthLocation: person.BaptismPlace == '' ? person.BaptismPlace : person.BirthPlace
         //};
-
+        if(person.isFirst)
+            console.log('person.isFirst '+ person.name);
 
         var newPerson = {
             RecordLink: this.RecordLinkLoader.fill(person),
