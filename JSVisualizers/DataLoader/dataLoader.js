@@ -4,6 +4,10 @@ var DataLoader = {};
 (function () {
     /** @constructor */
     DataLoader.GedLoader = function () {
+        //JSON.parse(JSON.stringify(loader.families));
+        this.cacheFamilies = [];
+        this.cachePersons = [];
+        
         this.families = [];
         this.persons = [];
 
@@ -254,6 +258,9 @@ var DataLoader = {};
                         
                         var rng = that.findDateRange();
                         
+                        that.cacheFamilies = JSON.parse(JSON.stringify(that.families));
+                        that.cachePersons = JSON.parse(JSON.stringify(that.persons));
+                        
                         newloader(that.families, that.persons, rng);
                     });
                 });
@@ -352,6 +359,7 @@ var DataLoader = {};
             this.loader = new GedAncPreLoader(this);
             
         },
+        
         SetForDescLoader: function () {
             this.loader = new GedPreLoader(this);
         },
