@@ -4,7 +4,7 @@
 function GedPreLoader(loader) {
     // Constructor
     //this.monkey = 'm';
-    if (loader == undefined) loader = new DataLoader.GedLoader();
+    if (loader == undefined) loader = new ApplicationGedLoader();
     
     this.ancUtils = new AncUtils();
 

@@ -177,7 +177,7 @@ TreeRunner.prototype = {
         $(".button_box").unbind();
 
         this.ancTree.generations = null;
-      //  this.ancTree.familiesPerGeneration = null;
+        this.loader.RefreshData();
         this.ancTree.familySpanLines = null;
         this.ancTree.childlessMarriages = null;
     },
