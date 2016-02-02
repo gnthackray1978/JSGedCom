@@ -133,7 +133,8 @@ function GedPreLoader(applicationGedLoader) {
             this.addPerson(startperson);
         }
 
-        var addPersonIf = function(state, person, spouse) {
+        //added idx for debug purpose can delete
+        var addPersonIf = function(state, person, spouse, idx) {
 
             try {
                 var addChild = false;
@@ -146,11 +147,13 @@ function GedPreLoader(applicationGedLoader) {
                     person.id == startperson.id) {
 
                     if (state.WorkingFamilies[idx].children.length > 0) state.WorkingFamilies[idx].children[0].isFirst = true;
+                    
+                    var tpDebugGen = person.generation;
 
                     if (person.generation == -1) {
                         person.generation = state.searchDepth;
                         if(person.id == '@P1924@'){
-                            console.log(person.id + '-1');
+                            console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen);
                         }
                         state.addPerson(person, spouse);
                     }
@@ -202,9 +205,9 @@ function GedPreLoader(applicationGedLoader) {
             // }
             
             
-            addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife);
+            addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife,idx);
 
-            addPersonIf(this, this.WorkingFamilies[idx].wife, this.WorkingFamilies[idx].husband);
+            addPersonIf(this, this.WorkingFamilies[idx].wife, this.WorkingFamilies[idx].husband,idx);
 
             idx++;
         }
