@@ -193,13 +193,13 @@ function GedPreLoader(applicationGedLoader) {
         while (idx < this.WorkingFamilies.length && familyFound) {
 
 
-            if(idx == 97){
-                console.log('97');
-            }
+            // if(idx == 97){
+            //     console.log('97');
+            // }
             
-            if(idx == 108){
-                console.log('108');
-            }
+            // if(idx == 108){
+            //     console.log('108');
+            // }
             
             
             addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife);
