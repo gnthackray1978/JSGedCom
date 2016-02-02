@@ -294,6 +294,19 @@ var DataLoader = {};
         },
 
         findPerson: function(person) {
+            var idx = 0;
+            while (idx < this.persons.length) {
+
+                if (this.persons[idx].id == person) {
+                    return this.persons[idx];
+                }
+                idx++;
+            }
+
+            return null;
+        },
+        
+        findMakeFirst: function(person) {
 
 
             var idx = 0;
@@ -308,6 +321,7 @@ var DataLoader = {};
 
             return null;
         },
+        
         
         findDateRange: function() {
 

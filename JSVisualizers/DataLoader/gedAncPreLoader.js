@@ -32,7 +32,7 @@ function GedAncPreLoader(gedLoader) {
         //'@I4@'
 
 
-        this.searchFams(this.gedLoader.findPerson(personId));
+        this.searchFams(this.gedLoader.findMakeFirst(personId));
 
         var payload = {
             Generations: this.generations

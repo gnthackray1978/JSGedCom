@@ -113,12 +113,8 @@ function GedPreLoader(loader) {
 
         if (this.generations.length < this.searchDepth) this.generations.push([]);
 
-
         var idx = 0;
         var famidx = 0;
-
-
-
 
         var familyFound = $.grep(this.families, function (e) {
             if(startperson == null) return false;
@@ -128,16 +124,11 @@ function GedPreLoader(loader) {
 
         }).length > 0 ? true : false;
 
-
-
-       
-
         // a child with no spouse
         if (!familyFound && startperson.generation == -1) {
             startperson.generation = this.searchDepth;
             this.addPerson(startperson);
         }
-
 
         var addPersonIf = function(state, person, spouse) {
 
@@ -187,23 +178,15 @@ function GedPreLoader(loader) {
 
         while (idx < this.families.length && familyFound) {
 
-
             addPersonIf( this, this.families[idx].husband, this.families[idx].wife);
 
             addPersonIf(this, this.families[idx].wife, this.families[idx].husband);
 
-
-
-
-
             idx++;
         }
 
-
         this.generations[0][0].IsHtmlLink = false;
 
-
- 
     };
 
     GedPreLoader.prototype.addPerson = function (person, spouse, isChild) {
