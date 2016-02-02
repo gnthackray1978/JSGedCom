@@ -153,7 +153,7 @@ function GedPreLoader(applicationGedLoader) {
                     if (person.generation == -1) {
                         person.generation = state.searchDepth;
                         if(person.id == '@P1924@'){
-                            console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen);
+                            console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen + ' sp: ' +startperson.id);
                         }
                         state.addPerson(person, spouse);
                     }
