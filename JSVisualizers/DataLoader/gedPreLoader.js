@@ -111,7 +111,10 @@ function GedPreLoader(applicationGedLoader) {
 
     GedPreLoader.prototype.searchFams = function (startperson) {
 
-
+        if(startperson.id == '@P1924@'){
+            console.log('searchFams:' + startperson.id + ' ' +startperson.generation);
+        }
+            
         this.searchDepth++;
 
         if (this.generations.length < this.searchDepth) this.generations.push([]);
