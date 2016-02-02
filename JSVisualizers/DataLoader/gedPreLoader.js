@@ -24,17 +24,7 @@ function GedPreLoader(loader) {
 }
 
 (function () {
-
-    function moduleFoo(url) {
-        // Problem using "this" keyword. Will require @this annotation.
-        console.log('called');
-    }
-
-    GedPreLoader.prototype = {
-        foo: moduleFoo
-    };
-
-    
+ 
     GedPreLoader.prototype.SearchFurthestAncestor = function (startperson) {        
         
         var that = this;

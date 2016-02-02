@@ -25,7 +25,6 @@ $(document).ready(function () {
         
         var that = diagMode;
 
-        //var forceDirect = null;
         var selectedId = id;
 
         switch (diagMode.GetDiagramType()) {
