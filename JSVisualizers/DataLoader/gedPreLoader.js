@@ -20,7 +20,9 @@ function GedPreLoader(loader) {
     this.gedLoader = loader;
 
     this.RecordLinkLoader = new Bio();
-
+    
+    //debug
+    this.firstCount =0;
 }
 
 (function () {
@@ -82,7 +84,9 @@ function GedPreLoader(loader) {
         personId = this.SearchFurthestAncestor(personId);
 
         console.log('GetGenerations: ' + initPerson + ' ' + personId);
-
+        
+        this.firstCount =0;
+        
         var idx = 0;
    
         while (idx < this.families.length) {
@@ -205,7 +209,13 @@ function GedPreLoader(loader) {
         //    BirthLocation: person.BaptismPlace == '' ? person.BaptismPlace : person.BirthPlace
         //};
         if(person.isFirst)
-            console.log('person.isFirst '+ person.name);
+        {
+            
+            console.log('person.isFirst '+ person.id + ' ' + this.firstCount);
+            this.firstCount++;
+        }
+
+
 
         var newPerson = {
             RecordLink: this.RecordLinkLoader.fill(person),
@@ -314,7 +324,7 @@ function GedPreLoader(loader) {
                 tpFamily[lastPersonAdded].IsParentalLink = true;
             }
             else {
-                console.log('zero length family');
+                console.log('zero length family: ' + person.id);
             }
            
 
