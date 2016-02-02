@@ -200,9 +200,9 @@ function GedPreLoader(applicationGedLoader) {
             //     console.log('97');
             // }
             
-            // if(idx == 108){
-            //     console.log('108');
-            // }
+            if(idx == 108 && startperson.id == '@P1924@'){
+                console.log('108');
+            }
             
             
             addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife,idx);
