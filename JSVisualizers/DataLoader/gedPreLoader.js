@@ -211,7 +211,10 @@ function GedPreLoader(applicationGedLoader) {
             this.firstCount++;
         }
 
-
+        if(person.id == '@P2516@')
+        {
+            console.log(person.id + ' found');
+        }
 
         var newPerson = {
             RecordLink: this.RecordLinkLoader.fill(person),
