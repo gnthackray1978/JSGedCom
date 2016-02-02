@@ -117,7 +117,7 @@ function GedPreLoader(loader) {
             return null;
         };
         
-        this.searchFams(this.findPerson(personId));
+        this.searchFams(findPerson(personId));
 
         var payload = {Generations : this.generations};
          
