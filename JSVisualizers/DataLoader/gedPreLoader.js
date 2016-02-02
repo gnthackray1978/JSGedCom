@@ -17,8 +17,9 @@ function GedPreLoader(loader) {
 //JSON.parse(JSON.stringify(loader.families));//
 
     this.families = loader.families;
+    
     //this.families = JSON.parse(JSON.stringify(loader.families));//loader.families;
-    this.persons = loader.person;
+    this.persons;
     //this.persons = JSON.parse(JSON.stringify(loader.persons));//loader.person;
 
     this.gedLoader = loader;
@@ -101,23 +102,7 @@ function GedPreLoader(loader) {
             idx++;
         }
 
-        
-
-        var findPerson = function(person) {
-            
-            var idx = 0;
-            while (idx < this.persons.length) {
-
-                if (this.persons[idx].id == person) {
-                    return this.persons[idx];
-                }
-                idx++;
-            }
-
-            return null;
-        };
-        
-        this.searchFams(findPerson(personId));
+        this.searchFams(this.gedLoader.findPerson(personId));
 
         var payload = {Generations : this.generations};
          
