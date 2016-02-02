@@ -149,6 +149,9 @@ function GedPreLoader(applicationGedLoader) {
 
                     if (person.generation == -1) {
                         person.generation = state.searchDepth;
+                        if(person.id == '@P1924@'){
+                            console.log(person.id + '-1');
+                        }
                         state.addPerson(person, spouse);
                     }
 
@@ -162,6 +165,10 @@ function GedPreLoader(applicationGedLoader) {
                     person != undefined &&
                     person.id == startperson.id) {
                     spouse.generation = state.searchDepth;
+                    
+                    if(person.id == '@P1924@'){
+                        console.log(person.id + '-2');
+                    }
                     state.addPerson(spouse, person, false);
                 }
 
