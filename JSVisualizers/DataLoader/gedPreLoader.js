@@ -78,7 +78,7 @@ function GedPreLoader(applicationGedLoader) {
         return nextGeneration;
     },
 
-    GedPreLoader.prototype.GetGenerations = function (personId,newGeneration) {
+    GedPreLoader.prototype.GetGenerations = function (personId,callback) {
   
         var initPerson = personId;
         
@@ -102,11 +102,7 @@ function GedPreLoader(applicationGedLoader) {
 
         var payload = {Generations : this.generations};
          
-        newGeneration(payload);
-
-         
-
-
+        callback(payload);
     };
 
     GedPreLoader.prototype.searchFams = function (startperson) {

@@ -1,6 +1,6 @@
 function ApplicationGedLoader() {
     
-    //JSON.parse(JSON.stringify(loader.families));
+    
     this.cacheFamilies = [];
     this.cachePersons = [];
     
@@ -360,7 +360,7 @@ ApplicationGedLoader.prototype = {
         this.loader = new GedPreLoader(this);
     },
 
-    GetGenerations: function (personId, newGeneration) {
+    GetGenerations: function (personId, callback) {
         
         console.log('dataloader GetGenerations');
         
@@ -369,13 +369,15 @@ ApplicationGedLoader.prototype = {
             console.log('no loader set');
         }
 
-        this.loader.GetGenerations(personId, newGeneration);
+        this.loader.GetGenerations(personId, callback);
         
     },
     
     RefreshData: function () {
 
-    
+        //JSON.parse(JSON.stringify(loader.families));
+        this.families = JSON.parse(JSON.stringify(this.cacheFamilies));
+        this.persons =  JSON.parse(JSON.stringify(this.cachePersons));
         
     }
 };

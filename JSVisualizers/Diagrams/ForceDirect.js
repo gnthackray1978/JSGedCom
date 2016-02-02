@@ -61,11 +61,15 @@ var ForceDirect = function (colourScheme,gedPreLoader) {
 ForceDirect.prototype = {
     init: function(id, params) {
         
+        var that = this;
+        
         this.speed =params.sp;
         this.increment =params.im;
         this.year = params.sy;
         
-        this.gedPreLoader.GetGenerations(id, $.proxy(this.run, this));
+        this.gedPreLoader.GetGenerations(id, function(data){
+            that.run(data);
+        });
     },
     
     kill: function() {

@@ -31,7 +31,7 @@ function GedAncPreLoader(applicationGedLoader) {
 (function () {
 
 
-    GedAncPreLoader.prototype.GetGenerations = function (personId, newGeneration) {
+    GedAncPreLoader.prototype.GetGenerations = function (personId, callback) {
         //'@I4@'
 
 
@@ -41,7 +41,7 @@ function GedAncPreLoader(applicationGedLoader) {
             Generations: this.generations
         };
 
-        newGeneration(payload);
+        callback(payload);
 
     };
 

@@ -35,25 +35,24 @@ TreeRunner.prototype = {
             this._tree.selectedPersonY = 0;
 
 
-            var getData = function (context,personId,x,y) {
-                
-
-
+            var getData = function (personId,x,y) {
                 if (type == 'anc') {
-                    context._tree = new AncTree();
-                    context._tree.treeUI = treeUI;
-                    context.applicationGedLoader.SetForAncLoader();
+                    that._tree = new AncTree();
+                    that._tree.treeUI = treeUI;
+                    that.applicationGedLoader.SetForAncLoader();
                 } else {
-                    context._tree = new DescTree();
-                    context._tree.treeUI = treeUI;
-                    context.applicationGedLoader.SetForDescLoader();
+                    that._tree = new DescTree();
+                    that._tree.treeUI = treeUI;
+                    that.applicationGedLoader.SetForDescLoader();
                 }
 
-                context._tree.selectedPersonY = y;
-                context._tree.selectedPersonX = x;
-                context._tree.selectedPersonId = personId;
+                that._tree.selectedPersonY = y;
+                that._tree.selectedPersonX = x;
+                that._tree.selectedPersonId = personId;
 
-                context.applicationGedLoader.GetGenerations(personId, $.proxy(context.processData, context));
+                that.applicationGedLoader.GetGenerations(personId, function(data){
+                    that.processData(data);
+                });
 
             };
 
@@ -109,7 +108,7 @@ TreeRunner.prototype = {
                     that._tree.UpdateGenerationState();
 
                     if (that._tree.refreshData) {                    
-                        getData(that, that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);                    
+                        getData(that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);                    
                     }
             
 
@@ -133,7 +132,7 @@ TreeRunner.prototype = {
 
             $("#ml .message").html('<span>Downloading Descendant Tree</span>');
 
-            getData(this, this._tree.selectedPersonId, 0, 0);
+            getData( this._tree.selectedPersonId, 0, 0);
         
         }, this));
 
@@ -141,11 +140,7 @@ TreeRunner.prototype = {
     },
     processData: function (data) {
 
-
-       
         var _zoomLevel = 100; 
-
-
 
         this._tree.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
@@ -156,8 +151,6 @@ TreeRunner.prototype = {
 
         this._tree.generations = data.Generations;
 
-        
-        
         this._tree.UpdateGenerationState();
 
         this._tree.RelocateToSelectedPerson();
