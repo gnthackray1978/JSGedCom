@@ -61,7 +61,9 @@ var DataLoader = {};
         },
 
         processFile: function(file,progressFunction, newloader) {
-
+            
+            console.log('processFile');
+            
             var asynch = new Asynch();
             
             var results = file.match(/[^\n]+(?:\r?\n|$)/g);
