@@ -14,8 +14,9 @@ function GedPreLoader(loader) {
 
     this.generations = [];
 
-    this.families = loader.families;
-    this.persons = loader.person;
+//JSON.parse(JSON.stringify(loader.families));//
+    this.families = JSON.parse(JSON.stringify(loader.families));//loader.families;
+    this.persons = JSON.parse(JSON.stringify(loader.persons));//loader.person;
 
     this.gedLoader = loader;
 
@@ -83,7 +84,7 @@ function GedPreLoader(loader) {
         
         personId = this.SearchFurthestAncestor(personId);
 
-        console.log('GetGenerations: ' + initPerson + ' ' + personId);
+        console.log('GetGenerations: ' + initPerson + ' ' + personId + ' init sd ' +  this.searchDepth);
         
         this.firstCount =0;
         
@@ -333,7 +334,7 @@ function GedPreLoader(loader) {
 
 
         if (spouse != undefined) {
-            currentPersonIdx = this.generations[this.searchDepth - 1].length - 1;
+            var currentPersonIdx = this.generations[this.searchDepth - 1].length - 1;
             var spouseIdx = currentPersonIdx;
             
             // fill out spouses location in the current generation
