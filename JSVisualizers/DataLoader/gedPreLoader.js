@@ -211,7 +211,7 @@ function GedPreLoader(applicationGedLoader) {
             this.firstCount++;
         }
 
-        if(person.id == '@P2516@')
+        if(person.id == '@P1924@')
         {
             console.log(person.id + ' found');
         }
