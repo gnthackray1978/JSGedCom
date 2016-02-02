@@ -137,6 +137,10 @@ function GedPreLoader(applicationGedLoader) {
 
             try {
                 var addChild = false;
+                
+                if(person.id == '@P1924@'){
+                    console.log(person.id);
+                }
 
                 if (person != undefined &&
                     person.id == startperson.id) {
@@ -202,6 +206,29 @@ function GedPreLoader(applicationGedLoader) {
 
     };
 
+    GedPreLoader.prototype._break = function(person){
+        
+        var id = person.id;
+        
+        if(id == '@P1924@')
+        {
+            console.log(id + ' found' );
+            
+            try
+            {
+                var _tpMid = this.generations[this.searchDepth - 1][0].MotherId;
+                var _tpFid = this.generations[this.searchDepth - 1][0].FatherId;
+                
+                console.log(id + ' parents: ' + _tpMid + ' ' + _tpFid);
+            }
+            catch(err){
+                console.log(err);
+            }
+            
+            
+        }
+    };
+
     GedPreLoader.prototype.addPerson = function (person, spouse, isChild) {
         isChild = (isChild == undefined) ? true : isChild;
 
@@ -217,30 +244,14 @@ function GedPreLoader(applicationGedLoader) {
         //    Occupation: "",
         //    BirthLocation: person.BaptismPlace == '' ? person.BaptismPlace : person.BirthPlace
         //};
-        if(person.isFirst)
-        {
+        // if(person.isFirst)
+        // {
             
-            console.log('person.isFirst '+ person.id + ' ' + this.firstCount);
-            this.firstCount++;
-        }
+        //     console.log('person.isFirst '+ person.id + ' ' + this.firstCount);
+        //     this.firstCount++;
+        // }
 
-        if(person.id == '@P1924@')
-        {
-            console.log(person.id + ' found');
-            
-            try
-            {
-                var _tpMid = this.generations[this.searchDepth - 1][idx].MotherId;
-                var _tpFid = this.generations[this.searchDepth - 1][idx].FatherId;
-                
-                console.log(person.id + ' parents: ' + _tpMid + ' ' + _tpFid);
-            }
-            catch(err){
-                console.log(err);
-            }
-            
-            
-        }
+        //this._break(person);
 
         var newPerson = {
             RecordLink: this.RecordLinkLoader.fill(person),
