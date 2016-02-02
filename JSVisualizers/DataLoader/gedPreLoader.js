@@ -10,18 +10,14 @@ function GedPreLoader(loader) {
 
     this.searchDepth = 0;
 
-
-
     this.generations = [];
 
-//JSON.parse(JSON.stringify(loader.families));//
-
-    this.families = loader.families;
+    //this.families = loader.families;
     
-    //this.families = JSON.parse(JSON.stringify(loader.families));//loader.families;
+    this.families = JSON.parse(JSON.stringify(loader.families));//loader.families;
+    
     this.persons;
-    //this.persons = JSON.parse(JSON.stringify(loader.persons));//loader.person;
-
+   
     this.gedLoader = loader;
 
     this.RecordLinkLoader = new Bio();
