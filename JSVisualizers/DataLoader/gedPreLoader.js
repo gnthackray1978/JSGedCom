@@ -92,13 +92,8 @@ function GedPreLoader(applicationGedLoader) {
         var idx = 0;
    
         while (idx < this.WorkingFamilies.length) {
-
-
-            
-
             if (this.WorkingFamilies[idx].husband != undefined) this.WorkingFamilies[idx].husband.generation = -1;
             if (this.WorkingFamilies[idx].wife != undefined) this.WorkingFamilies[idx].wife.generation = -1;
-            
             idx++;
         }
 
@@ -199,9 +194,9 @@ function GedPreLoader(applicationGedLoader) {
         while (idx < this.WorkingFamilies.length && familyFound) {
 
 
-            // if(idx == 97){
-            //     console.log('97');
-            // }
+            if(idx == 97 && startperson.id == '@P1924@'){
+                console.log('97');
+            }
             
             if(idx == 108 && startperson.id == '@P1924@'){
                 console.log('108');
