@@ -15,7 +15,7 @@ $(document).ready(function () {
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
     } else {
-        diagMode = new ComplexLoaderUI();//new GedPreLoader()
+        diagMode = new ComplexLoaderUI(new GedPreLoader());//
     }
 
 
