@@ -1,7 +1,9 @@
 /** @constructor */
 function ComplexLoaderUI(gedPreLoader) {       
     this.gedPreLoader = gedPreLoader;
-    this.loader = this.gedPreLoader.gedLoader;
+    
+    this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
+    
     this.defaultGed = '/basicvis/samples/default.txt';
 
     this.showGed = true;

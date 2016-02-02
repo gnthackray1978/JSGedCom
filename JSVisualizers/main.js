@@ -36,7 +36,7 @@ $(document).ready(function () {
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
-                that.treeRunner.run(selectedId, diagMode.loader, new AncTree());
+                that.treeRunner.run(selectedId, diagMode.applicationGedLoader, new AncTree());
 
                 break;
             case 'desc_1':
@@ -47,8 +47,11 @@ $(document).ready(function () {
                
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
+                    
+                                    
+                    
                 that.treeRunner = new TreeRunner();
-                that.treeRunner.run(selectedId, diagMode.loader, new DescTree());
+                that.treeRunner.run(selectedId, diagMode.applicationGedLoader, new DescTree());
                 break;
 
             case 'desc_2':
@@ -123,7 +126,7 @@ $(document).ready(function () {
             default:
                 //  code to be executed if n is different from case 1 and 2
 
-                var g = new GedPreLoader(diagMode.loader);
+                var g = new GedPreLoader(diagMode.applicationGedLoader);
 
                 g.SearchFurthestAncestor('@I931@');// annie harmston
 
@@ -140,7 +143,7 @@ $(document).ready(function () {
     diagMode.newFileLoaded($.proxy(function (data) {
         var that = this; // this is selectorwidget context
         //receive the tree file here 
-        that.loader.processFile(data,that.showGedLoading, function (families, persons,range) {
+        that.applicationGedLoader.processFile(data,that.showGedLoading, function (families, persons,range) {
             if(persons == undefined || persons == null || persons.length ==0){
                 that.showGedError("Could not obtain list of persons");
                 return;

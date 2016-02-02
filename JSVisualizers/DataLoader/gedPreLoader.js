@@ -1,10 +1,10 @@
 
 
 /** @constructor */
-function GedPreLoader(loader) {
+function GedPreLoader(applicationGedLoader) {
     // Constructor
     //this.monkey = 'm';
-    if (loader == undefined) loader = new ApplicationGedLoader();
+    if (applicationGedLoader == undefined) applicationGedLoader = new ApplicationGedLoader();
     
     this.ancUtils = new AncUtils();
 
@@ -12,13 +12,13 @@ function GedPreLoader(loader) {
 
     this.generations = [];
 
-    this.WorkingFamilies = loader.families;
+    this.WorkingFamilies = applicationGedLoader.families;
     
     //this.WorkingFamilies = JSON.parse(JSON.stringify(loader.families));//loader.families;
     
     this.persons;
    
-    this.gedLoader = loader;
+    this.applicationGedLoader = applicationGedLoader;
 
     this.RecordLinkLoader = new Bio();
     
@@ -71,7 +71,7 @@ function GedPreLoader(loader) {
             
         }
 
-        // var p = this.gedLoader.findPerson(nextGeneration);
+        // var p = this.applicationGedLoader.findPerson(nextGeneration);
         
         // console.log(p.name);
 
@@ -98,7 +98,7 @@ function GedPreLoader(loader) {
             idx++;
         }
 
-        this.searchFams(this.gedLoader.findPerson(personId));
+        this.searchFams(this.applicationGedLoader.findPerson(personId));
 
         var payload = {Generations : this.generations};
          

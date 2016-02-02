@@ -1,9 +1,12 @@
+/*global ApplicationGedLoader*/
+/*global AncUtils*/
+
 
 
 /** @constructor */
-function GedAncPreLoader(gedLoader) {
+function GedAncPreLoader(applicationGedLoader) {
 
-    if (gedLoader == undefined) gedLoader = new DataLoader.GedLoader();
+    if (applicationGedLoader == undefined) applicationGedLoader = new ApplicationGedLoader();
 
 
     this.ancUtils = new AncUtils();
@@ -16,10 +19,10 @@ function GedAncPreLoader(gedLoader) {
     this.generations = [];
 
     
-    this.families = gedLoader.families;
-    this.persons = gedLoader.person;
+    this.families = applicationGedLoader.families;
+    this.persons = applicationGedLoader.person;
 
-    this.gedLoader = gedLoader;
+    this.applicationGedLoader = applicationGedLoader;
 
     this.RecordLinkLoader = new Bio();
 
@@ -32,7 +35,7 @@ function GedAncPreLoader(gedLoader) {
         //'@I4@'
 
 
-        this.searchFams(this.gedLoader.findMakeFirst(personId));
+        this.searchFams(this.applicationGedLoader.findMakeFirst(personId));
 
         var payload = {
             Generations: this.generations
