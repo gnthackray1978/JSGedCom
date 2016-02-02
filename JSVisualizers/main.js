@@ -15,7 +15,7 @@ $(document).ready(function () {
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
     } else {
-        diagMode = new ComplexLoaderUI(new GedPreLoader());
+        diagMode = new ComplexLoaderUI();//new GedPreLoader()
     }
 
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
 
         var selectedId = id;
 
-        switch (diagMode.GetDiagramType()) {
+        switch (that.GetDiagramType()) {
             case 'anc':
                 
                 if(that.forceDirect)
@@ -36,7 +36,7 @@ $(document).ready(function () {
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
                 that.treeRunner = new TreeRunner();
-                that.treeRunner.run(selectedId, diagMode.applicationGedLoader, new AncTree());
+                that.treeRunner.run(selectedId, that.applicationGedLoader, new AncTree());
 
                 break;
             case 'desc_1':
@@ -45,13 +45,17 @@ $(document).ready(function () {
                     that.forceDirect.kill();
                 
                
-                if (that.treeRunner != null)
-                    that.treeRunner.CleanUp();
-                    
-                                    
-                    
+                if (that.treeRunner != null){
+                    //that.Refresh(new GedPreLoader());
+                    //that.treeRunner.CleanUp();
+                    //this._tree.generations = null;
+                    that.applicationGedLoader.RefreshData();
+         
+                }
+   
                 that.treeRunner = new TreeRunner();
-                that.treeRunner.run(selectedId, diagMode.applicationGedLoader, new DescTree());
+                
+                that.treeRunner.run(selectedId, that.applicationGedLoader, new DescTree());
                 break;
 
             case 'desc_2':
@@ -62,7 +66,7 @@ $(document).ready(function () {
                 if(that.forceDirect)
                     that.forceDirect.kill();
                 
-                that.forceDirect = new ForceDirect(colourScheme, diagMode.gedPreLoader);
+                that.forceDirect = new ForceDirect(colourScheme, that.gedPreLoader);
                 
                  
                 var diagUI = new VisControlsUI();

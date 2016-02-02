@@ -3,7 +3,8 @@
 /** @constructor */
 function GedPreLoader(applicationGedLoader) {
     // Constructor
-    //this.monkey = 'm';
+    console.log('GED PRE LOADER created');
+    
     if (applicationGedLoader == undefined) applicationGedLoader = new ApplicationGedLoader();
     
     this.ancUtils = new AncUtils();
@@ -84,7 +85,7 @@ function GedPreLoader(applicationGedLoader) {
         
         personId = this.SearchFurthestAncestor(personId);
 
-        console.log('GetGenerations: ' + initPerson + ' ' + personId + ' init sd ' +  this.searchDepth);
+        console.log('GED PRE LOADER: GetGenerations: ' + initPerson + ' ' + personId + ' init sd ' +  this.searchDepth);
         
         this.firstCount =0;
         

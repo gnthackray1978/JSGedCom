@@ -163,10 +163,10 @@ TreeRunner.prototype = {
         $("#myCanvas").unbind();
         $(".button_box").unbind();
 
-        this._tree.generations = null;
-        this.applicationGedLoader.RefreshData();
-        this._tree.familySpanLines = null;
-        this._tree.childlessMarriages = null;
+        // this._tree.generations = null;
+        // this.applicationGedLoader.RefreshData();
+        // this._tree.familySpanLines = null;
+        // this._tree.childlessMarriages = null;
     },
 
     GameLoop: function () {

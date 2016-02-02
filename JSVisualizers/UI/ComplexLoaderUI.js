@@ -18,6 +18,10 @@ function ComplexLoaderUI(gedPreLoader) {
     this.forceDirect;
 }
 
+ComplexLoaderUI.prototype.Refresh = function (gedPreLoader) {
+    this.gedPreLoader = gedPreLoader;
+    this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
+};
 
 ComplexLoaderUI.prototype.toggleFDOptions = function (visible) {
     
