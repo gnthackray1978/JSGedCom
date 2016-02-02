@@ -138,9 +138,9 @@ function GedPreLoader(applicationGedLoader) {
             try {
                 var addChild = false;
                 
-                if(person.id == '@P1924@'){
-                    console.log(person.id);
-                }
+                // if(person.id == '@P1924@'){
+                //     console.log(person.id);
+                // }
 
                 if (person != undefined &&
                     person.id == startperson.id) {
