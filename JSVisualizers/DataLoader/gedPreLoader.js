@@ -130,10 +130,14 @@ function GedPreLoader(applicationGedLoader) {
             startperson.generation = this.searchDepth;
             this.addPerson(startperson);
         }
-
+        
+        var that = this;
+        
         //added idx for debug purpose can delete
-        var addPersonIf = function(state, person, spouse, idx) {
-
+        var addPersonIf = function(person, spouse, idx) {
+            
+           
+            
             try {
                 var addChild = false;
                 
@@ -144,16 +148,16 @@ function GedPreLoader(applicationGedLoader) {
                 if (person != undefined &&
                     person.id == startperson.id) {
 
-                    if (state.WorkingFamilies[idx].children.length > 0) state.WorkingFamilies[idx].children[0].isFirst = true;
+                    if (that.WorkingFamilies[idx].children.length > 0) that.WorkingFamilies[idx].children[0].isFirst = true;
                     
                     var tpDebugGen = person.generation;
 
                     if (person.generation == -1) {
-                        person.generation = state.searchDepth;
+                        person.generation = that.searchDepth;
                         if(person.id == '@P1924@'){
                             console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen + ' sp: ' +startperson.id);
                         }
-                        state.addPerson(person, spouse);
+                        that.addPerson(person, spouse);
                     }
 
                     addChild = true;
@@ -165,20 +169,20 @@ function GedPreLoader(applicationGedLoader) {
                     spouse.generation == -1 &&
                     person != undefined &&
                     person.id == startperson.id) {
-                    spouse.generation = state.searchDepth;
+                    spouse.generation = that.searchDepth;
                     
                     if(person.id == '@P1924@'){
                         console.log(person.id + '-2');
                     }
-                    state.addPerson(spouse, person, false);
+                    that.addPerson(spouse, person, false);
                 }
 
 
                 if (addChild) {
                     famidx = 0;
-                    while (famidx < state.WorkingFamilies[idx].children.length) {
-                        state.searchFams(state.WorkingFamilies[idx].children[famidx]);
-                        state.searchDepth--;
+                    while (famidx < that.WorkingFamilies[idx].children.length) {
+                        that.searchFams(that.WorkingFamilies[idx].children[famidx]);
+                        that.searchDepth--;
                         famidx++;
                     }
                 }
@@ -191,7 +195,7 @@ function GedPreLoader(applicationGedLoader) {
 
         };
 
-        while (idx < this.WorkingFamilies.length && familyFound) {
+        while (idx < that.WorkingFamilies.length && familyFound) {
 
 
             if(idx == 97 && startperson.id == '@P1924@'){
@@ -203,14 +207,14 @@ function GedPreLoader(applicationGedLoader) {
             }
             
             
-            addPersonIf( this, this.WorkingFamilies[idx].husband, this.WorkingFamilies[idx].wife,idx);
+            addPersonIf(that.WorkingFamilies[idx].husband, that.WorkingFamilies[idx].wife,idx);
 
-            addPersonIf(this, this.WorkingFamilies[idx].wife, this.WorkingFamilies[idx].husband,idx);
+            addPersonIf(that.WorkingFamilies[idx].wife, that.WorkingFamilies[idx].husband,idx);
 
             idx++;
         }
 
-        this.generations[0][0].IsHtmlLink = false;
+        that.generations[0][0].IsHtmlLink = false;
 
     };
 
