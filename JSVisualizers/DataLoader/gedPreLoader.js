@@ -216,29 +216,6 @@ function GedPreLoader(applicationGedLoader) {
 
     };
 
-    GedPreLoader.prototype._break = function(person){
-        
-        var id = person.id;
-        
-        if(id == '@P1924@')
-        {
-            console.log(id + ' found' );
-            
-            try
-            {
-                var _tpMid = this.generations[this.searchDepth - 1][0].MotherId;
-                var _tpFid = this.generations[this.searchDepth - 1][0].FatherId;
-                
-                console.log(id + ' parents: ' + _tpMid + ' ' + _tpFid);
-            }
-            catch(err){
-                console.log(err);
-            }
-            
-            
-        }
-    };
-
     GedPreLoader.prototype.addPerson = function (person, spouse, isChild) {
         isChild = (isChild == undefined) ? true : isChild;
 
