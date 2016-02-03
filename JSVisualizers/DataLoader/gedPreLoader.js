@@ -106,7 +106,7 @@ function GedPreLoader(applicationGedLoader) {
 
     GedPreLoader.prototype.searchFams = function (startperson) {
 
-        if(startperson.id == '@P1924@'){
+        if(startperson.id == '@P39@'){
             console.log('searchFams:' + startperson.id + ' ' +startperson.generation);
         }
             
@@ -198,13 +198,11 @@ function GedPreLoader(applicationGedLoader) {
         while (idx < that.WorkingFamilies.length && familyFound) {
 
 
-            if(idx == 97 && startperson.id == '@P1924@'){
-                console.log('97');
+            if(idx == 585 && startperson.id == '@P39@'){
+                console.log('585');
             }
             
-            if(idx == 108 && startperson.id == '@P1924@'){
-                console.log('108');
-            }
+         
             
             
             addPersonIf(that.WorkingFamilies[idx].husband, that.WorkingFamilies[idx].wife,idx);
