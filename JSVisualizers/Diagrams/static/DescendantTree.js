@@ -182,7 +182,6 @@ DescTree.prototype = {
 
 
     ComputeLocations: function () {
-        console.log('compute locations');
         
         if (this.generations.length === 0) {
             return;
@@ -533,7 +532,7 @@ DescTree.prototype = {
     //run when visibility changed
     UpdateGenerationState: function () {
 
-        console.log('DescTree.UpdateGenerationState');
+        //console.log('DescTree.UpdateGenerationState');
 
         var familyCount = 0;
         var personCount = 0;

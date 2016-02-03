@@ -3,8 +3,7 @@
 /** @constructor */
 function GedPreLoader(applicationGedLoader) {
     // Constructor
-    console.log('GED PRE LOADER created');
-    
+  
     if (applicationGedLoader == undefined) applicationGedLoader = new ApplicationGedLoader();
     
     this.ancUtils = new AncUtils();
@@ -72,10 +71,6 @@ function GedPreLoader(applicationGedLoader) {
             
         }
 
-        // var p = this.applicationGedLoader.findPerson(nextGeneration);
-        
-        // console.log(p.name);
-
         return nextGeneration;
     },
 
@@ -85,8 +80,6 @@ function GedPreLoader(applicationGedLoader) {
         
         personId = this.SearchFurthestAncestor(personId);
 
-        console.log('GED PRE LOADER: GetGenerations: ' + initPerson + ' ' + personId + ' init sd ' +  this.searchDepth);
-        
         this.firstCount =0;
         
         var idx = 0;
@@ -115,8 +108,6 @@ function GedPreLoader(applicationGedLoader) {
     GedPreLoader.prototype.searchFams = function (startperson) {
 
         
-        console.log('searchFams:' + startperson.id + ' ' +startperson.generation);
-        
             
         this.searchDepth++;
 
@@ -141,17 +132,10 @@ function GedPreLoader(applicationGedLoader) {
         
         var that = this;
         
-        //added idx for debug purpose can delete
-        var addPersonIf = function(person, spouse, idx) {
-            
-           
-            
+        var addPersonIf = function(person, spouse) {
+
             try {
                 var addChild = false;
-                
-                // if(person.id == '@P1924@'){
-                //     console.log(person.id);
-                // }
 
                 if (person != undefined &&
                     person.id == startperson.id) {
@@ -162,9 +146,7 @@ function GedPreLoader(applicationGedLoader) {
 
                     if (person.generation == -1) {
                         person.generation = that.searchDepth;
-                        
-                        //console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen + ' sp: ' +startperson.id);
-                        
+                   
                         that.addPerson(person, spouse);
                     }
 
@@ -178,10 +160,7 @@ function GedPreLoader(applicationGedLoader) {
                     person != undefined &&
                     person.id == startperson.id) {
                     spouse.generation = that.searchDepth;
-                    
-                    
-                        console.log(person.id + '-2');
-                    
+                
                     that.addPerson(spouse, person, false);
                 }
 
@@ -205,9 +184,9 @@ function GedPreLoader(applicationGedLoader) {
 
         while (idx < that.WorkingFamilies.length && familyFound) {
 
-            addPersonIf(that.WorkingFamilies[idx].husband, that.WorkingFamilies[idx].wife,idx);
+            addPersonIf(that.WorkingFamilies[idx].husband, that.WorkingFamilies[idx].wife);
 
-            addPersonIf(that.WorkingFamilies[idx].wife, that.WorkingFamilies[idx].husband,idx);
+            addPersonIf(that.WorkingFamilies[idx].wife, that.WorkingFamilies[idx].husband);
 
             idx++;
         }
@@ -220,8 +199,7 @@ function GedPreLoader(applicationGedLoader) {
         isChild = (isChild == undefined) ? true : isChild;
 
 
-       // console.log(this.searchDepth + ' ' + person.name + ' ' + person.isFirst);
-
+     
         //var RecordLink = {
         //    DOB: person.BirthDate.yearDate() != 0 ? person.BirthDate.yearDate() : person.BaptismDate.yearDate(),
         //    DOD: "",
@@ -231,14 +209,6 @@ function GedPreLoader(applicationGedLoader) {
         //    Occupation: "",
         //    BirthLocation: person.BaptismPlace == '' ? person.BaptismPlace : person.BirthPlace
         //};
-        // if(person.isFirst)
-        // {
-            
-        //     console.log('person.isFirst '+ person.id + ' ' + this.firstCount);
-        //     this.firstCount++;
-        // }
-
-        //this._break(person);
 
         var newPerson = {
             RecordLink: this.RecordLinkLoader.fill(person),

@@ -213,11 +213,7 @@ TreeUI.prototype = {
                     var halfwidth = Math.abs(_person.X2 - _person.X1) / 2;
                     var middlebox = _person.X1 + halfwidth;
 
-                    if (_person.RecordLink.Name == "Jane Thackray") {
-                        console.log("Jane Thackray X1 Y2");
-                      
-
-                    }
+                   
 
                     //middle of box   
                     if ((_person.ChildCount > 0 || _person.SpouseLst.length> 0) && !_person.IsHtmlLink) {

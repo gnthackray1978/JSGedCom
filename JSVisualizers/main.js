@@ -46,11 +46,7 @@ $(document).ready(function () {
                 
                
                 if (that.treeRunner != null){
-                    //that.Refresh(new GedPreLoader());
-                    //that.treeRunner.CleanUp();
-                    //this._tree.generations = null;
                     that.applicationGedLoader.RefreshData();
-         
                 }
    
                 that.treeRunner = new TreeRunner();
