@@ -35,6 +35,7 @@ $(document).ready(function () {
                 
                 if (that.treeRunner != null)
                     that.treeRunner.CleanUp();
+                    
                 that.treeRunner = new TreeRunner();
                 that.treeRunner.run(selectedId, that.applicationGedLoader, new AncTree());
 
@@ -46,7 +47,7 @@ $(document).ready(function () {
                 
                
                 if (that.treeRunner != null){
-                    that.applicationGedLoader.RefreshData();
+                    that.treeRunner.CleanUp();
                 }
    
                 that.treeRunner = new TreeRunner();

@@ -11,7 +11,7 @@ var TreeRunner = function () {
     this._moustQueue = [];
     this._mouseDown = false;
     
-
+    this.kill  = false;
 };
 
 TreeRunner.prototype = {
@@ -162,11 +162,8 @@ TreeRunner.prototype = {
 
         $("#myCanvas").unbind();
         $(".button_box").unbind();
-
-        // this._tree.generations = null;
-        // this.applicationGedLoader.RefreshData();
-        // this._tree.familySpanLines = null;
-        // this._tree.childlessMarriages = null;
+        this._tree = undefined;
+        this.kill = true;
     },
 
     GameLoop: function () {
@@ -178,8 +175,9 @@ TreeRunner.prototype = {
             this._tree.SetCentrePoint(_point[0], _point[1]);
             this._tree.DrawTree();
         }
-
-        setTimeout($.proxy(this.GameLoop, this));
+        
+        if(!this.kill)
+            setTimeout($.proxy(this.GameLoop, this));
     }
 
 };

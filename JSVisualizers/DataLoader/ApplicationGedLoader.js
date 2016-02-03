@@ -371,22 +371,7 @@ ApplicationGedLoader.prototype = {
 
         this.loader.GetGenerations(personId, callback);
         
-    },
-    
-    RefreshData: function () {
-
-        //JSON.parse(JSON.stringify(loader.families));
-        // this.families = JSON.parse(JSON.stringify(this.cacheFamilies));
-        // this.persons =  JSON.parse(JSON.stringify(this.cachePersons));
-        
-        // var idx =0;
-        
-        // while (idx < this.families.length) {
-        //     if (this.families[idx].husband != undefined) this.families[idx].husband.generation = -1;
-        //     if (this.families[idx].wife != undefined) this.families[idx].wife.generation = -1;
-        //     idx++;
-        // }
-        
-        
     }
+    
+
 };
