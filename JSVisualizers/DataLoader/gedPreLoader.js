@@ -94,6 +94,14 @@ function GedPreLoader(applicationGedLoader) {
         while (idx < this.WorkingFamilies.length) {
             if (this.WorkingFamilies[idx].husband != undefined) this.WorkingFamilies[idx].husband.generation = -1;
             if (this.WorkingFamilies[idx].wife != undefined) this.WorkingFamilies[idx].wife.generation = -1;
+            
+            var iidx =0;
+            
+            while(iidx < this.WorkingFamilies[idx].children.length){
+                this.WorkingFamilies[idx].children[iidx].generation =-1;
+                iidx++;
+            }
+            
             idx++;
         }
 
@@ -155,7 +163,7 @@ function GedPreLoader(applicationGedLoader) {
                     if (person.generation == -1) {
                         person.generation = that.searchDepth;
                         
-                        console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen + ' sp: ' +startperson.id);
+                        //console.log(person.id + '-1 : idx ' + idx + ' gen ' + tpDebugGen + ' sp: ' +startperson.id);
                         
                         that.addPerson(person, spouse);
                     }
