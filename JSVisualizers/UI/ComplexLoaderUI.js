@@ -4,7 +4,7 @@ function ComplexLoaderUI(gedPreLoader) {
     
     this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
     
-    this.defaultGed = '/basicvis/samples/Bannanas.txt';
+    this.defaultGed = '/basicvis/samples/default.txt';
 
     this.showGed = true;
     this.showMapControls = true;
