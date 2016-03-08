@@ -6,11 +6,17 @@
 /*global GedPreLoader*/
 /*global VisControlsUI*/
 
+/*global postal*/
 
 $(document).ready(function () {
 
     var diagMode = null;
+    var channel;
+    
+    if(postal)
+        channel = postal.channel(); 
      
+    var _view = new View(channel);
     
     if (window.location.hash == '#test') {
         diagMode = new SimpleLoaderUI(new FakeData());
