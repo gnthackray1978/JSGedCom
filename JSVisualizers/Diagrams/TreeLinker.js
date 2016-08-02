@@ -4,9 +4,10 @@ var TreeLinker = function (data) {
     this.data = data;
 
     this.addedPeople = new Array();
-    this.topYear=0;
-    this.bottomYear =0;
-    this.currentYear =0;
+    
+    this.topYear= this.data.TopYear;
+    this.bottomYear =this.data.BottomYear;
+    this.currentYear =this.data.BottomYear;
 };
 
 TreeLinker.prototype = {
@@ -146,43 +147,43 @@ TreeLinker.prototype = {
         }
 
         return count;
-    },
-
-    calculateTreeRange: function(){
-        var gidx = 0;
-        var botYear = 0;
-        var topYear = 0;
-
-        var years = [];
-
-        while (gidx < this.data.Generations.length) {
-            var pidx = 0;
-
-            while (pidx < this.data.Generations[gidx].length) {
-
-                if (Number(this.data.Generations[gidx][pidx].RecordLink.DOB) != 0)
-                    years.push(Number(this.data.Generations[gidx][pidx].RecordLink.DOB));
-
-                pidx++;
-            }
-
-            gidx++;
-        }
-
-        years = years.sort(function(a, b) { return a - b; });
-
-        if (years.length > 0) {
-            botYear = years[0];
-            topYear = years[years.length - 1];
-        }
-
-        if (botYear == 0) {
-            botYear = 1695;
-            topYear = 1695;
-        }
-    
-        this.topYear=topYear;
-        this.bottomYear =botYear;
-        this.currentYear = botYear;
     }
+
+    // calculateTreeRange: function(){
+    //     var gidx = 0;
+    //     var botYear = 0;
+    //     var topYear = 0;
+
+    //     var years = [];
+
+    //     while (gidx < this.data.Generations.length) {
+    //         var pidx = 0;
+
+    //         while (pidx < this.data.Generations[gidx].length) {
+
+    //             if (Number(this.data.Generations[gidx][pidx].RecordLink.DOB) != 0)
+    //                 years.push(Number(this.data.Generations[gidx][pidx].RecordLink.DOB));
+
+    //             pidx++;
+    //         }
+
+    //         gidx++;
+    //     }
+
+    //     years = years.sort(function(a, b) { return a - b; });
+
+    //     if (years.length > 0) {
+    //         botYear = years[0];
+    //         topYear = years[years.length - 1];
+    //     }
+
+    //     if (botYear == 0) {
+    //         botYear = 1695;
+    //         topYear = 1695;
+    //     }
+    
+    //     this.topYear=topYear;
+    //     this.bottomYear =botYear;
+    //     this.currentYear = botYear;
+    // }
 }

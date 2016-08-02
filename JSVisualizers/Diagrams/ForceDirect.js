@@ -314,7 +314,7 @@ ForceDirect.prototype = {
 
         this.layoutList = [];
         
-        that.treeLinker.calculateTreeRange();
+    //    that.treeLinker.calculateTreeRange();
         
         
 

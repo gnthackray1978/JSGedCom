@@ -1,9 +1,13 @@
 
 var GedData = function (generationsArray) {
 
+    this.TopYear=0;
+    
+    this.BottomYear =0;
+        
     this.Generations = generationsArray;
-    this.TopYear =0;
-    this.BottomYear=0;
+    
+    this.TreeRange();
     
     
 };
