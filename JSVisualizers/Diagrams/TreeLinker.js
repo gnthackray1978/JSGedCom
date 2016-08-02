@@ -101,7 +101,7 @@ TreeLinker.prototype = {
 
                     // count how many desendants this person has in the diagram already.
                     if (this.data.Generations[genIdx][personIdx].nodeLink != undefined)
-                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount = this.countDescendants(this.data, genIdx, personIdx);
+                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount = this.data.DescendantCount(genIdx, personIdx);
                 }
 
                 personIdx++;
@@ -113,77 +113,40 @@ TreeLinker.prototype = {
 
 
 
-    },
-
-    countDescendants: function (data, genidx, personidx) {
-
-        //   var genIdx = 0;
-
-        var stack = new Array();
-        var count = 0;
-        stack.push(data.Generations[genidx][personidx]);
-
-
-        while (stack.length > 0) {
-
-            var current = stack.pop();
-            count++;
-            var personIdx = 0;
-
-            var nextGen = current.GenerationIdx + 1;
-
-            if (nextGen < data.Generations.length) {
-
-                while (personIdx < data.Generations[nextGen].length) {
-                    if (data.Generations[nextGen][personIdx].FatherId == current.PersonId &&
-                            data.Generations[nextGen][personIdx].nodeLink != undefined)
-                        stack.push(data.Generations[nextGen][personIdx]);
-
-                    personIdx++;
-                }
-
-            }
-            //  genIdx++;
-        }
-
-        return count;
     }
 
-    // calculateTreeRange: function(){
-    //     var gidx = 0;
-    //     var botYear = 0;
-    //     var topYear = 0;
+    // countDescendants: function (data, genidx, personidx) {
 
-    //     var years = [];
+    //     //   var genIdx = 0;
 
-    //     while (gidx < this.data.Generations.length) {
-    //         var pidx = 0;
+    //     var stack = new Array();
+    //     var count = 0;
+    //     stack.push(data.Generations[genidx][personidx]);
 
-    //         while (pidx < this.data.Generations[gidx].length) {
 
-    //             if (Number(this.data.Generations[gidx][pidx].RecordLink.DOB) != 0)
-    //                 years.push(Number(this.data.Generations[gidx][pidx].RecordLink.DOB));
+    //     while (stack.length > 0) {
 
-    //             pidx++;
+    //         var current = stack.pop();
+    //         count++;
+    //         var personIdx = 0;
+
+    //         var nextGen = current.GenerationIdx + 1;
+
+    //         if (nextGen < data.Generations.length) {
+
+    //             while (personIdx < data.Generations[nextGen].length) {
+    //                 if (data.Generations[nextGen][personIdx].FatherId == current.PersonId &&
+    //                         data.Generations[nextGen][personIdx].nodeLink != undefined)
+    //                     stack.push(data.Generations[nextGen][personIdx]);
+
+    //                 personIdx++;
+    //             }
+
     //         }
-
-    //         gidx++;
+    //         //  genIdx++;
     //     }
 
-    //     years = years.sort(function(a, b) { return a - b; });
-
-    //     if (years.length > 0) {
-    //         botYear = years[0];
-    //         topYear = years[years.length - 1];
-    //     }
-
-    //     if (botYear == 0) {
-    //         botYear = 1695;
-    //         topYear = 1695;
-    //     }
-    
-    //     this.topYear=topYear;
-    //     this.bottomYear =botYear;
-    //     this.currentYear = botYear;
+    //     return count;
     // }
+
 }
