@@ -1,3 +1,5 @@
+/*global GedData*/
+/*global AncUtils*/
 
 
 /** @constructor */
@@ -100,9 +102,9 @@ function GedPreLoader(applicationGedLoader) {
 
         this.searchFams(this.applicationGedLoader.findPerson(personId));
 
-        var payload = {Generations : this.generations};
+       // var payload = {Generations : this.generations};
          
-        callback(payload);
+        callback(new GedData(this.generations));
     };
 
     GedPreLoader.prototype.searchFams = function (startperson) {

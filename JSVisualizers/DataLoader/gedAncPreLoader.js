@@ -1,5 +1,6 @@
 /*global ApplicationGedLoader*/
 /*global AncUtils*/
+/*global GedData*/
 
 
 
@@ -37,11 +38,12 @@ function GedAncPreLoader(applicationGedLoader) {
 
         this.searchFams(this.applicationGedLoader.findMakeFirst(personId));
 
-        var payload = {
-            Generations: this.generations
-        };
+        // var payload = {
+        //     Generations: this.generations
+        // };
 
-        callback(payload);
+
+        callback(new GedData(this.generations));
 
     };
 
