@@ -59,9 +59,9 @@ Graph.prototype = {
     newNode: function (data) {
         var node = new Node(this.nextNodeId++, data);
 
-        this.addedPeople.push(data.RecordId);
+        // this.addedPeople.push(data.RecordId);
         
-        this.addedNodes.push(node);
+        // this.addedNodes.push(node);
         
         this.addNode(node);
         return node;
