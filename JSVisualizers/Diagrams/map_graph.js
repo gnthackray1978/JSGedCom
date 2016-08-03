@@ -10,8 +10,8 @@ var Graph = function () {
     this.eventListeners = [];
 
     //todo get rid of this and just iterate nodes collection
+
     this.addedNodes = [];
-    this.addedPeople = [];
 };
 
 
@@ -59,9 +59,7 @@ Graph.prototype = {
     newNode: function (data) {
         var node = new Node(this.nextNodeId++, data);
 
-         this.addedPeople.push(data.RecordId);
-        
-        // this.addedNodes.push(node);
+        this.addedNodes.push(node);
         
         this.addNode(node);
         return node;
@@ -127,27 +125,16 @@ Graph.prototype = {
     },
  
     containsNode: function (recordId) {
-      //  var idx =0;
-        var personPresent =false;
+ 
+        var nodePresent =false;
         
-        // while(idx < this.addedNodes.length){
-            
-        //     if (this.addedNodes[idx].match(recordId)) {
-        //         return true;
-        //     }
-        //     idx++;
-        // }
-        
-        
-        this.addedPeople.forEach(function (entry) {
-            if (entry == recordId) {
-                personPresent = true;
-
+        this.addedNodes.forEach(function (entry) {
+            if (entry.match(recordId)) {
+                nodePresent = true;
             }
         });
 
-        
-        return personPresent;
+        return nodePresent;
     },
  
     addGraphListener: function (obj) {
