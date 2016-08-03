@@ -84,10 +84,23 @@ TreeLinker.prototype = {
 
                             }
 
-                            var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
+                            // var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
                             
-                            if(fatherEdge.IsValid)
-                                mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
+                            // if(fatherEdge.IsValid)
+                            //     mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
+                            
+                            if (genIdx > 0) {
+                                var fatherNode = this.data.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
+                                
+                                if(!fatherNode) 
+                                    console.log(fatherNode.PersonId + 'father node missing nodelink');
+                                
+                                if(!currentPerson.nodeLink) 
+                                    console.log(currentPerson.PersonId + 'current node missing nodelink');
+                                    
+                                if(fatherNode && currentPerson.nodeLink)
+                                    mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
+                            }
                         }
                         else {
                             console.log('person present');
