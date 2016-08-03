@@ -62,7 +62,7 @@ TreeLinker.prototype = {
                         
                         var personPresent = false;
                         var that = this;
-                        mygraph.addedPeople.forEach(function (entry) {
+                        mygraph.addedNodes.forEach(function (entry) {
                             if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
                                 personPresent = true;
 
