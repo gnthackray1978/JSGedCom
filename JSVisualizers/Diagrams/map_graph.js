@@ -136,6 +136,7 @@ Graph.prototype = {
             if (this.addedNodes[idx].match(recordId)) {
                 return true;
             }
+            idx++;
         }
         
         // this.addedNodes.forEach(function(entry){
