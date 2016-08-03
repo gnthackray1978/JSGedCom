@@ -25,3 +25,9 @@ Node.prototype.getWidth = function (ctx) {
 Node.prototype.getHeight = function (ctx) {
     return 20;
 };
+
+Node.prototype.match = function (id) {
+    if(!this.data.RecordId) return false;
+    
+    return this.data.RecordId == id;
+};

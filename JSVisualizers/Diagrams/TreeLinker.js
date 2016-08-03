@@ -3,7 +3,7 @@
 var TreeLinker = function (data) {
     this.data = data;
 
-    this.addedPeople = new Array();
+   // this.addedPeople = new Array();
     
     this.topYear= this.data.TopYear;
     this.bottomYear =this.data.BottomYear;
@@ -22,7 +22,7 @@ TreeLinker.prototype = {
         while (genIdx < this.data.Generations.length) {
 
             var personIdx = 0;
-            var genArray = new Array();
+         //   var genArray = new Array();
 
 
             while (personIdx < this.data.Generations[genIdx].length) {
@@ -60,41 +60,29 @@ TreeLinker.prototype = {
                     
                     if (_dob < year && _dob != 0) {
                         
-                        var personPresent = false;
-                        var that = this;
-                        this.addedPeople.forEach(function (entry) {
-                            if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
-                                personPresent = true;
+                        // var personPresent = false;
+                        // var that = this;
+                        // this.addedPeople.forEach(function (entry) {
+                        //     if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
+                        //         personPresent = true;
 
-                            }
-                        });
+                        //     }
+                        // });
 
-                        if (!personPresent) {
+                        var personId = this.data.Generations[genIdx][personIdx].PersonId;
+                        
+                        if (!mygraph.containsNode(personId)) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
-                                this.addedPeople.push(this.data.Generations[genIdx][personIdx].PersonId);
+                                //this.addedPeople.push(this.data.Generations[genIdx][personIdx].PersonId);
                                 this.data.Generations[genIdx][personIdx].nodeLink =
-                                    mygraph.newNode({ label: descriptor, RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, type: 'normal' });
+                                    mygraph.newNode({ label: descriptor, 
+                                                      RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, 
+                                                      RecordId : personId,
+                                                      type: 'normal' });
 
                             }
-
-                            // if (genIdx > 0) {
-                            //     var fatherNode = this.data.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
-                                
-                            //     if(!fatherNode) 
-                            //         console.log(fatherNode.PersonId + 'father node missing nodelink');
-                                
-                            //     if(!currentPerson.nodeLink) 
-                            //         console.log(currentPerson.PersonId + 'current node missing nodelink');
-                                    
-                            //     if(fatherNode && currentPerson.nodeLink)
-                            //         mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
-                                    
-                            //     var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
-                                
-                                
-                            // }
 
                             var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
                             
@@ -109,7 +97,8 @@ TreeLinker.prototype = {
 
                     // count how many desendants this person has in the diagram already.
                     if (this.data.Generations[genIdx][personIdx].nodeLink != undefined)
-                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount = this.data.DescendantCount(genIdx, personIdx);
+                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount 
+                        = this.data.DescendantCount(genIdx, personIdx);
                 }
 
                 personIdx++;

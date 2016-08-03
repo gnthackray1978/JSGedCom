@@ -123,6 +123,16 @@ Graph.prototype = {
         this.notify();
     },
  
+    containsNode: function (recordId) {
+        this.nodes.forEach(function (entry) {
+            if (entry.match(recordId)) {
+                return true;
+            }
+        });
+        
+        return false;
+    },
+ 
     addGraphListener: function (obj) {
         this.eventListeners.push(obj);
     },
