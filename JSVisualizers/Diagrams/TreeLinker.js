@@ -86,7 +86,7 @@ TreeLinker.prototype = {
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
                                     
-                                that.addedPeople.push(personId);
+                                //that.addedPeople.push(personId);
                                 
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
