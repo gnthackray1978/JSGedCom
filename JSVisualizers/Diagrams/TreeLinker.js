@@ -64,30 +64,14 @@ TreeLinker.prototype = {
                     if (_dob < year && _dob != 0) {
                         
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
-                        var personPresent = false;
+                        
                         var that = mygraph;
-                        
-                        
-                        // that.addedPeople.forEach(function (entry) {
-                        //     if (entry == personId) {
-                        //         personPresent = true;
-
-                        //     }
-                        // });
-
-                        
-                        
-                        console.log(personPresent);
-                        console.log(that.containsNode(personId));
-                        
                         
                         if (!that.containsNode(personId)) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
-                                    
-                                //that.addedPeople.push(personId);
-                                
+                               
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
                                                       RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, 
