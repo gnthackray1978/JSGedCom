@@ -102,7 +102,7 @@ GedData.prototype = {
             
     
         if(fatherNode && currentPerson.nodeLink && genIdx > 0){
-            return {IsValid: true, FatherNode : fatherNode, ChildNode : currentPerson};    
+            return {IsValid: true, FatherNode : fatherNode.nodeLink, ChildNode : currentPerson.nodeLink};    
         }
         else
         {
