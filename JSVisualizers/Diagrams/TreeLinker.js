@@ -17,7 +17,7 @@ TreeLinker.prototype = {
 
         var genIdx = 0;
 
-
+        mygraph.addedNodes =[];
 
         while (genIdx < this.data.Generations.length) {
 
