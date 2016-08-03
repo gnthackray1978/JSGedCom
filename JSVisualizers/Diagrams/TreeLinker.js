@@ -3,7 +3,7 @@
 var TreeLinker = function (data) {
     this.data = data;
 
-    this.addedPeople = new Array();
+   // this.addedPeople = new Array();
     
     this.topYear= this.data.TopYear;
     this.bottomYear =this.data.BottomYear;
@@ -63,9 +63,9 @@ TreeLinker.prototype = {
                         
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         
-                        var that = mygraph;
+                       // var that = mygraph;
                         
-                        if (!that.containsNode(personId)) {
+                        if (!mygraph.containsNode(personId)) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
