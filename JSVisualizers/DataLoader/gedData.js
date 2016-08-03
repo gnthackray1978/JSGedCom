@@ -85,14 +85,15 @@ GedData.prototype = {
     FatherEdge: function(genIdx, personIdx){
         
         var currentPerson = this.Generations[genIdx][personIdx];
-        var fatherNode;
+        var fatherNodeLink;
+        
         
         if(genIdx > 0 && currentPerson) {
-            fatherNode = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
+            fatherNodeLink = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
         }      
         
-        if(!fatherNode) 
-            console.log('father node not found');
+        if(!fatherNodeLink) 
+            console.log('father node link not found');
         
         if(!currentPerson.nodeLink) 
             console.log(currentPerson.PersonId + 'current node missing nodelink');
@@ -101,8 +102,8 @@ GedData.prototype = {
             console.log('no father for generation: ' + genIdx);
             
     
-        if(fatherNode && currentPerson.nodeLink && genIdx > 0){
-            return {IsValid: true, FatherNode : fatherNode.nodeLink, ChildNode : currentPerson.nodeLink};    
+        if(fatherNodeLink && currentPerson.nodeLink && genIdx > 0){
+            return {IsValid: true, FatherNode : fatherNodeLink, ChildNode : currentPerson.nodeLink};    
         }
         else
         {
