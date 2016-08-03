@@ -127,24 +127,27 @@ Graph.prototype = {
     },
  
     containsNode: function (recordId) {
-        var idx =0;
+      //  var idx =0;
+        var personPresent =false;
         
-        while(idx < this.addedNodes.length){
+        // while(idx < this.addedNodes.length){
             
-            if (this.addedNodes[idx].match(recordId)) {
-                return true;
-            }
-            idx++;
-        }
-        
-        // this.addedNodes.forEach(function(entry){
-            
-        //     if (entry.RecordId == recordId) {
+        //     if (this.addedNodes[idx].match(recordId)) {
         //         return true;
-        //     }    
-        // })
+        //     }
+        //     idx++;
+        // }
         
-        return false;
+        
+        this.addedPeople.forEach(function (entry) {
+            if (entry == recordId) {
+                personPresent = true;
+
+            }
+        });
+
+        
+        return personPresent;
     },
  
     addGraphListener: function (obj) {

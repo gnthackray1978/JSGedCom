@@ -78,7 +78,7 @@ TreeLinker.prototype = {
                         
                         
                         console.log(personPresent);
-                        console.log(mygraph.containsNode(personId));
+                        console.log(that.containsNode(personId));
                         
                         
                         if (!personPresent) {
