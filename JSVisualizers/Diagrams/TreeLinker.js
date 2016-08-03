@@ -42,7 +42,7 @@ TreeLinker.prototype = {
 
         var genIdx = 0;
 
-        mygraph.addedPeople =[];
+        this.addedPeople =[];
 
         while (genIdx < this.data.Generations.length) {
 
@@ -66,7 +66,7 @@ TreeLinker.prototype = {
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         var personPresent = false;
                         var that = this;
-                        mygraph.addedPeople.forEach(function (entry) {
+                        this.addedPeople.forEach(function (entry) {
                             if (entry == personId) {
                                 personPresent = true;
 
@@ -84,7 +84,7 @@ TreeLinker.prototype = {
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
                                     
-                                mygraph.addedPeople.push(personId);
+                                that.addedPeople.push(personId);
                                 
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
