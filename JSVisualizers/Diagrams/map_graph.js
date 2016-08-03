@@ -135,7 +135,7 @@ Graph.prototype = {
         
         this.addedNodes.forEach(function(entry){
             
-            if (entry.match(recordId)) {
+            if (entry.RecordId == recordId) {
                 return true;
             }    
         })
