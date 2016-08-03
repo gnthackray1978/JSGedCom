@@ -10,7 +10,7 @@ var Graph = function () {
     this.eventListeners = [];
 
     //todo get rid of this and just iterate nodes collection
-    this.addedNodes = new Array();
+    this.addedNodes = [];
 
 };
 
@@ -60,7 +60,7 @@ Graph.prototype = {
         var node = new Node(this.nextNodeId++, data);
 
 
-        //this.addedNodes.push(data);
+        this.addedNodes.push(data);
         
         this.addNode(node);
         return node;
@@ -127,18 +127,23 @@ Graph.prototype = {
  
     containsNode: function (recordId) {
         
-        // this.nodes.forEach(function (entry) {
-        //     if (entry.match(recordId)) {
-        //         return true;
-        //     }
-        // });
         
-        this.addedNodes.forEach(function(entry){
+        
+        var idx =0;
+        
+        while(idx < this.addedNodes.length){
             
-            if (entry.RecordId == recordId) {
+            if (this.addedNodes[idx].match(recordId)) {
                 return true;
-            }    
-        })
+            }
+        }
+        
+        // this.addedNodes.forEach(function(entry){
+            
+        //     if (entry.RecordId == recordId) {
+        //         return true;
+        //     }    
+        // })
         
         return false;
     },
