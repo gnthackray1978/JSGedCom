@@ -80,5 +80,32 @@ GedData.prototype = {
     
         this.TopYear=topYear;
         this.BottomYear =botYear;
+    },
+    
+    FatherEdge: function(genIdx, personIdx){
+        
+        var currentPerson = this.Generations[genIdx][personIdx];
+        
+        var fatherNode = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
+                                
+        if(!fatherNode) 
+            console.log(fatherNode.PersonId + 'father node missing nodelink');
+        
+        if(!currentPerson.nodeLink) 
+            console.log(currentPerson.PersonId + 'current node missing nodelink');
+    
+        if(genIdx <= 0) 
+            console.log('no father for generation: ' + genIdx);
+            
+    
+        if(fatherNode && currentPerson.nodeLink && genIdx > 0){
+            return {IsValid: true, FatherNode : fatherNode, ChildNode : currentPerson};    
+        }
+        else
+        {
+            return {IsValid: false}; 
+        }
+        
+        
     }
 };
