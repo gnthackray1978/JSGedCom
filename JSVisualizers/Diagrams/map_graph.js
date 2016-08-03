@@ -60,7 +60,7 @@ Graph.prototype = {
         var node = new Node(this.nextNodeId++, data);
 
 
-        this.addedNodes.push(data);
+        this.addedNodes.push(node);
         
         this.addNode(node);
         return node;
