@@ -60,18 +60,18 @@ TreeLinker.prototype = {
                     
                     if (_dob < year && _dob != 0) {
                         
-                        // var personPresent = false;
-                        // var that = this;
-                        // this.addedPeople.forEach(function (entry) {
-                        //     if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
-                        //         personPresent = true;
+                        var personPresent = false;
+                        var that = this;
+                        mygraph.addedPeople.forEach(function (entry) {
+                            if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
+                                personPresent = true;
 
-                        //     }
-                        // });
+                            }
+                        });
 
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         
-                        if (!mygraph.containsNode(personId)) {
+                        if (!personPresent) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
