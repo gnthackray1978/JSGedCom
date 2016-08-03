@@ -11,7 +11,32 @@ var TreeLinker = function (data) {
 };
 
 TreeLinker.prototype = {
+    
+    _createDOB: function(genIdx,personIdx){
+        var _dob = 0;
 
+        try
+        {
+            _dob = this.data.Generations[genIdx][personIdx].RecordLink.DOB;
+            
+            if(_dob == 0)//try estimate dob if there is a father
+            {
+                var tpFIDX = this.data.Generations[genIdx][personIdx].FatherIdx;
+                
+                if(genIdx > 0 && tpFIDX){
+                    if(this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
+                        _dob = this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
+                    }
+                }
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+        
+        return _dob;
+    },
 
     populateGraph: function (year, mygraph) {
 
@@ -22,8 +47,6 @@ TreeLinker.prototype = {
         while (genIdx < this.data.Generations.length) {
 
             var personIdx = 0;
-         //   var genArray = new Array();
-
 
             while (personIdx < this.data.Generations[genIdx].length) {
 
@@ -34,48 +57,35 @@ TreeLinker.prototype = {
 
 
                     // add the person to the graph if he/she was born in the current time period
-                    var _dob = 0;
-
-                    try
-                    {
-                        _dob = this.data.Generations[genIdx][personIdx].RecordLink.DOB;
-                        
-                        if(_dob == 0)//try estimate dob if there is a father
-                        {
-                            var tpFIDX = this.data.Generations[genIdx][personIdx].FatherIdx;
-                            
-                            if(genIdx > 0 && tpFIDX){
-                                if(this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
-                                    _dob = this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
-                                }
-                            }
-                        }
-                    }
-                    catch(e)
-                    {
-                        console.log(e);
-                    }
+                    var _dob = this._createDOB(genIdx,personIdx);
 
                     //if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
                     
                     if (_dob < year && _dob != 0) {
                         
+                        var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         var personPresent = false;
                         var that = this;
                         this.addedPeople.forEach(function (entry) {
-                            if (entry == that.data.Generations[genIdx][personIdx].PersonId) {
+                            if (entry == personId) {
                                 personPresent = true;
 
                             }
                         });
 
-                        var personId = this.data.Generations[genIdx][personIdx].PersonId;
+                        
+                        
+                        console.log(personPresent);
+                        console.log(mygraph.containsNode(personId));
+                        
                         
                         if (!personPresent) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
-                                that.addedPeople.push(this.data.Generations[genIdx][personIdx].PersonId);
+                                    
+                                that.addedPeople.push(personId);
+                                
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
                                                       RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, 
@@ -84,23 +94,12 @@ TreeLinker.prototype = {
 
                             }
 
-                            // var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
+                            var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
                             
-                            // if(fatherEdge.IsValid)
-                            //     mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
+                            if(fatherEdge.IsValid)
+                                mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
                             
-                            if (genIdx > 0) {
-                                var fatherNode = this.data.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
-                                
-                                if(!fatherNode) 
-                                    console.log(fatherNode.PersonId + 'father node missing nodelink');
-                                
-                                if(!currentPerson.nodeLink) 
-                                    console.log(currentPerson.PersonId + 'current node missing nodelink');
-                                    
-                                if(fatherNode && currentPerson.nodeLink)
-                                    mygraph.newEdge(fatherNode, currentPerson.nodeLink, { type: 'person' });
-                            }
+                           
                         }
                         else {
                             console.log('person present');
