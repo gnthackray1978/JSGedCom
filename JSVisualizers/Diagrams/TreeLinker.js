@@ -42,7 +42,7 @@ TreeLinker.prototype = {
 
         var genIdx = 0;
 
-        this.addedPeople =[];
+        mygraph.addedNodes =[];
 
         while (genIdx < this.data.Generations.length) {
 
@@ -76,10 +76,10 @@ TreeLinker.prototype = {
                         
                         
                         console.log(personPresent);
-                        console.log('graph contains node: ' + mygraph.containsNode(personId));
+                        console.log(mygraph.containsNode(personId));
                         
                         
-                        if (personPresent) {
+                        if (!personPresent) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
