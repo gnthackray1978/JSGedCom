@@ -65,7 +65,7 @@ TreeLinker.prototype = {
                         
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         var personPresent = false;
-                        var that = this;
+                        var that = mygraph;
                         
                         
                         that.addedPeople.forEach(function (entry) {
