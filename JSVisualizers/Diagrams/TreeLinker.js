@@ -63,8 +63,6 @@ TreeLinker.prototype = {
                         
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         
-                       // var that = mygraph;
-                        
                         if (!mygraph.containsNode(personId)) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
