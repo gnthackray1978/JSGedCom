@@ -42,8 +42,6 @@ TreeLinker.prototype = {
 
         var genIdx = 0;
 
-        //mygraph.addedNodes =[];
-
         while (genIdx < this.data.Generations.length) {
 
             var personIdx = 0;
@@ -105,43 +103,7 @@ TreeLinker.prototype = {
             genIdx++;
         }
 
-
-
-
     }
 
-    // countDescendants: function (data, genidx, personidx) {
-
-    //     //   var genIdx = 0;
-
-    //     var stack = new Array();
-    //     var count = 0;
-    //     stack.push(data.Generations[genidx][personidx]);
-
-
-    //     while (stack.length > 0) {
-
-    //         var current = stack.pop();
-    //         count++;
-    //         var personIdx = 0;
-
-    //         var nextGen = current.GenerationIdx + 1;
-
-    //         if (nextGen < data.Generations.length) {
-
-    //             while (personIdx < data.Generations[nextGen].length) {
-    //                 if (data.Generations[nextGen][personIdx].FatherId == current.PersonId &&
-    //                         data.Generations[nextGen][personIdx].nodeLink != undefined)
-    //                     stack.push(data.Generations[nextGen][personIdx]);
-
-    //                 personIdx++;
-    //             }
-
-    //         }
-    //         //  genIdx++;
-    //     }
-
-    //     return count;
-    // }
-
+  
 }
