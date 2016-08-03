@@ -68,12 +68,12 @@ TreeLinker.prototype = {
                         var that = mygraph;
                         
                         
-                        that.addedPeople.forEach(function (entry) {
-                            if (entry == personId) {
-                                personPresent = true;
+                        // that.addedPeople.forEach(function (entry) {
+                        //     if (entry == personId) {
+                        //         personPresent = true;
 
-                            }
-                        });
+                        //     }
+                        // });
 
                         
                         
@@ -81,7 +81,7 @@ TreeLinker.prototype = {
                         console.log(that.containsNode(personId));
                         
                         
-                        if (!personPresent) {
+                        if (!that.containsNode(personId)) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
