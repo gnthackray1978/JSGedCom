@@ -79,7 +79,7 @@ TreeLinker.prototype = {
                         console.log('graph contains node: ' + mygraph.containsNode(personId));
                         
                         
-                        if (!personPresent) {
+                        if (personPresent) {
 
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
