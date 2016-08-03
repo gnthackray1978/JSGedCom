@@ -11,7 +11,7 @@ var Graph = function () {
 
     //todo get rid of this and just iterate nodes collection
     this.addedNodes = [];
-
+    this.addedPeople = [];
 };
 
 
@@ -59,7 +59,8 @@ Graph.prototype = {
     newNode: function (data) {
         var node = new Node(this.nextNodeId++, data);
 
-
+        this.addedPeople.push(data.RecordId);
+        
         this.addedNodes.push(node);
         
         this.addNode(node);
@@ -126,9 +127,6 @@ Graph.prototype = {
     },
  
     containsNode: function (recordId) {
-        
-        
-        
         var idx =0;
         
         while(idx < this.addedNodes.length){

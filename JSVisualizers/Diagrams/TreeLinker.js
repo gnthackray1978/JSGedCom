@@ -42,7 +42,7 @@ TreeLinker.prototype = {
 
         var genIdx = 0;
 
-        mygraph.addedNodes =[];
+        mygraph.addedPeople =[];
 
         while (genIdx < this.data.Generations.length) {
 
@@ -66,7 +66,7 @@ TreeLinker.prototype = {
                         var personId = this.data.Generations[genIdx][personIdx].PersonId;
                         var personPresent = false;
                         var that = this;
-                        this.addedPeople.forEach(function (entry) {
+                        mygraph.addedPeople.forEach(function (entry) {
                             if (entry == personId) {
                                 personPresent = true;
 
@@ -76,7 +76,7 @@ TreeLinker.prototype = {
                         
                         
                         console.log(personPresent);
-                        console.log(mygraph.containsNode(personId));
+                        console.log('graph contains node: ' + mygraph.containsNode(personId));
                         
                         
                         if (!personPresent) {
@@ -84,7 +84,7 @@ TreeLinker.prototype = {
                             if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
                                 this.data.Generations[genIdx][personIdx].nodeLink == null) {
                                     
-                                that.addedPeople.push(personId);
+                                mygraph.addedPeople.push(personId);
                                 
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
