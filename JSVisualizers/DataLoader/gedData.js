@@ -92,7 +92,7 @@ GedData.prototype = {
         }      
         
         if(!fatherNode) 
-            console.log(fatherNode.PersonId + 'father node missing nodelink');
+            console.log('father node not found');
         
         if(!currentPerson.nodeLink) 
             console.log(currentPerson.PersonId + 'current node missing nodelink');
