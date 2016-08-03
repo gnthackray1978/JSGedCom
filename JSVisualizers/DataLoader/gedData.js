@@ -85,9 +85,12 @@ GedData.prototype = {
     FatherEdge: function(genIdx, personIdx){
         
         var currentPerson = this.Generations[genIdx][personIdx];
+        var fatherNode;
         
-        var fatherNode = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
-                                
+        if(genIdx > 0 && currentPerson) {
+            fatherNode = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
+        }      
+        
         if(!fatherNode) 
             console.log(fatherNode.PersonId + 'father node missing nodelink');
         
