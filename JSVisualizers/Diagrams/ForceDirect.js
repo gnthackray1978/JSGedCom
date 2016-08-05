@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 /*global TreeLinker*/
 /*global FDLayout*/ 
+/*global CameraView*/
  
 var ForceDirect = function (channel, colourScheme,gedPreLoader) {
 
@@ -255,10 +256,11 @@ ForceDirect.prototype = {
 
             if (map.layout.parentNode != undefined && map.layout.parentLayout != undefined) {
                 // get parent location
-                var _tp = new Utils(map.layout.parentLayout.mapHandler.currentBB, 
-                    map.layout.parentLayout.mapHandler.graph_width, map.layout.parentLayout.mapHandler.graph_height);
+                var _tp = new Utils(map.layout.parentLayout._cameraView.currentBB, 
+                    map.layout.parentLayout._cameraView.graph_width, map.layout.parentLayout._cameraView.graph_height);
+                    
                 var pV = map.layout.parentLayout.nodePoints[map.layout.parentNode.id];
-                pV = map.layout.parentLayout.mapHandler.mapOffset(_tp.toScreen(pV.p));
+                pV = map.layout.parentLayout._cameraView.mapOffset(_tp.toScreen(pV.p));
 
                 //  s.distance(pV)
                 distance = s.distance(pV);
@@ -354,7 +356,7 @@ ForceDirect.prototype = {
 
 
         var parentLayout = this.layout = new FDLayout(that.channel, that.graph, 
-            new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
+            new CameraView(this.colourScheme, window.innerWidth, window.innerHeight), 
             this.stiffness, this.repulsion, this.damping);
 
         this.layoutList.push({ layout: parentLayout, drawEdges: drawEdges, drawNodes: drawNodes, type: 'parent' });
@@ -428,7 +430,7 @@ ForceDirect.prototype = {
         }
 
         return new FDLayout(this.channel,infoGraph, 
-            new mapHandler(this.colourScheme, 200, 200), this.stiffness, 
+            new CameraView(this.colourScheme, 200, 200), this.stiffness, 
             this.repulsion, this.damping, entry, parentLayout, centreNode);
     },
 

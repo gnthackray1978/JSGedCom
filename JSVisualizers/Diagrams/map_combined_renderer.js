@@ -37,8 +37,8 @@ CombinedRenderer.prototype = {
         CombinedRenderer.requestAnimationFrame(function step() {
             var onScreenList = [];
 
-            if (that.layouts[0].layout.mapHandler.zoompercentage > 8500)
-                onScreenList = that.layouts[0].layout.mapHandler.onscreenNodes(20);
+            if (that.layouts[0].layout._cameraView.zoompercentage > 8500)
+                onScreenList = that.layouts[0].layout._cameraView.onscreenNodes(20);
 
 
             // create a list of the new layouts we need to add
@@ -69,16 +69,16 @@ CombinedRenderer.prototype = {
                 if (layout.layout.graph.eventListeners.length == 0)
                     layout.layout.graph.addGraphListener(that);
 
-                layout.layout.mapHandler.adjustPosition();
+                layout.layout._cameraView.adjustPosition();
             });
  
            
             var energyCount = 0;
 
 
-            that.clear(that.layouts[0].layout.mapHandler);
+            that.clear(that.layouts[0].layout._cameraView);
 
-            $('#nodes').html(that.layouts[0].layout.mapHandler.countOnscreenNodes());
+            $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
 
             that.layouts.forEach(function(layout,idx) {
 
@@ -89,7 +89,7 @@ CombinedRenderer.prototype = {
                 layout.layout.updatePosition(0.03);
 
 
-                var map = layout.layout.mapHandler;
+                var map = layout.layout._cameraView;
 
                 // render 
                 layout.layout.eachEdge(function(edge, spring) {
