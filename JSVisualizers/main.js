@@ -76,44 +76,20 @@ $(document).ready(function () {
                 that.forceDirect = new ForceDirect(channel, colourScheme, that.gedPreLoader);
                 
                  
+                diagUI.InitEvents();
                 
                 
-                //when mouse up happens this gets executed
-                // diagUI.SetMouseDown(function(e) {                            
-                //     $.proxy(that.forceDirect.mouseDown(e), that.forceDirect);                            
-                // });
-                
-                // diagUI.SetMouseUp(function (e) {
-                //     $.proxy(that.forceDirect.mouseUp(e), that.forceDirect);
+                // diagUI.Save(function (recordLink) {
+                //     $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
                 // });
 
-                // diagUI.SetMouseMove(function (e) {
-                //     $.proxy(that.forceDirect.mouseMove(e), that.forceDirect);
+                // diagUI.Add(function (recordLink) {
+                //     $.proxy(that.forceDirect.Add(recordLink), that.forceDirect);
                 // });
 
-                // diagUI.SetMouseDoubleClick(function (e) {
-                //     $.proxy(that.forceDirect.mouseDoubleClick(e), that.forceDirect);
+                // diagUI.Delete(function () {
+                //     $.proxy(that.forceDirect.Delete(), that.forceDirect);
                 // });
-                                                                  
-                // diagUI.SetButtonDown(function (e) {
-                //     $.proxy(that.forceDirect.buttonDown(e), that.forceDirect);
-                // });
-
-                // diagUI.SetButtonUp(function (e) {
-                //     $.proxy(that.forceDirect.buttonUp(e), that.forceDirect);
-                // });
-                
-                diagUI.Save(function (recordLink) {
-                    $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
-                });
-
-                diagUI.Add(function (recordLink) {
-                    $.proxy(that.forceDirect.Add(recordLink), that.forceDirect);
-                });
-
-                diagUI.Delete(function () {
-                    $.proxy(that.forceDirect.Delete(), that.forceDirect);
-                });
                 
                 
                 

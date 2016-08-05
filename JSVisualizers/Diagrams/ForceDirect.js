@@ -70,6 +70,16 @@ var ForceDirect = function (channel, colourScheme,gedPreLoader) {
             that.combinedRenderer.start();
     });
     
+    this.channel.subscribe("requestAdd", function(data, envelope) {
+        that.Add(data.value);
+    });
+    this.channel.subscribe("requestSave", function(data, envelope) {
+        that.Save(data.value);
+    });
+    this.channel.subscribe("requestDelete", function(data, envelope) {
+        that.Delete();
+    });
+    
 };
 
 ForceDirect.prototype = {
@@ -437,10 +447,10 @@ ForceDirect.prototype = {
     },
 
     HighLightedChanged: function(obj) {
-          this.highLighted = obj;
+        this.highLighted = obj;
     },
     SelectedChanged: function(obj) {
-          this.selected = obj;//function
+        this.selected = obj;//function
     },
     
     
@@ -484,10 +494,6 @@ ForceDirect.prototype = {
         console.log('Delete ' );
     }
 
- 
-
-
-    
 };
 
 

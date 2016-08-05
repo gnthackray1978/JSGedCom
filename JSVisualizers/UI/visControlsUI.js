@@ -2,29 +2,29 @@ function VisControlsUI(channel) {
     this._channel = channel;
 }
 
-VisControlsUI.prototype.Save = function (action) {
-    var that = this;
-    $('#saveNode').click(function (e) {
-        action(that.PopulateRecordLink());
-        e.preventDefault();
-    });               
-};
+// VisControlsUI.prototype.Save = function (action) {
+//     var that = this;
+//     $('#saveNode').click(function (e) {
+//         action(that.PopulateRecordLink());
+//         e.preventDefault();
+//     });               
+// };
 
-VisControlsUI.prototype.Add = function (action) {
-    var that = this;
-    $('#updateNode').click(function (e) {
-        action(that.PopulateRecordLink());
-        e.preventDefault();
-    });
-};
+// VisControlsUI.prototype.Add = function (action) {
+//     var that = this;
+//     $('#updateNode').click(function (e) {
+//         action(that.PopulateRecordLink());
+//         e.preventDefault();
+//     });
+// };
 
-VisControlsUI.prototype.Delete = function (action) {
-    var that = this;
-    $('#deleteNode').click(function (e) {            
-        action();
-        e.preventDefault();
-    });        
-};
+// VisControlsUI.prototype.Delete = function (action) {
+//     var that = this;
+//     $('#deleteNode').click(function (e) {            
+//         action();
+//         e.preventDefault();
+//     });        
+// };
 
 VisControlsUI.prototype.PopulateRecordLink = function () {
     var node = new Bio();
@@ -42,71 +42,64 @@ VisControlsUI.prototype.PopulateRecordLink = function () {
     return node;
 };
 
-VisControlsUI.prototype.SetMouseDoubleClick = function (action) {
+
+VisControlsUI.prototype.InitEvents = function () {
     var that = this;
+    
+    $('#saveNode').click(function (e) {
+        //action(that.PopulateRecordLink());
+        
+        that._channel.publish( "requestSave", { value: undefined } );
+        
+        e.preventDefault();
+    });  
+    
+    $('#deleteNode').click(function (e) {            
+        that._channel.publish( "requestDelete", { value: undefined } );
+        e.preventDefault();
+    });  
+    
+    
+    $('#updateNode').click(function (e) {
+        //action(that.PopulateRecordLink());
+        
+        that._channel.publish( "requestAdd", { value: that.PopulateRecordLink() } );
+        
+        e.preventDefault();
+    });
     
     $('#myCanvas').dblclick(function (e) {
-        
         that._channel.publish( "mouseDoubleClick", { value: e } );
-        
-        action(e);
         e.preventDefault();
     });
-}; 
-    
-VisControlsUI.prototype.SetMouseDown = function (action) {
-    var that = this;
     
     $('#myCanvas').mousedown(function (e) {
-        
         that._channel.publish( "mouseDown", { value: e } );
-        
-        action(e);
         e.preventDefault();
     });
- 
-};
-
-VisControlsUI.prototype.SetMouseUp = function (action) {
-    var that = this;
     
     $('#myCanvas').mouseup(function (e) {
         that._channel.publish( "mouseUp", { value: e } );
-        action(e);
         e.preventDefault();
     });
-}; 
-    
-VisControlsUI.prototype.SetMouseMove = function (action) {
-    var that = this;
     
     $('#myCanvas').mousemove(function (e) {
         that._channel.publish( "mouseMove", { value: e } );
-        action(e);
         e.preventDefault();
     });
-}; 
-    
-VisControlsUI.prototype.SetButtonDown = function (action) {
-    var that =this;
     
     $(".button_box").mousedown(function (e) {
         that._channel.publish( "buttondown", { value: e } );
-        action(e);
         e.preventDefault();
     });
-};
-    
-VisControlsUI.prototype.SetButtonUp = function (action) {
-    var that =this;
     
     $(".button_box").mouseup(function (e) {
         that._channel.publish( "buttonup", { value: e } );
-        action(e);
         e.preventDefault();
     });
-};    
-    
+};
+
+
 VisControlsUI.prototype.NodeSelected = function (node) {
     //hidPersonId
     $('#hidPersonId').val(node.PersonId);
@@ -147,15 +140,4 @@ VisControlsUI.prototype.NodeSelected = function (node) {
 VisControlsUI.prototype.NodeHovered = function (node) {
 
 };
-    
-VisControlsUI.prototype.ResetDraggedMasses = function (action) {
-
-        //$('#myCanvas').dblclick(function (e) {
-
-        //    action(e);
-
-        //    e.preventDefault();
-        //});
-
-};    
     
