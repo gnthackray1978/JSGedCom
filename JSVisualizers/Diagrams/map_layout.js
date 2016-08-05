@@ -415,28 +415,28 @@ FDLayout.prototype = {
 
 
     notifyHighLight: function (e) {
-        this.highLightedListeners.forEach(function (obj) {
-            obj(e.node.data.RecordLink);
-        });
+        // this.highLightedListeners.forEach(function (obj) {
+        //     obj(e.node.data.RecordLink);
+        // });
         
-        this.channel.publish("nodeHighlighted",{value:e.node.data.RecordLink});
+        this._channel.publish("nodeHighlighted",{value:e.node.data.RecordLink});
     },
     
     notifySelection: function (e) {
-        this.selectedListeners.forEach(function (obj) {
-            obj(e.node.data.RecordLink);
-        });
+        // this.selectedListeners.forEach(function (obj) {
+        //     obj(e.node.data.RecordLink);
+        // });
         
-        this.channel.publish("nodeSelected",{value:e.node.data.RecordLink});
+        this._channel.publish("nodeSelected",{value:e.node.data.RecordLink});
     },
 
-    HighLightedChanged: function (obj) {
-        this.highLightedListeners.push(obj);
-    },
+    // HighLightedChanged: function (obj) {
+    //     this.highLightedListeners.push(obj);
+    // },
     
-    SelectedChanged: function (obj) {
-        this.selectedListeners.push(obj);
-    },
+    // SelectedChanged: function (obj) {
+    //     this.selectedListeners.push(obj);
+    // },
 
     //Find the nearest point to a particular position
     nearestPoint : function (pos) {
