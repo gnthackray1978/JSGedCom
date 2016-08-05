@@ -330,7 +330,7 @@ ForceDirect.prototype = {
         $('body').css("background-color", this.colourScheme.mapbackgroundColour);
 
 
-        var parentLayout = this.layout = new FDLayout(that.graph, 
+        var parentLayout = this.layout = new FDLayout(that.channel, that.graph, 
             new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
             this.stiffness, this.repulsion, this.damping);
 
@@ -418,7 +418,7 @@ ForceDirect.prototype = {
             infoGraph.newEdge(centreNode, dlocNode, { type: 'data', directional: false });
         }
 
-        return new FDLayout(infoGraph, 
+        return new FDLayout(this.channel,infoGraph, 
             new mapHandler(this.colourScheme, 200, 200), this.stiffness, 
             this.repulsion, this.damping, entry, parentLayout, centreNode);
     },

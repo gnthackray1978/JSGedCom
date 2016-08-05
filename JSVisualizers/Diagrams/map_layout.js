@@ -4,8 +4,8 @@
 
  
 
-var FDLayout = function (graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
-    this._channel = graph.channel;
+var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
+    this._channel = channel;
     
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
     this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
