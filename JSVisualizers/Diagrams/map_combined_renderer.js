@@ -18,7 +18,9 @@ CombinedRenderer.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 
 function CombinedRenderer(forceDirect, clear, drawEdges,drawNodes) {
     this.forceDirect =forceDirect;
+    
     this.layouts = forceDirect.layoutList;
+    
     this.clear = clear;
     this.drawEdges = drawEdges;
     this.drawNodes = drawNodes;

@@ -1,5 +1,5 @@
-function VisControlsUI() {       
-
+function VisControlsUI(channel) {       
+    this._channel = channel;
 }
 
 VisControlsUI.prototype.Save = function (action) {
@@ -43,14 +43,24 @@ VisControlsUI.prototype.PopulateRecordLink = function () {
 };
 
 VisControlsUI.prototype.SetMouseDoubleClick = function (action) {
+    var that = this;
+    
     $('#myCanvas').dblclick(function (e) {
+        
+        that._channel.publish( "MouseDoubleClick", { value: e } );
+        
         action(e);
         e.preventDefault();
     });
 }; 
     
 VisControlsUI.prototype.SetMouseDown = function (action) {
+    var that = this;
+    
     $('#myCanvas').mousedown(function (e) {
+        
+        that._channel.publish( "MouseDown", { value: e } );
+        
         action(e);
         e.preventDefault();
     });
@@ -58,14 +68,20 @@ VisControlsUI.prototype.SetMouseDown = function (action) {
 };
 
 VisControlsUI.prototype.SetMouseUp = function (action) {
+    var that = this;
+    
     $('#myCanvas').mouseup(function (e) {
+        that._channel.publish( "MouseUp", { value: e } );
         action(e);
         e.preventDefault();
     });
 }; 
     
 VisControlsUI.prototype.SetMouseMove = function (action) {
+    var that = this;
+    
     $('#myCanvas').mousemove(function (e) {
+        that._channel.publish( "MouseMove", { value: e } );
         action(e);
         e.preventDefault();
     });

@@ -23,10 +23,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 /*global TreeLinker*/
+/*global FDLayout*/ 
  
-var ForceDirect = function (colourScheme,gedPreLoader) {
+var ForceDirect = function (channel, colourScheme,gedPreLoader) {
 
-    
+    this.channel = channel;
 
     this.stiffness = 400.0;
     this.repulsion = 500.0;
@@ -314,10 +315,6 @@ ForceDirect.prototype = {
 
         this.layoutList = [];
         
-    //    that.treeLinker.calculateTreeRange();
-        
-        
-
         function myTimer() {
 
             $('#map_year').html(that.year);
@@ -333,9 +330,11 @@ ForceDirect.prototype = {
         $('body').css("background-color", this.colourScheme.mapbackgroundColour);
 
 
-        var parentLayout = this.layout = new Layout.ForceDirected(that.graph, 
+        var parentLayout = this.layout = new FDLayout(that.graph, 
             new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
             this.stiffness, this.repulsion, this.damping);
+
+
 
         this.layoutList.push({ layout: parentLayout, drawEdges: drawEdges, drawNodes: drawNodes, type: 'parent' });
 
@@ -419,20 +418,20 @@ ForceDirect.prototype = {
             infoGraph.newEdge(centreNode, dlocNode, { type: 'data', directional: false });
         }
 
-        return new Layout.ForceDirected(infoGraph, 
+        return new FDLayout(infoGraph, 
             new mapHandler(this.colourScheme, 200, 200), this.stiffness, 
             this.repulsion, this.damping, entry, parentLayout, centreNode);
     },
 
     
 
+    //didnt seem to be called
+    // resetDragList: function() {
 
-    resetDragList: function() {
-
-        this.layoutList.forEach(function (value, index, ar) {
-            $.proxy(value.layout.resetMasses(), value);
-        });
-    },
+    //     this.layoutList.forEach(function (value, index, ar) {
+    //         $.proxy(value.layout.resetMasses(), value);
+    //     });
+    // },
     
     mouseDoubleClick: function (e) {
         

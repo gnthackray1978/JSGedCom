@@ -69,10 +69,10 @@ $(document).ready(function () {
                 if(that.forceDirect)
                     that.forceDirect.kill();
                 
-                that.forceDirect = new ForceDirect(colourScheme, that.gedPreLoader);
+                that.forceDirect = new ForceDirect(channel, colourScheme, that.gedPreLoader);
                 
                  
-                var diagUI = new VisControlsUI();
+                var diagUI = new VisControlsUI(channel);
                 
                 //when mouse up happens this gets executed
                 diagUI.SetMouseDown(function(e) {                            

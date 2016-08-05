@@ -3,8 +3,6 @@
 var TreeLinker = function (data) {
     this.data = data;
 
-   // this.addedPeople = new Array();
-    
     this.topYear= this.data.TopYear;
     this.bottomYear =this.data.BottomYear;
     this.currentYear =this.data.BottomYear;
@@ -53,7 +51,6 @@ TreeLinker.prototype = {
                 if (!currentPerson.IsHtmlLink) {
                     var descriptor = '.'; // currentPerson.DOB + ' ' + currentPerson.Name;
 
-
                     // add the person to the graph if he/she was born in the current time period
                     var _dob = this._createDOB(genIdx,personIdx);
 
@@ -61,16 +58,16 @@ TreeLinker.prototype = {
                     
                     if (_dob < year && _dob != 0) {
                         
-                        var personId = this.data.Generations[genIdx][personIdx].PersonId;
+                        var personId = currentPerson.PersonId;
                         
                         if (!mygraph.containsNode(personId)) {
 
-                            if (this.data.Generations[genIdx][personIdx].nodeLink == undefined ||
-                                this.data.Generations[genIdx][personIdx].nodeLink == null) {
+                            if (currentPerson.nodeLink == undefined ||
+                                currentPerson.nodeLink == null) {
                                
                                 this.data.Generations[genIdx][personIdx].nodeLink =
                                     mygraph.newNode({ label: descriptor, 
-                                                      RecordLink: this.data.Generations[genIdx][personIdx].RecordLink, 
+                                                      RecordLink: currentPerson.RecordLink, 
                                                       RecordId : personId,
                                                       type: 'normal' });
 

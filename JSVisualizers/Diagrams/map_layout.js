@@ -2,10 +2,11 @@
 /*global Point */
 /*global Vector */
 
-var Layout = {};
+ 
 
-
-Layout.ForceDirected = function (graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
+var FDLayout = function (graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
+    this._channel = graph.channel;
+    
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
     this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
     this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
@@ -39,9 +40,29 @@ Layout.ForceDirected = function (graph, mapHandler, stiffness, repulsion, dampin
     this.dragList = [];
 
     this.selectionMass = 0;
+    
+    
+    //handle channel events
+    this._channel.subscribe("mouseDoubleClick", function(data, envelope) {
+        console.log('mouseDoubleClick=');
+    });
+    
+    this._channel.subscribe("mouseDown", function(data, envelope) {
+        console.log('mouseDown=');
+    });
+    
+    this._channel.subscribe("mouseUp", function(data, envelope) {
+        console.log('mouseUp=');
+    });
+    
+    this._channel.subscribe("mouseMove", function(data, envelope) {
+        console.log('mouseMove=');
+    });
+    
+    
 };
 
-Layout.ForceDirected.prototype = {
+FDLayout.prototype = {
     point: function (node) {
         if (typeof (this.nodePoints[node.id]) === 'undefined') {
             var mass = typeof (node.data.mass) !== 'undefined' ? node.data.mass : 1.0;
@@ -165,11 +186,9 @@ Layout.ForceDirected.prototype = {
         return energy;
     },
 
-
-
-
-
     mouseDoubleClick:function(e) {
+
+        console.log('mouseDoubleClick_');
 
         if (e.target.id == "myCanvas") {
           
@@ -202,6 +221,7 @@ Layout.ForceDirected.prototype = {
     
     mouseDown: function (e) {
 
+        console.log('mouseDown_');
 
         if (e.target.id == "myCanvas") {
             this.mouseup = false;
@@ -305,6 +325,8 @@ Layout.ForceDirected.prototype = {
     },
     
     mouseUp: function (e) {
+        
+        console.log('mouseUp_');
 
         if (e.target.id == "myCanvas") {
  
@@ -321,6 +343,8 @@ Layout.ForceDirected.prototype = {
     },
 
     mouseMove: function (e) {
+
+        console.log('mouseMove_');
 
         var pos = $(this.canvasId).offset();
         var p = this.mapHandler.currentPositionFromScreen(pos, e);
@@ -389,6 +413,7 @@ Layout.ForceDirected.prototype = {
     HighLightedChanged: function (obj) {
         this.highLightedListeners.push(obj);
     },
+    
     SelectedChanged: function (obj) {
         this.selectedListeners.push(obj);
     },
@@ -429,9 +454,6 @@ Layout.ForceDirected.prototype = {
             return -1;
         }
     },
-    
-
-
 
     getBoundingBox : function () {
         var bottomleft = new Vector(-2, -2);

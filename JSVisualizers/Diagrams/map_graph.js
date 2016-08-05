@@ -140,6 +140,7 @@ Graph.prototype = {
     addGraphListener: function (obj) {
         this.eventListeners.push(obj);
     },
+    
     notify: function () {
         this.eventListeners.forEach(function (obj) {
             obj.graphChanged();

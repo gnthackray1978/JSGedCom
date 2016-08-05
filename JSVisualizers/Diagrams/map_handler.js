@@ -1,4 +1,3 @@
-﻿
 
 var mapHandler = function (colourScheme, startwidth, startheight) {
 
