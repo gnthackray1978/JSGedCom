@@ -61,12 +61,12 @@ VisControlsUI.prototype.InitEvents = function () {
     });
     
     
-    this.channel.subscribe("nodeSelected", function(data, envelope) {
+    this._channel.subscribe("nodeSelected", function(data, envelope) {
         console.log('ui node selected caught');
         that.NodeSelected(data.value);
     });
     
-    this.channel.subscribe("nodeHighlighted", function(data, envelope) {
+    this._channel.subscribe("nodeHighlighted", function(data, envelope) {
         console.log('ui node highlighted event caught');
     });
 };
