@@ -47,7 +47,7 @@ VisControlsUI.prototype.SetMouseDoubleClick = function (action) {
     
     $('#myCanvas').dblclick(function (e) {
         
-        that._channel.publish( "MouseDoubleClick", { value: e } );
+        that._channel.publish( "mouseDoubleClick", { value: e } );
         
         action(e);
         e.preventDefault();
@@ -59,7 +59,7 @@ VisControlsUI.prototype.SetMouseDown = function (action) {
     
     $('#myCanvas').mousedown(function (e) {
         
-        that._channel.publish( "MouseDown", { value: e } );
+        that._channel.publish( "mouseDown", { value: e } );
         
         action(e);
         e.preventDefault();
@@ -71,7 +71,7 @@ VisControlsUI.prototype.SetMouseUp = function (action) {
     var that = this;
     
     $('#myCanvas').mouseup(function (e) {
-        that._channel.publish( "MouseUp", { value: e } );
+        that._channel.publish( "mouseUp", { value: e } );
         action(e);
         e.preventDefault();
     });
@@ -81,7 +81,7 @@ VisControlsUI.prototype.SetMouseMove = function (action) {
     var that = this;
     
     $('#myCanvas').mousemove(function (e) {
-        that._channel.publish( "MouseMove", { value: e } );
+        that._channel.publish( "mouseMove", { value: e } );
         action(e);
         e.preventDefault();
     });
