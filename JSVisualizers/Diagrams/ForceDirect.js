@@ -357,21 +357,7 @@ ForceDirect.prototype = {
             new mapHandler(this.colourScheme, window.innerWidth, window.innerHeight), 
             this.stiffness, this.repulsion, this.damping);
 
-
-
         this.layoutList.push({ layout: parentLayout, drawEdges: drawEdges, drawNodes: drawNodes, type: 'parent' });
-
-        // if (this.highLighted!=null) {
-        //     this.layoutList.forEach(function(value, index, ar) {
-        //         $.proxy(value.layout.HighLightedChanged(that.highLighted), value);
-        //     });
-        // }
-        
-        // if (this.selected != null) {
-        //     this.layoutList.forEach(function(value, index, ar) {
-        //         $.proxy(value.layout.SelectedChanged(that.selected), value);
-        //     });
-        // }
 
         that.combinedRenderer = new CombinedRenderer(that,clearFunction, drawEdges, drawNodes);
 
@@ -446,14 +432,6 @@ ForceDirect.prototype = {
             this.repulsion, this.damping, entry, parentLayout, centreNode);
     },
 
-    // HighLightedChanged: function(obj) {
-    //     this.highLighted = obj;
-    // },
-    // SelectedChanged: function(obj) {
-    //     this.selected = obj;//function
-    // },
-    
-    
     Save: function(recordLink) {
         console.log('Saved ' + recordLink.PersonId);
         

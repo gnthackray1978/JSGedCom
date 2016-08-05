@@ -1,5 +1,5 @@
 
-var mapHandler = function (colourScheme, startwidth, startheight) {
+var CameraView = function (colourScheme, startwidth, startheight) {
 
     this.layout = null;
     //this.graph = graph;
@@ -58,7 +58,7 @@ var mapHandler = function (colourScheme, startwidth, startheight) {
 };
 
 
-mapHandler.prototype = {
+CameraView.prototype = {
 
     SetCentrePoint: function (param_x, param_y) {
         if (param_x == 1000000 && param_y == 1000000) {
@@ -269,9 +269,9 @@ mapHandler.prototype = {
 
                 var screenFirstNode = currentUtils.toScreen(firstNodePoint);
 
-                var parentMapHandler = this.layout.parentLayout.mapHandler;
+                var parentLayoutCameraView = this.layout.parentLayout._cameraView;
 
-                var parentUtils = new Utils(parentMapHandler.currentBB, parentMapHandler.graph_width, parentMapHandler.graph_height);
+                var parentUtils = new Utils(parentLayoutCameraView.currentBB, parentLayoutCameraView.graph_width, parentLayoutCameraView.graph_height);
 
 
                 var parentPoint = this.layout.parentLayout.nodePoints[this.layout.parentNode.id].p;
@@ -279,9 +279,9 @@ mapHandler.prototype = {
                 var screenParentNode = parentUtils.toScreen(parentPoint);
 
                 // add parentlayout centre points !
-                this.centrePoint = parentMapHandler.centrePoint + screenParentNode.x - screenFirstNode.x; // (this.graph_width / 2);
+                this.centrePoint = parentLayoutCameraView.centrePoint + screenParentNode.x - screenFirstNode.x; // (this.graph_width / 2);
 
-                this.centreVerticalPoint = parentMapHandler.centreVerticalPoint + screenParentNode.y - screenFirstNode.y; // (this.graph_height / 2);
+                this.centreVerticalPoint = parentLayoutCameraView.centreVerticalPoint + screenParentNode.y - screenFirstNode.y; // (this.graph_height / 2);
             }
         }
 

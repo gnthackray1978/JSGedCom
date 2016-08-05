@@ -4,7 +4,7 @@
 
  
 
-var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
+var FDLayout = function (channel, graph, camera, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
     this._channel = channel;
     
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
@@ -14,7 +14,7 @@ var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, dampi
     this.parentLayout = parentLayout;
 
     this.firstNode = firstNode;
-    this.mapHandler = mapHandler;
+    this._cameraView = camera;
 
     this.canvasId = '#myCanvas';
     this.mouseup = true;
@@ -27,8 +27,8 @@ var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, dampi
     this.nodePoints = {}; // keep track of points associated with nodes
     this.edgeSprings = {}; // keep track of springs associated with edges
 
-    this.mapHandler.layout = this; // oh dear george! 
-    this.mapHandler.currentBB = this.getBoundingBox(); // fix this!!!
+    this._cameraView.layout = this; // oh dear george! 
+    this._cameraView.currentBB = this.getBoundingBox(); // fix this!!!
 
     this.selectionChanged = null;
     this.nearestChanged = null;
@@ -50,23 +50,23 @@ var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, dampi
     });
     
     this._channel.subscribe("mouseDown", function(data, envelope) {
-        //console.log('mouseDown=');
+    
         that.processNewSelections(data.value);
     });
     
     this._channel.subscribe("mouseUp", function(data, envelope) {
-        //console.log('mouseUp=');
+        
         that.handlermouseUp(data.value);
         
     });
     
     this._channel.subscribe("buttondown", function(data, envelope) {
-        //console.log('mouseDown=');
+        
         that.processNewSelections(data.value);
     });
     
     this._channel.subscribe("buttonup", function(data, envelope) {
-        //console.log('mouseUp=');
+       
         that.handlermouseUp(data.value);
         
     });
@@ -214,7 +214,7 @@ FDLayout.prototype = {
           
             var pos = $(this.canvasId).offset();
 
-            var p = this.mapHandler.currentPositionFromScreen(pos, e); 
+            var p = this._cameraView.currentPositionFromScreen(pos, e); 
 
             var newNearest = this.nearestPoint(p);
  
@@ -249,7 +249,7 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this.mapHandler.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
+            var p = this._cameraView.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
 
             var newNearest = this.nearestPoint(p);
 
@@ -313,13 +313,13 @@ FDLayout.prototype = {
         }
 
 
-        if (e.target.id == "up") this.mapHandler.moving = 'UP';
-        if (e.target.id == "dn") this.mapHandler.moving = 'DOWN';
-        if (e.target.id == "we") this.mapHandler.moving = 'WEST';
-        if (e.target.id == "no") this.mapHandler.moving = 'NORTH';
-        if (e.target.id == "es") this.mapHandler.moving = 'EAST';
-        if (e.target.id == "so") this.mapHandler.moving = 'SOUTH';
-        if (e.target.id == "de") this.mapHandler.moving = 'DEBUG';
+        if (e.target.id == "up") this._cameraView.moving = 'UP';
+        if (e.target.id == "dn") this._cameraView.moving = 'DOWN';
+        if (e.target.id == "we") this._cameraView.moving = 'WEST';
+        if (e.target.id == "no") this._cameraView.moving = 'NORTH';
+        if (e.target.id == "es") this._cameraView.moving = 'EAST';
+        if (e.target.id == "so") this._cameraView.moving = 'SOUTH';
+        if (e.target.id == "de") this._cameraView.moving = 'DEBUG';
        
     },
 
@@ -345,14 +345,14 @@ FDLayout.prototype = {
 
         if (e.target.id == "myCanvas") {
  
-            this.mapHandler.addToMouseQueue(1000000, 1000000);
+            this._cameraView.addToMouseQueue(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
             
             
             
             this.mouseup = true;
         } else {
-            this.mapHandler.moving = '';
+            this._cameraView.moving = '';
         }
         
     },
@@ -363,10 +363,10 @@ FDLayout.prototype = {
     //    console.log('mouseMove_');
 
         var pos = $(this.canvasId).offset();
-        var p = this.mapHandler.currentPositionFromScreen(pos, e);
+        var p = this._cameraView.currentPositionFromScreen(pos, e);
 
         if (!this.mouseup && this.selected.node.id !== -1 && this.dragged.node.id == -1) {
-            this.mapHandler.addToMouseQueue(e.clientX, e.clientY);
+            this._cameraView.addToMouseQueue(e.clientX, e.clientY);
         }
 
         var newNearest = this.nearestPoint(p);
@@ -415,28 +415,14 @@ FDLayout.prototype = {
 
 
     notifyHighLight: function (e) {
-        // this.highLightedListeners.forEach(function (obj) {
-        //     obj(e.node.data.RecordLink);
-        // });
-        
+
         this._channel.publish("nodeHighlighted",{value:e.node.data.RecordLink});
     },
     
     notifySelection: function (e) {
-        // this.selectedListeners.forEach(function (obj) {
-        //     obj(e.node.data.RecordLink);
-        // });
-        
+
         this._channel.publish("nodeSelected",{value:e.node.data.RecordLink});
     },
-
-    // HighLightedChanged: function (obj) {
-    //     this.highLightedListeners.push(obj);
-    // },
-    
-    // SelectedChanged: function (obj) {
-    //     this.selectedListeners.push(obj);
-    // },
 
     //Find the nearest point to a particular position
     nearestPoint : function (pos) {

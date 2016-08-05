@@ -79,17 +79,6 @@ $(document).ready(function () {
                 diagUI.InitEvents();
                 
                 
-                // that.forceDirect.HighLightedChanged(function(e) {
-                //     console.log('highlighted changed' + e);
-                                            
-                // });
-                
-                // that.forceDirect.SelectedChanged(function (e) {
-                //     console.log('selected changed' + e);
-                //     diagUI.NodeSelected(e);
-                // });
-                
-                
                 
                 that.forceDirect.init(selectedId, diagMode.GetFDParams());
                 
