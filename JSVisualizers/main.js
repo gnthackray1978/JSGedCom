@@ -79,9 +79,9 @@ $(document).ready(function () {
                 
                 
                 //when mouse up happens this gets executed
-                diagUI.SetMouseDown(function(e) {                            
-                    $.proxy(that.forceDirect.mouseDown(e), that.forceDirect);                            
-                });
+                // diagUI.SetMouseDown(function(e) {                            
+                //     $.proxy(that.forceDirect.mouseDown(e), that.forceDirect);                            
+                // });
                 
                 // diagUI.SetMouseUp(function (e) {
                 //     $.proxy(that.forceDirect.mouseUp(e), that.forceDirect);
@@ -95,13 +95,13 @@ $(document).ready(function () {
                 //     $.proxy(that.forceDirect.mouseDoubleClick(e), that.forceDirect);
                 // });
                                                                   
-                diagUI.SetButtonDown(function (e) {
-                    $.proxy(that.forceDirect.buttonDown(e), that.forceDirect);
-                });
+                // diagUI.SetButtonDown(function (e) {
+                //     $.proxy(that.forceDirect.buttonDown(e), that.forceDirect);
+                // });
 
-                diagUI.SetButtonUp(function (e) {
-                    $.proxy(that.forceDirect.buttonUp(e), that.forceDirect);
-                });
+                // diagUI.SetButtonUp(function (e) {
+                //     $.proxy(that.forceDirect.buttonUp(e), that.forceDirect);
+                // });
                 
                 diagUI.Save(function (recordLink) {
                     $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
