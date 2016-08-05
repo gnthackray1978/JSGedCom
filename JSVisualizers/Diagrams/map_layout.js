@@ -360,7 +360,7 @@ FDLayout.prototype = {
     //formerly mousemove
     checkForHighLights: function (e) {
 
-        console.log('mouseMove_');
+    //    console.log('mouseMove_');
 
         var pos = $(this.canvasId).offset();
         var p = this.mapHandler.currentPositionFromScreen(pos, e);
@@ -418,12 +418,16 @@ FDLayout.prototype = {
         this.highLightedListeners.forEach(function (obj) {
             obj(e.node.data.RecordLink);
         });
+        
+        this.channel.publish("nodeHighlighted",{value:e.node.data.RecordLink});
     },
     
     notifySelection: function (e) {
         this.selectedListeners.forEach(function (obj) {
             obj(e.node.data.RecordLink);
         });
+        
+        this.channel.publish("nodeSelected",{value:e.node.data.RecordLink});
     },
 
     HighLightedChanged: function (obj) {

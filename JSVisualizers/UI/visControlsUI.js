@@ -2,45 +2,7 @@ function VisControlsUI(channel) {
     this._channel = channel;
 }
 
-// VisControlsUI.prototype.Save = function (action) {
-//     var that = this;
-//     $('#saveNode').click(function (e) {
-//         action(that.PopulateRecordLink());
-//         e.preventDefault();
-//     });               
-// };
 
-// VisControlsUI.prototype.Add = function (action) {
-//     var that = this;
-//     $('#updateNode').click(function (e) {
-//         action(that.PopulateRecordLink());
-//         e.preventDefault();
-//     });
-// };
-
-// VisControlsUI.prototype.Delete = function (action) {
-//     var that = this;
-//     $('#deleteNode').click(function (e) {            
-//         action();
-//         e.preventDefault();
-//     });        
-// };
-
-VisControlsUI.prototype.PopulateRecordLink = function () {
-    var node = new Bio();
-    node.PersonId = $('#hidPersonId').val();        
-    node.FirstName= $('#txtCName').val();
-    node.Surname= $('#txtSurname').val();
-    node.BirthDate= $('#txtBirYear').val();
-    node.BaptismDate= $('#txtBapDate').val();
-    node.BirthLocation= $('#txtBLocation').val();
-    node.DOD= $('#txtDYear').val();
-    node.DeathLocation= $('#txtDLocation').val();
-    node.OccupationDate= $('#txtOccupationDate').val();
-    node.OccupationPlace= $('#txtOccupationPlace').val();
-    node.Occupation= $('#txtOccupationDesc').val();
-    return node;
-};
 
 
 VisControlsUI.prototype.InitEvents = function () {
@@ -97,7 +59,20 @@ VisControlsUI.prototype.InitEvents = function () {
         that._channel.publish( "buttonup", { value: e } );
         e.preventDefault();
     });
+    
+    
+    this.channel.subscribe("nodeSelected", function(data, envelope) {
+        console.log('ui node selected caught');
+        that.NodeSelected(data.value);
+    });
+    
+    this.channel.subscribe("nodeHighlighted", function(data, envelope) {
+        console.log('ui node highlighted event caught');
+    });
 };
+
+
+
 
 
 VisControlsUI.prototype.NodeSelected = function (node) {
@@ -141,3 +116,18 @@ VisControlsUI.prototype.NodeHovered = function (node) {
 
 };
     
+VisControlsUI.prototype.PopulateRecordLink = function () {
+    var node = new Bio();
+    node.PersonId = $('#hidPersonId').val();        
+    node.FirstName= $('#txtCName').val();
+    node.Surname= $('#txtSurname').val();
+    node.BirthDate= $('#txtBirYear').val();
+    node.BaptismDate= $('#txtBapDate').val();
+    node.BirthLocation= $('#txtBLocation').val();
+    node.DOD= $('#txtDYear').val();
+    node.DeathLocation= $('#txtDLocation').val();
+    node.OccupationDate= $('#txtOccupationDate').val();
+    node.OccupationPlace= $('#txtOccupationPlace').val();
+    node.Occupation= $('#txtOccupationDesc').val();
+    return node;
+};

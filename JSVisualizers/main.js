@@ -79,29 +79,15 @@ $(document).ready(function () {
                 diagUI.InitEvents();
                 
                 
-                // diagUI.Save(function (recordLink) {
-                //     $.proxy(that.forceDirect.Save(recordLink), that.forceDirect);
-                // });
-
-                // diagUI.Add(function (recordLink) {
-                //     $.proxy(that.forceDirect.Add(recordLink), that.forceDirect);
-                // });
-
-                // diagUI.Delete(function () {
-                //     $.proxy(that.forceDirect.Delete(), that.forceDirect);
-                // });
-                
-                
-                
-                that.forceDirect.HighLightedChanged(function(e) {
-                    console.log('highlighted changed' + e);
+                // that.forceDirect.HighLightedChanged(function(e) {
+                //     console.log('highlighted changed' + e);
                                             
-                });
+                // });
                 
-                that.forceDirect.SelectedChanged(function (e) {
-                    console.log('selected changed' + e);
-                    diagUI.NodeSelected(e);
-                });
+                // that.forceDirect.SelectedChanged(function (e) {
+                //     console.log('selected changed' + e);
+                //     diagUI.NodeSelected(e);
+                // });
                 
                 
                 

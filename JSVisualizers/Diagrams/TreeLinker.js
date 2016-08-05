@@ -81,7 +81,7 @@ TreeLinker.prototype = {
                            
                         }
                         else {
-                            console.log('person present');
+                        //    console.log('person present');
                         }
                     }
 
