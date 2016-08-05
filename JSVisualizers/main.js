@@ -83,17 +83,17 @@ $(document).ready(function () {
                     $.proxy(that.forceDirect.mouseDown(e), that.forceDirect);                            
                 });
                 
-                diagUI.SetMouseUp(function (e) {
-                    $.proxy(that.forceDirect.mouseUp(e), that.forceDirect);
-                });
+                // diagUI.SetMouseUp(function (e) {
+                //     $.proxy(that.forceDirect.mouseUp(e), that.forceDirect);
+                // });
 
-                diagUI.SetMouseMove(function (e) {
-                    $.proxy(that.forceDirect.mouseMove(e), that.forceDirect);
-                });
+                // diagUI.SetMouseMove(function (e) {
+                //     $.proxy(that.forceDirect.mouseMove(e), that.forceDirect);
+                // });
 
-                diagUI.SetMouseDoubleClick(function (e) {
-                    $.proxy(that.forceDirect.mouseDoubleClick(e), that.forceDirect);
-                });
+                // diagUI.SetMouseDoubleClick(function (e) {
+                //     $.proxy(that.forceDirect.mouseDoubleClick(e), that.forceDirect);
+                // });
                                                                   
                 diagUI.SetButtonDown(function (e) {
                     $.proxy(that.forceDirect.buttonDown(e), that.forceDirect);

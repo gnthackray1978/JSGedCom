@@ -57,6 +57,19 @@ var ForceDirect = function (channel, colourScheme,gedPreLoader) {
     this.speed =3000;
     this.increment =5;
     this.year = 1670;
+    
+    var that =this;
+    
+    this.channel.subscribe("mouseDown", function(data, envelope) {
+        if(that.combinedRenderer) // hack until i can be bothered add bus in for the events
+            that.combinedRenderer.start();
+    });
+    
+    this.channel.subscribe("mouseMove", function(data, envelope) {
+        if(that.combinedRenderer) // hack until i can be bothered add bus in for the events
+            that.combinedRenderer.start();
+    });
+    
 };
 
 ForceDirect.prototype = {
@@ -422,68 +435,6 @@ ForceDirect.prototype = {
             new mapHandler(this.colourScheme, 200, 200), this.stiffness, 
             this.repulsion, this.damping, entry, parentLayout, centreNode);
     },
-
-    
-
-    //didnt seem to be called
-    // resetDragList: function() {
-
-    //     this.layoutList.forEach(function (value, index, ar) {
-    //         $.proxy(value.layout.resetMasses(), value);
-    //     });
-    // },
-    
-    mouseDoubleClick: function (e) {
-        
-        this.layoutList.forEach(function (value, index, ar) {
-            $.proxy(value.layout.mouseDoubleClick(e), value);
-        });
-    },
-
-    mouseMove: function(e) {
-
-        this.layoutList.forEach(function(value, index, ar) {
-            $.proxy(value.layout.mouseMove(e), value);
-        });
-        
-        if(this.combinedRenderer) // hack until i can be bothered add bus in for the events
-            this.combinedRenderer.start();
-    },
-
-    mouseDown: function(e) {
-
-        this.layoutList.forEach(function(value, index, ar) {
-            $.proxy(value.layout.mouseDown(e), value);
-        });
-
-        if(this.combinedRenderer) // hack until i can be bothered add bus in for the events
-            this.combinedRenderer.start();
-    },
-
-    mouseUp: function (e) {
-
-        this.layoutList.forEach(function(value, index, ar) {
-            $.proxy(value.layout.mouseUp(e), value);
-        });
-    },
-
-    buttonDown: function(e) {
-
-        this.layoutList.forEach(function(value, index, ar) {
-            $.proxy(value.layout.mouseDown(e), value);
-        });
-    },
-
-    buttonUp: function(e) {
-        this.layoutList.forEach(function(value, index, ar) {
-            $.proxy(value.layout.mouseUp(e), value);
-        });
-
-     //   this.notify();
-    },
-
-
-
 
     HighLightedChanged: function(obj) {
           this.highLighted = obj;

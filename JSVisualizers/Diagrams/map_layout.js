@@ -41,22 +41,39 @@ var FDLayout = function (channel, graph, mapHandler, stiffness, repulsion, dampi
 
     this.selectionMass = 0;
     
+    var that = this;
     
     //handle channel events
     this._channel.subscribe("mouseDoubleClick", function(data, envelope) {
         console.log('mouseDoubleClick=');
+        that.resetDragListNodeMass(data.value);
     });
     
     this._channel.subscribe("mouseDown", function(data, envelope) {
-        console.log('mouseDown=');
+        //console.log('mouseDown=');
+        that.processNewSelections(data.value);
     });
     
     this._channel.subscribe("mouseUp", function(data, envelope) {
-        console.log('mouseUp=');
+        //console.log('mouseUp=');
+        that.handlermouseUp(data.value);
+        
+    });
+    
+    this._channel.subscribe("buttondown", function(data, envelope) {
+        //console.log('mouseDown=');
+        that.processNewSelections(data.value);
+    });
+    
+    this._channel.subscribe("buttonup", function(data, envelope) {
+        //console.log('mouseUp=');
+        that.handlermouseUp(data.value);
+        
     });
     
     this._channel.subscribe("mouseMove", function(data, envelope) {
-        console.log('mouseMove=');
+        //console.log('mouseMove=');
+        that.checkForHighLights(data.value);
     });
     
     
@@ -186,8 +203,11 @@ FDLayout.prototype = {
         return energy;
     },
 
-    mouseDoubleClick:function(e) {
+    //formerly mouse double click
+    resetDragListNodeMass:function(e) {
 
+        //reset nearest draglist node mass
+        
         console.log('mouseDoubleClick_');
 
         if (e.target.id == "myCanvas") {
@@ -219,7 +239,8 @@ FDLayout.prototype = {
         }
     },
     
-    mouseDown: function (e) {
+    //formerly mousedown
+    processNewSelections: function (e) {
 
         console.log('mouseDown_');
 
@@ -231,9 +252,6 @@ FDLayout.prototype = {
             var p = this.mapHandler.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
 
             var newNearest = this.nearestPoint(p);
-
-
-            //this.selected = this.nearest = this.dragged = ;
 
             if (newNearest.node != null) {
                 
@@ -292,8 +310,6 @@ FDLayout.prototype = {
 
             }
 
-           
-
         }
 
 
@@ -304,9 +320,7 @@ FDLayout.prototype = {
         if (e.target.id == "es") this.mapHandler.moving = 'EAST';
         if (e.target.id == "so") this.mapHandler.moving = 'SOUTH';
         if (e.target.id == "de") this.mapHandler.moving = 'DEBUG';
-        
-        //layoutList[0].layout.selected.node.data.person.RecordLink
-
+       
     },
 
     resetMasses: function (e) {
@@ -324,7 +338,8 @@ FDLayout.prototype = {
 
     },
     
-    mouseUp: function (e) {
+    //mouseup
+    handlermouseUp: function (e) {
         
         console.log('mouseUp_');
 
@@ -342,7 +357,8 @@ FDLayout.prototype = {
         
     },
 
-    mouseMove: function (e) {
+    //formerly mousemove
+    checkForHighLights: function (e) {
 
         console.log('mouseMove_');
 
@@ -362,7 +378,7 @@ FDLayout.prototype = {
             this.notifyHighLight(this.nearest);
         }
 
-        //  if (this.dragged !== null && this.dragged.node !== null && this.dragged.node.id !== -1) {
+        
         if (this.dragged.node.id !== -1) {
             this.dragged.point.p.x = p.x;
             this.dragged.point.p.y = p.y;

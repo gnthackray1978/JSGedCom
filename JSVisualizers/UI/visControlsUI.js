@@ -88,14 +88,20 @@ VisControlsUI.prototype.SetMouseMove = function (action) {
 }; 
     
 VisControlsUI.prototype.SetButtonDown = function (action) {
+    var that =this;
+    
     $(".button_box").mousedown(function (e) {
+        that._channel.publish( "buttondown", { value: e } );
         action(e);
         e.preventDefault();
     });
 };
     
 VisControlsUI.prototype.SetButtonUp = function (action) {
+    var that =this;
+    
     $(".button_box").mouseup(function (e) {
+        that._channel.publish( "buttonup", { value: e } );
         action(e);
         e.preventDefault();
     });
