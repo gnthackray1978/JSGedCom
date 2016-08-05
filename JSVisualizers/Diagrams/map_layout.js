@@ -249,13 +249,11 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e);    // fromScreen({ x: (e.pageX - centrePoint) - pos.left, y: (e.pageY - centreVerticalPoint) - pos.top });
+            var p = this._cameraView.currentPositionFromScreen(pos, e);
 
             var newNearest = this.nearestPoint(p);
 
             if (newNearest.node != null) {
-                
-                console.log('mouse down: ' + newNearest.node.id + ' ' + this.selected.node.id)
                 
                 if (newNearest.node.id != this.selected.node.id) {
                     this.selected.point.m = 1;
@@ -267,17 +265,15 @@ FDLayout.prototype = {
 
                     this.notifySelection(this.selected);
                 }
+                
                 if (newNearest.node.id != this.nearest.node.id) {
                     this.nearest = newNearest;
-                //     console.log('nearest changed: ' + this.nearest);
                     this.notifyHighLight(this.nearest);
-
                 }
+                
                 if (newNearest.node.id != this.dragged.node.id) {
                     this.dragged = newNearest;
-                  //  console.log('dragged changed: ' + this.dragged);
                 }
-
             }
 
             if (this.selected.node !== null) {
