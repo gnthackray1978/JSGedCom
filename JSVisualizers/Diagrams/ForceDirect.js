@@ -130,19 +130,19 @@ ForceDirect.prototype = {
         that.graph = new Graph();
 
 
-        this.yearTimer = setInterval(function() { myTimer() }, that.speed);
+        this.yearTimer = setInterval(function() { myTimer() }, that.settings.speed);
 
         this.layoutList = [];
         
         function myTimer() {
 
-            $('#map_year').html(that.year);
+            $('#map_year').html(that.settings.year);
 
-            that.treeLinker.populateGraph(that.year, that.graph);
+            that.treeLinker.populateGraph(that.settings.year, that.graph);
 
-            that.year += that.increment;
+            that.settings.year += that.settings.increment;
             
-            if (Number(that.year) > that.treeLinker.topYear) clearInterval(that.yearTimer);
+            if (Number(that.settings.year) > that.treeLinker.topYear) clearInterval(that.yearTimer);
         }
 
 
