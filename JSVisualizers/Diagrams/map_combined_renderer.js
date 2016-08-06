@@ -105,7 +105,7 @@ CombinedRenderer.prototype = {
                 layout.layout.eachNode(function(node, point) {
 
                     //layout.drawNodes(map, node, point.p);
-                    $.proxy(that.renderer.drawNodes(layout, map, node, point.p), that);
+                    $.proxy(that.renderer.drawNodes(layout.layout, map, node, point.p), that);
                 });
 
                 // what was this for? it was fixing something but i cant remember what!
