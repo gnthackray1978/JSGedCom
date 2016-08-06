@@ -8,7 +8,7 @@ var FDRenderer = function(graph, ctx){
 
 FDRenderer.prototype ={
     
-    clearFunction : function(cameraView) {
+    clear : function(cameraView) {
         this.ctx.clearRect(0, 0, cameraView.graph_width, cameraView.graph_height);
     },
 
