@@ -25,16 +25,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 /*global TreeLinker*/
 /*global FDLayout*/ 
 /*global CameraView*/
+/*global LayoutSettings*/
  
 var ForceDirect = function (channel, colourScheme,gedPreLoader) {
 
     this.channel = channel;
+    
+    this.settings = new LayoutSettings();
+    
+    // this.stiffness = 400.0;
+    // this.repulsion = 500.0;
+    // this.damping = 0.5;
 
-    this.stiffness = 400.0;
-    this.repulsion = 500.0;
-    this.damping = 0.5;
-
-    this.colourScheme = colourScheme;
+    // this.colourScheme = colourScheme;
 
     this.canvas = document.getElementById("myCanvas");
 
@@ -55,9 +58,9 @@ var ForceDirect = function (channel, colourScheme,gedPreLoader) {
     this.graph = null;
     this.yearTimer;
     
-    this.speed =3000;
-    this.increment =5;
-    this.year = 1670;
+    // this.speed =3000;
+    // this.increment =5;
+    // this.year = 1670;
     
     var that =this;
     
@@ -88,9 +91,9 @@ ForceDirect.prototype = {
         
         var that = this;
         
-        this.speed =params.sp;
-        this.increment =params.im;
-        this.year = params.sy;
+        this.settings.speed =params.sp;
+        this.settings.increment =params.im;
+        this.settings.year = params.sy;
         
         this.gedPreLoader.GetGenerations(id, function(data){
             that.run(data);
@@ -143,12 +146,12 @@ ForceDirect.prototype = {
         }
 
 
-        $('body').css("background-color", this.colourScheme.mapbackgroundColour);
+        $('body').css("background-color", this.settings.colourScheme.mapbackgroundColour);
 
 
         var parentLayout = this.layout = new FDLayout(that.channel, that.graph, 
-            new CameraView(this.colourScheme, window.innerWidth, window.innerHeight), 
-            this.stiffness, this.repulsion, this.damping);
+            new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight), 
+            this.settings);
 
         this.layoutList.push({ layout: parentLayout, type: 'parent' });
 
@@ -221,8 +224,7 @@ ForceDirect.prototype = {
         }
 
         return new FDLayout(this.channel,infoGraph, 
-            new CameraView(this.colourScheme, 200, 200), this.stiffness, 
-            this.repulsion, this.damping, entry, parentLayout, centreNode);
+            new CameraView(this.settings.colourScheme, 200, 200), this.settings, entry, parentLayout, centreNode);
     },
 
     Save: function(recordLink) {

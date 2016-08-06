@@ -4,7 +4,7 @@
 
  
 
-var FDLayout = function (channel, graph, camera, stiffness, repulsion, damping, parentNode, parentLayout, firstNode) {
+var FDLayout = function (channel, graph, camera, settings, parentNode, parentLayout, firstNode) {
     this._channel = channel;
     
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
@@ -20,9 +20,9 @@ var FDLayout = function (channel, graph, camera, stiffness, repulsion, damping, 
     this.mouseup = true;
 
     this.graph = graph;
-    this.stiffness = stiffness; // spring stiffness constant
-    this.repulsion = repulsion; // repulsion constant
-    this.damping = damping; // velocity damping factor
+    this.stiffness = settings.stiffness; // spring stiffness constant
+    this.repulsion = settings.repulsion; // repulsion constant
+    this.damping = settings.damping; // velocity damping factor
 
     this.nodePoints = {}; // keep track of points associated with nodes
     this.edgeSprings = {}; // keep track of springs associated with edges

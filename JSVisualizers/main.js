@@ -5,7 +5,7 @@
 /*global ComplexLoaderUI*/
 /*global GedPreLoader*/
 /*global VisControlsUI*/
-
+/*global ColourScheme*/
 /*global postal*/
 
 $(document).ready(function () {

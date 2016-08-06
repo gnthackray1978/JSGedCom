@@ -98,13 +98,9 @@ CombinedRenderer.prototype = {
                 // render 
                 layout.layout.eachEdge(function(edge, spring) {
                    $.proxy(that.renderer.drawEdges(map, edge, spring.point1.p, spring.point2.p), that);
-                   // layout.drawEdges(map, edge, spring.point1.p, spring.point2.p);
-                   
                 });
 
                 layout.layout.eachNode(function(node, point) {
-
-                    //layout.drawNodes(map, node, point.p);
                     $.proxy(that.renderer.drawNodes(layout.layout, map, node, point.p), that);
                 });
 
