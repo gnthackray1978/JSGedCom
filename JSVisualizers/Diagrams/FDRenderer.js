@@ -115,7 +115,7 @@ FDRenderer.prototype ={
 
     },
 
-    drawNodes : function(map, node, p) {
+    drawNodes : function(layout, map, node, p) {
         var _utils = new Utils(map.currentBB, map.graph_width, map.graph_height);
 
         var x1 = map.mapOffset(_utils.toScreen(p)).x;
@@ -142,7 +142,7 @@ FDRenderer.prototype ={
 
         this.ctx.save();
         //2 = nearest
-        var selectionId = this.layout.getSelection(node);
+        var selectionId = layout.getSelection(node);
 
 
         if (node.data.type != undefined && node.data.type == 'infonode') {
