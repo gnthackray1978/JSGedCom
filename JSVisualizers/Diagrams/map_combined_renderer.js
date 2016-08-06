@@ -82,8 +82,6 @@ CombinedRenderer.prototype = {
 
             that.renderer.clear(that.layouts[0].layout._cameraView);
 
-          //  $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
-
             that._channel.publish( "nodecount", { value: that.layouts[0].layout._cameraView.countOnscreenNodes() } );
 
             that.layouts.forEach(function(layout,idx) {
@@ -123,8 +121,6 @@ CombinedRenderer.prototype = {
                 idx++;
             });
 
-         //   $('#energy').html(energyCount.toFixed(2));
-            
             that._channel.publish( "energy",  {value: energyCount.toFixed(2) });
 
 
