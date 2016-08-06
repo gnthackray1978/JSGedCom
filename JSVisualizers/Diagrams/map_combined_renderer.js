@@ -1,4 +1,3 @@
-﻿
 
 // we need a list of layouts, drawedges, drawnodes
 // 1 clear function
@@ -15,15 +14,21 @@ CombinedRenderer.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 	    window.setTimeout(callback, 10);
 	}, window);
 
+//layouts
+//renderer
 
-function CombinedRenderer(forceDirect, clear, drawEdges,drawNodes) {
+function CombinedRenderer(channel, forceDirect, renderer) {
+    this._channel = channel;
+    
     this.forceDirect =forceDirect;
     
     this.layouts = forceDirect.layoutList;
     
-    this.clear = clear;
-    this.drawEdges = drawEdges;
-    this.drawNodes = drawNodes;
+    this.renderer = renderer;
+    
+    // this.clear = clear;
+    // this.drawEdges = drawEdges;
+    // this.drawNodes = drawNodes;
 }
 
 CombinedRenderer.prototype = {
@@ -48,8 +53,7 @@ CombinedRenderer.prototype = {
                     if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
                 });
                 if (!nodePresent)
-                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), 
-                                drawEdges: that.drawEdges, drawNodes: that.drawNodes, type: 'child' });
+                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), type: 'child' });
             });
 
             //remove the layouts for nodes that are no longer on the screen
@@ -76,9 +80,11 @@ CombinedRenderer.prototype = {
             var energyCount = 0;
 
 
-            that.clear(that.layouts[0].layout._cameraView);
+            that.renderer.clear(that.layouts[0].layout._cameraView);
 
-            $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
+          //  $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
+
+            that._channel.publish( "nodecount", { value: that.layouts[0].layout._cameraView.countOnscreenNodes() } );
 
             that.layouts.forEach(function(layout,idx) {
 
@@ -93,14 +99,15 @@ CombinedRenderer.prototype = {
 
                 // render 
                 layout.layout.eachEdge(function(edge, spring) {
-
-                    layout.drawEdges(map, edge, spring.point1.p, spring.point2.p);
+                   $.proxy(that.renderer.drawEdges(map, edge, spring.point1.p, spring.point2.p), that);
+                   // layout.drawEdges(map, edge, spring.point1.p, spring.point2.p);
+                   
                 });
 
                 layout.layout.eachNode(function(node, point) {
 
-                    layout.drawNodes(map, node, point.p);
-
+                    //layout.drawNodes(map, node, point.p);
+                    $.proxy(that.renderer.drawNodes(map, node, point.p), that);
                 });
 
                 // what was this for? it was fixing something but i cant remember what!
@@ -116,7 +123,10 @@ CombinedRenderer.prototype = {
                 idx++;
             });
 
-            $('#energy').html(energyCount.toFixed(2));
+         //   $('#energy').html(energyCount.toFixed(2));
+            
+            that._channel.publish( "energy",  {value: energyCount.toFixed(2) });
+
 
             // stop simulation when energy of the system goes below a threshold
             if (energyCount < 0.01) {

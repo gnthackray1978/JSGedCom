@@ -69,6 +69,19 @@ VisControlsUI.prototype.InitEvents = function () {
     this._channel.subscribe("nodeHighlighted", function(data, envelope) {
         console.log('ui node highlighted event caught');
     });
+    
+    //  //  $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
+    
+    //
+    
+    this._channel.subscribe("nodecount", function(data, envelope) {
+        $('#nodes').html(data.value);
+    });
+    
+    this._channel.subscribe("energy", function(data, envelope) {
+        $('#energy').html(data.value);
+    });
+    
 };
 
 
