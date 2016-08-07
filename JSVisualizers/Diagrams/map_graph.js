@@ -12,6 +12,22 @@ var Graph = function () {
     //todo get rid of this and just iterate nodes collection
 
     this.addedNodes = [];
+    
+    var that = this;
+    
+     /*save add delete is work in progress and needs fixing
+    
+    */
+    
+    // this.channel.subscribe("requestAdd", function(data, envelope) {
+    //     that.Add(data.value);
+    // });
+    // this.channel.subscribe("requestSave", function(data, envelope) {
+    //     that.Save(data.value);
+    // });
+    // this.channel.subscribe("requestDelete", function(data, envelope) {
+    //     that.Delete();
+    // });
 };
 
 
@@ -145,7 +161,53 @@ Graph.prototype = {
         this.eventListeners.forEach(function (obj) {
             obj.graphChanged();
         });
+    },
+    
+    /*save add delete is work in progress and needs fixing
+    
+    */
+    Save: function(recordLink) {
+        console.log('Saved ' + recordLink.PersonId);
+        
+        //this.layout.selected.
+
+        if (this.layout.selected.node.data.RecordLink.PersonId == recordLink.PersonId) {
+            this.layout.selected.node.data.RecordLink.BaptismDate = recordLink.BaptismDate;
+            this.layout.selected.node.data.RecordLink.BirthDate = recordLink.BirthDate;
+            this.layout.selected.node.data.RecordLink.BirthLocation = recordLink.BirthLocation;
+            this.layout.selected.node.data.RecordLink.DOB = recordLink.DOB;
+            this.layout.selected.node.data.RecordLink.DOD = recordLink.DOD;
+            this.layout.selected.node.data.RecordLink.DeathLocation = recordLink.DeathLocation;
+            this.layout.selected.node.data.RecordLink.FirstName = recordLink.FirstName;
+            this.layout.selected.node.data.RecordLink.Name = recordLink.FirstName + ' ' + recordLink.Surname;
+            this.layout.selected.node.data.RecordLink.Occupation = recordLink.Occupation;
+            this.layout.selected.node.data.RecordLink.OccupationDate = recordLink.OccupationDate;
+            this.layout.selected.node.data.RecordLink.OccupationPlace = recordLink.OccupationPlace;
+            this.layout.selected.node.data.RecordLink.PersonId = recordLink.PersonId;
+            this.layout.selected.node.data.RecordLink.Surname = recordLink.Surname;
+        }
+        
+
+    },
+    
+    Add: function (recordLink) {
+
+        recordLink.PersonId = 1234;
+        
+        console.log('Add ' + recordLink.PersonId);
+        
+
+        var nodeLink = this.graph.newNode({ label: 'new one', RecordLink: recordLink, type: 'normal' });
+        
+        this.graph.newEdge(this.layout.selected.node, nodeLink, { type: 'person' });
+    },
+    
+    Delete: function() {
+        console.log('Delete ' );
     }
+
+
+
 
 };
  

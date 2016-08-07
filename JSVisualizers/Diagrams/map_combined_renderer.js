@@ -17,18 +17,13 @@ CombinedRenderer.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 //layouts
 //renderer
 
-function CombinedRenderer(channel, forceDirect, renderer) {
+function CombinedRenderer(channel, layoutList, renderer) {
     this._channel = channel;
-    
-    this.forceDirect =forceDirect;
-    
-    this.layouts = forceDirect.layoutList;
+
+    this.layouts = layoutList;
     
     this.renderer = renderer;
-    
-    // this.clear = clear;
-    // this.drawEdges = drawEdges;
-    // this.drawNodes = drawNodes;
+
 }
 
 CombinedRenderer.prototype = {
@@ -40,51 +35,52 @@ CombinedRenderer.prototype = {
         var that = this;
 
         CombinedRenderer.requestAnimationFrame(function step() {
-            var onScreenList = [];
+            // var onScreenList = [];
 
-            if (that.layouts[0].layout._cameraView.zoompercentage > 8500)
-                onScreenList = that.layouts[0].layout._cameraView.onscreenNodes(20);
+            // if (that.layouts[0].layout._cameraView.zoompercentage > 8500)
+            //     onScreenList = that.layouts[0].layout._cameraView.onscreenNodes(20);
 
 
-            // create a list of the new layouts we need to add
-            onScreenList.forEach(function(node, index, ar) {
-                var nodePresent = false;
-                that.layouts.forEach(function(value, index, ar) {
-                    if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
-                });
-                if (!nodePresent)
-                    that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), type: 'child' });
-            });
+            // // create a list of the new layouts we need to add
+            // onScreenList.forEach(function(node, index, ar) {
+            //     var nodePresent = false;
+            //     that.layouts.forEach(function(value, index, ar) {
+            //         if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
+            //     });
+            //     if (!nodePresent)
+            //         that.layouts.push({ layout: that.forceDirect.createSubLayout(that.layouts[0].layout, node), type: 'child' });
+            // });
 
-            //remove the layouts for nodes that are no longer on the screen
-            for (var i = that.layouts.length - 1; i >= 0; i--) {
+            // //remove the layouts for nodes that are no longer on the screen
+            // for (var i = that.layouts.length - 1; i >= 0; i--) {
 
-                if (that.layouts[i].type == 'child') {
-                    var nodePresent = false;
-                    onScreenList.forEach(function(value, index, ar) {
-                        if (that.layouts[i].layout.parentNode.id == value.id) nodePresent = true;
-                    });
+            //     if (that.layouts[i].type == 'child') {
+            //         var nodePresent = false;
+            //         onScreenList.forEach(function(value, index, ar) {
+            //             if (that.layouts[i].layout.parentNode.id == value.id) nodePresent = true;
+            //         });
 
-                    if (!nodePresent) that.layouts.splice(i, 1);
-                }
-            };
+            //         if (!nodePresent) that.layouts.splice(i, 1);
+            //     }
+            // };
 
-            that.layouts.forEach(function(layout, index, ar) {
-                if (layout.layout.graph.eventListeners.length == 0)
-                    layout.layout.graph.addGraphListener(that);
+            // that.layouts.forEach(function(layout, index, ar) {
+            //     if (layout.layout.graph.eventListeners.length == 0)
+            //         layout.layout.graph.addGraphListener(that);
 
-                layout.layout._cameraView.adjustPosition();
-            });
+            //     layout.layout._cameraView.adjustPosition();
+            // });
  
+            that.layouts.UpdateActiveLayouts();
            
             var energyCount = 0;
 
 
-            that.renderer.clear(that.layouts[0].layout._cameraView);
+            that.renderer.clear(that.layouts.TopLayout()._cameraView);
 
-            that._channel.publish( "nodecount", { value: that.layouts[0].layout._cameraView.countOnscreenNodes() } );
+            that._channel.publish( "nodecount", { value: that.layouts.TopLayout()._cameraView.countOnscreenNodes() } );
 
-            that.layouts.forEach(function(layout,idx) {
+            that.layouts.layouts.forEach(function(layout,idx) {
 
                 layout.layout.applyCoulombsLaw();
                 layout.layout.applyHookesLaw();

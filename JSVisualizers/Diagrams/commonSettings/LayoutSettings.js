@@ -10,5 +10,6 @@ var LayoutSettings = function (){
     this.speed =3000;
     this.increment =5;
     this.year = 1670;
-    
+    this.sublayoutZoom= 8500;
+    this.sublayoutNodeThreshold = 20;
 };
