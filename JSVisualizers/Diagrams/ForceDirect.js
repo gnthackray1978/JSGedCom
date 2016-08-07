@@ -35,8 +35,6 @@ var ForceDirect = function (channel, colourScheme,gedPreLoader) {
     
     this.settings = new LayoutSettings();
 
-    this.layoutList = new LayoutList();
-
     this.canvas = document.getElementById("myCanvas");
 
     this.canvas.width = window.innerWidth;
@@ -84,7 +82,7 @@ ForceDirect.prototype = {
     },
     
     kill: function() {
-        this.layoutList = [];
+   
         if(this.gedPreLoader){
             this.gedPreLoader.generations =[];
             this.gedPreLoader.searchDepth = 0;
@@ -111,9 +109,9 @@ ForceDirect.prototype = {
 
         var graph = new Graph();
         
-        that.layoutList = new LayoutList(that.channel, that.graph, that.ctx, that.settings, data);
+        var layoutList = new LayoutList(that.channel, that.graph, that.ctx, that.settings, data);
 
-        that.layoutList.Init();
+        layoutList.Init();
         
         
 
@@ -124,11 +122,11 @@ ForceDirect.prototype = {
 
             $('#map_year').html(that.settings.year);
 
-            that.layoutList.populateGraph(that.settings.year);
+            layoutList.populateGraph(that.settings.year);
 
             that.settings.year += that.settings.increment;
             
-            if (Number(that.settings.year) > that.layoutList.topYear) clearInterval(that.yearTimer);
+            if (Number(that.settings.year) > layoutList.topYear) clearInterval(that.yearTimer);
         }
 
 
@@ -141,7 +139,7 @@ ForceDirect.prototype = {
 
         // this.layoutList.push({ layout: parentLayout, type: 'parent' });
 
-        that.combinedRenderer = new CombinedRenderer(that.channel, that.layoutList, new FDRenderer(that.graph, that.ctx));
+        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(that.graph, that.ctx));
 
         that.combinedRenderer.start();
 
