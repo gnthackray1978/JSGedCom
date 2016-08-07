@@ -139,7 +139,7 @@ ForceDirect.prototype = {
 
         // this.layoutList.push({ layout: parentLayout, type: 'parent' });
 
-        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(that.graph, that.ctx));
+        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(graph, that.ctx));
 
         that.combinedRenderer.start();
 
