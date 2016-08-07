@@ -227,7 +227,7 @@ LayoutList.prototype ={
     },
     
     TopLayout: function(){
-        return this.layouts[0];
+        return this.layouts[0].layout;
     }
 
   
