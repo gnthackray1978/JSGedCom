@@ -22,7 +22,7 @@ LayoutList.prototype ={
             new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight), 
             this.settings);
 
-        this.layoutList.push({ layout: parentLayout, type: 'parent' });
+        this.layouts.push({ layout: parentLayout, type: 'parent' });
     },
     
     AddLayout : function(parentLayout, entry){
