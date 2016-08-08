@@ -70,10 +70,11 @@ $(document).ready(function () {
                     that.forceDirect.kill();
                 
                 
-                var diagUI = new VisControlsUI(channel);
+                var settings = new LayoutSettings();
                 
+                var diagUI = new VisControlsUI(channel, settings);
                 
-                that.forceDirect = new ForceDirect(channel, colourScheme, that.gedPreLoader);
+                that.forceDirect = new ForceDirect(channel, settings, that.gedPreLoader);
                 
                  
                 diagUI.InitEvents();

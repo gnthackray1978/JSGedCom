@@ -1,5 +1,9 @@
-function VisControlsUI(channel) {       
+function VisControlsUI(channel, settings) {       
     this._channel = channel;
+    
+    $('body').css("background-color", settings.colourScheme.mapbackgroundColour);
+    
+    
 }
 
 
@@ -82,6 +86,9 @@ VisControlsUI.prototype.InitEvents = function () {
         $('#energy').html(data.value);
     });
     
+    this._channel.subscribe("mapyear", function(data, envelope) {
+        $('#map_year').html(data.value);
+    });
 };
 
 

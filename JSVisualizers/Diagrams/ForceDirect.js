@@ -29,18 +29,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 /*global LayoutList*/ 
  
  
-var ForceDirect = function (channel, colourScheme,gedPreLoader) {
+var ForceDirect = function (channel,settings, gedPreLoader) {
 
     this.channel = channel;
     
-    this.settings = new LayoutSettings();
+    this.settings = settings;
 
-    this.canvas = document.getElementById("myCanvas");
 
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-
-    this.ctx = this.canvas.getContext("2d");
 
 
     this.combinedRenderer = null;
@@ -101,15 +96,20 @@ ForceDirect.prototype = {
     },
     
     run: function(data) {
-        //var f = JSON.stringify(data);
+        
+        var canvas = document.getElementById("myCanvas");
+    
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    
+        var ctx = canvas.getContext("2d");
 
-        //this.treeLinker = new TreeLinker(data);
 
         var that = this;
 
         var graph = new Graph(that.channel);
         
-        var layoutList = new LayoutList(that.channel, graph, that.ctx, that.settings, data);
+        var layoutList = new LayoutList(that.channel, graph, ctx, that.settings, data);
 
         layoutList.Init();
         
@@ -120,7 +120,7 @@ ForceDirect.prototype = {
       
         function myTimer() {
 
-            $('#map_year').html(that.settings.year);
+            that.channel.publish( "mapyear",  {value: that.settings.year});
 
             layoutList.populateGraph(that.settings.year);
 
@@ -130,16 +130,9 @@ ForceDirect.prototype = {
         }
 
 
-        $('body').css("background-color", this.settings.colourScheme.mapbackgroundColour);
+        
 
-
-        // var parentLayout = this.layout = new FDLayout(that.channel, that.graph, 
-        //     new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight), 
-        //     this.settings);
-
-        // this.layoutList.push({ layout: parentLayout, type: 'parent' });
-
-        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(graph, that.ctx));
+        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(graph, ctx));
 
         that.combinedRenderer.start();
 
