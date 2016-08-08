@@ -26,7 +26,7 @@ function CombinedRenderer(channel, layoutList, renderer) {
 
     var that = this;
     
-    this.channel.subscribe("graphChanged", function(data, envelope) {
+    this._channel.subscribe("graphChanged", function(data, envelope) {
         that.start();
     });
 
