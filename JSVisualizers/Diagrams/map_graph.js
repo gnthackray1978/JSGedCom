@@ -1,5 +1,6 @@
 
-var Graph = function () {
+var Graph = function (channel) {
+    this.channel = channel;
     this.nodeSet = {};
     this.nodes = [];
     this.edges = [];
@@ -28,6 +29,8 @@ var Graph = function () {
     // this.channel.subscribe("requestDelete", function(data, envelope) {
     //     that.Delete();
     // });
+    
+    
 };
 
 
@@ -158,9 +161,11 @@ Graph.prototype = {
     },
     
     notify: function () {
-        this.eventListeners.forEach(function (obj) {
-            obj.graphChanged();
-        });
+        // this.eventListeners.forEach(function (obj) {
+        //     obj.graphChanged();
+        // });
+        
+        this.channel.publish("graphChanged",{value: undefined});
     },
     
     /*save add delete is work in progress and needs fixing

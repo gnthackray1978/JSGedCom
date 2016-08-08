@@ -24,6 +24,12 @@ function CombinedRenderer(channel, layoutList, renderer) {
     
     this.renderer = renderer;
 
+    var that = this;
+    
+    this.channel.subscribe("graphChanged", function(data, envelope) {
+        that.start();
+    });
+
 }
 
 CombinedRenderer.prototype = {
@@ -120,7 +126,7 @@ CombinedRenderer.prototype = {
             if (energyCount < 0.01) {
                 that._started = false;
                 if (typeof(done) !== 'undefined') {
-                    done();
+                    that.done();
                 }
             } else {
 
@@ -132,8 +138,6 @@ CombinedRenderer.prototype = {
     },
     done: function() {
 
-    },
-    graphChanged: function(e) {
-        this.start();
     }
+    
 };

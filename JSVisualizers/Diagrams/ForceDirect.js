@@ -107,7 +107,7 @@ ForceDirect.prototype = {
 
         var that = this;
 
-        var graph = new Graph();
+        var graph = new Graph(that.channel);
         
         var layoutList = new LayoutList(that.channel, graph, that.ctx, that.settings, data);
 

@@ -27,7 +27,7 @@ LayoutList.prototype ={
     
     AddLayout : function(parentLayout, entry){
         
-        var infoGraph = new Graph();
+        var infoGraph = new Graph(this.channel);
 
         var centreNode = infoGraph.newNode({
             label: '',
