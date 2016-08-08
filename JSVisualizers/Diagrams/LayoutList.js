@@ -107,7 +107,7 @@ LayoutList.prototype ={
                 if (value.type == 'child' && value.layout.parentNode.id == node.id) nodePresent = true;
             });
             if (!nodePresent)
-                that.layouts.push({ layout: that.forceDirect.AddLayout(that.layouts[0].layout, node), type: 'child' });
+                that.layouts.push({ layout: that.AddLayout(that.layouts[0].layout, node), type: 'child' });
         });
 
         //remove the layouts for nodes that are no longer on the screen
