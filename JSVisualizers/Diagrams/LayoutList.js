@@ -124,8 +124,8 @@ LayoutList.prototype ={
         };
 
         that.layouts.forEach(function(layout, index, ar) {
-            if (layout.layout.graph.eventListeners.length == 0)
-                layout.layout.graph.addGraphListener(that);
+            // if (layout.layout.graph.eventListeners.length == 0)
+            //     layout.layout.graph.addGraphListener(that);
 
             layout.layout._cameraView.adjustPosition();
         });
