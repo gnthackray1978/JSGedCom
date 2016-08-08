@@ -35,27 +35,22 @@ var ForceDirect = function (channel,settings, gedPreLoader) {
     
     this.settings = settings;
 
-
-
-
-    this.combinedRenderer = null;
+    this.renderingHandler = null;
     
- 
     this.gedPreLoader = gedPreLoader;
 
-  
     this.yearTimer;
 
     var that =this;
     
     this.channel.subscribe("mouseDown", function(data, envelope) {
-        if(that.combinedRenderer) // hack until i can be bothered add bus in for the events
-            that.combinedRenderer.start();
+        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+            that.renderingHandler.start();
     });
     
     this.channel.subscribe("mouseMove", function(data, envelope) {
-        if(that.combinedRenderer) // hack until i can be bothered add bus in for the events
-            that.combinedRenderer.start();
+        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+            that.renderingHandler.start();
     });
     
 
@@ -87,7 +82,7 @@ ForceDirect.prototype = {
       
         this.graph = null;
         this.treeLinker = null;
-        this.combinedRenderer = null;
+        this.renderingHandler = null;
         this.layout = null;
         
         
@@ -129,12 +124,9 @@ ForceDirect.prototype = {
             if (Number(that.settings.year) > layoutList.topYear) clearInterval(that.yearTimer);
         }
 
+        that.renderingHandler = new RenderingHandler(that.channel, layoutList, new FDRenderer(graph, ctx));
 
-        
-
-        that.combinedRenderer = new CombinedRenderer(that.channel, layoutList, new FDRenderer(graph, ctx));
-
-        that.combinedRenderer.start();
+        that.renderingHandler.start();
 
         return this;
     }
