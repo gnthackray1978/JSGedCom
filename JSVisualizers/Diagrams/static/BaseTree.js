@@ -334,8 +334,10 @@ TreeBase.prototype = {
     },
    
     SetMouse: function (x, y, mousestate) {
+        console.log('mouse set: ' + x + ' , ' + y);
         this.mouse_x = x;
         this.mouse_y = y;
+        
         if (mousestate == undefined) mousestate = false;
 
 //        if (this.initial_mouse_x === 0) {
