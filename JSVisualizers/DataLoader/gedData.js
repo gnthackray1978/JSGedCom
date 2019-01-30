@@ -1,22 +1,22 @@
 
-var GedData = function (generationsArray) {
+export function GedData(generationsArray) {
 
     this.TopYear=0;
-    
+
     this.BottomYear =0;
-        
+
     this.Generations = generationsArray;
-    
+
     this.TreeRange();
-    
-    
-};
+
+
+}
 
 GedData.prototype = {
-    
+
     DescendantCount: function (genidx, personidx) {
 
-        var stack = new Array();
+        var stack = [];
         var count = 0;
         stack.push(this.Generations[genidx][personidx]);
 
@@ -77,39 +77,39 @@ GedData.prototype = {
             botYear = 1695;
             topYear = 1695;
         }
-    
+
         this.TopYear=topYear;
         this.BottomYear =botYear;
     },
-    
+
     FatherEdge: function(genIdx, personIdx){
-        
+
         var currentPerson = this.Generations[genIdx][personIdx];
         var fatherNodeLink;
-        
-        
+
+
         if(genIdx > 0 && currentPerson) {
             fatherNodeLink = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
-        }      
-        
-        if(!fatherNodeLink) 
+        }
+
+        if(!fatherNodeLink)
             console.log('father node link not found');
-        
-        if(!currentPerson.nodeLink) 
+
+        if(!currentPerson.nodeLink)
             console.log(currentPerson.PersonId + 'current node missing nodelink');
-    
-        if(genIdx <= 0) 
+
+        if(genIdx <= 0)
             console.log('no father for generation: ' + genIdx);
-            
-    
+
+
         if(fatherNodeLink && currentPerson.nodeLink && genIdx > 0){
-            return {IsValid: true, FatherNode : fatherNodeLink, ChildNode : currentPerson.nodeLink};    
+            return {IsValid: true, FatherNode : fatherNodeLink, ChildNode : currentPerson.nodeLink};
         }
         else
         {
-            return {IsValid: false}; 
+            return {IsValid: false};
         }
-        
-        
+
+
     }
 };

@@ -1,95 +1,90 @@
-
-
-<!DOCTYPE html> 
-<html> 
-<head> 
-	<title>Gedcom loader</title> 
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Gedcom loader</title>
+	<link rel="icon"
+      type="image/png"
+      href="favicon.ico">
     <link href="CSS/selection_widget.css" rel="stylesheet" />
     <link href="CSS/tree.css" rel="stylesheet" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link href="CSS/jquery-ui.css" rel="stylesheet">
+
+
+    <script src="Libs/Panels.js" type="module"></script>
+
+
     <script src="Libs/jquery.js"></script>
-    <script src="Libs/Asynch.js" type="text/javascript"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>   
-	<script src="http://www.gnthackray.co.uk/junkyardlib/bus/postal.js" type="text/javascript"></script>
-	
-    <script src="http://www.gnthackray.co.uk/junkyardlib/CanvasTools/requestAnimationFrame.js" type="text/javascript"></script>
-    <script src="http://www.gnthackray.co.uk/junkyardlib/Panels/visiblePanels.js" type="text/javascript"></script>
+
+    <script src="Libs/jquery-ui.js"></script>
+
+    <script src="Libs/requestAnimationFrame.js"  type="module"></script>
+
+    <script src="DataLoader/gedData.js" type="module"></script>
+
+    <script src="Diagrams/Data/Bio.mjs" type="module"></script>
+
+    <script src="DataLoader/FakeData.js" type="module"></script>
+    <script src="DataLoader/ApplicationGedLoader.js" type="module"></script>
+    <script src="DataLoader/GedPreLoader.js" type="module"></script>
+    <script src="DataLoader/GedAncPreLoader.js" type="module"></script>
 
 
-    <script src="UI/View.js"></script>
+    <script src="Libs/Extensions.js" type="module"></script>
 
 
-    <script src="DataLoader/gedData.js"></script>
-    
-    <script src="Diagrams/Data/Bio.js"></script>
 
-   <script src="DataLoader/fakeTree.js"></script>
-
-
-    <script src="DataLoader/ApplicationGedLoader.js"></script>
-    <script src="DataLoader/gedPreLoader.js"></script>
-    <script src="DataLoader/gedAncPreLoader.js"></script>
-       
-
-    <script src="Libs/extensions.js"></script>
-       
-  
-    <script src="Libs/util_func.js"></script>
+    <script src="UI/ComplexLoaderUI.js" type="module"></script>
+    <script src="UI/SimpleLoaderUI.js" type="module"></script>
+    <script src="UI/VisControlsUI.js" type="module"></script>
 
 
-    <script src="UI/ComplexLoaderUI.js"></script>
-    <script src="UI/SimpleLoaderUI.js"></script>
-    <script src="UI/visControlsUI.js"></script>
-    
-    <script src="Diagrams/static/treeUI.js" type="text/javascript"></script>
-    <script src="Diagrams/static/BaseTree.js" type="text/javascript"></script>
-    <script src="Diagrams/static/DescendantTree.js" type="text/javascript"></script>
- 
-    <script src="Diagrams/static/AncestorTree.js"></script>
+    <script src="Diagrams/Static/TreeUi.js"  type="module"></script>
+    <script src="Diagrams/Static/TreeBase.js"  type="module"></script>
+    <script src="Diagrams/Static/DescTree.js"  type="module"></script>
 
-    
-    <script src="Diagrams/static/TreeRunner.js"></script>
+    <script src="Diagrams/Static/AncTree.js" type="module"></script>
 
 
-    <script src="Diagrams/commonSettings/ColourScheme.js" type="text/javascript"></script>
-    <script src="Diagrams/commonSettings/LayoutSettings.js" type="text/javascript"></script>
-    <script src="Diagrams/types/Spring.js" type="text/javascript"></script>
-    <script src="Diagrams/types/Point.js" type="text/javascript"></script>
-    <script src="Diagrams/types/Edge.js" type="text/javascript"></script>
-    <script src="Diagrams/types/Node.js" type="text/javascript"></script>
-    <script src="Diagrams/types/Vector.js" type="text/javascript"></script>
-    <script src="Diagrams/FDRenderer.js" type="text/javascript"></script>
-    <script src="Diagrams/map_graph.js" type="text/javascript"></script>
-    <script src="Diagrams/CameraView.js" type="text/javascript"></script>
-    <script src="Diagrams/FDLayout.js" type="text/javascript"></script>
-    <script src="Diagrams/LayoutList.js" type="text/javascript"></script>
- 
-    <script src="Diagrams/libs/map_utils.js" type="text/javascript"></script>
-    
-    <script src="Diagrams/RenderingHandler.js" type="text/javascript"></script> 
-    <script src="Diagrams/ForceDirect.js" type="text/javascript"></script>
+    <script src="Diagrams/Static/TreeRunner.js" type="module"</script>
+
+
+    <script src="Diagrams/CommonSettings/LayoutSettings.js"  type="module"></script>
+    <script src="Diagrams/Types/Spring.js" type="module"></script>
+    <script src="Diagrams/Types/Point.js" type="module"></script>
+    <script src="Diagrams/Types/Edge.js" type="module"></script>
+    <script src="Diagrams/Types/Node.js" type="module"></script>
+    <script src="Diagrams/Types/Vector.js" type="module"></script>
+    <script src="Diagrams/FDRenderer.js" type="module"></script>
+    <script src="Diagrams/Graph.js" type="module"></script>
+    <script src="Diagrams/CameraView.js" type="module"></script>
+    <script src="Diagrams/FDLayout.js" type="module"></script>
+    <script src="Diagrams/LayoutList.js" type="module"></script>
+
+    <script src="Diagrams/Libs/Utils.js" type="module"></script>
+
+    <script src="Diagrams/RenderingHandler.js" type="module"></script>
+    <script src="Diagrams/ForceDirect.js" type="module"></script>
 
 
 
 
-    <script src="main.js"></script>
+    <script src="main.js" type="module"></script>
 
-  
 
-</head> 
-<body> 
-    
+
+</head>
+<body>
+
     <div id ="minimized_options" class ="hidePanel">
-        <input id ="show_dataLoader" class ="options_button" type="submit" value="Load Data" />               
+        <input id ="show_dataLoader" class ="options_button" type="submit" value="Load Data" />
         <input id ="show_controls" class ="options_button" type="submit" value="Controls" />
         <input id ="show_debugbox" class ="options_button" type="submit" value="Debug Window" />
         <input id ="show_databox" class ="options_button" type="submit" value="Data View" />
 
     </div>
-     
-    
-    
+
+
+
     <div id ="dataLoader" class ="hidePanel" title="Load GED Data">
         <!--<div id ="topbar">  <a id ='chooseFileLnk' href ="">Choose File</a> <a id ='selectPersonLnk' href ="">Select Person</a>  </div>-->
 
@@ -99,12 +94,12 @@
             <input id="defaultFile" type="submit" value="Default" />
             <input type="file" id="fileinput" />
             <br/>
-           
+
             <div id = "ged-content"  class = "hidePanel" >
                 <br>
                 <b>Select default person and diagram type to run</b>
                 <div id="selected_person"></div>
-                <div>       
+                <div>
                     <div><span>Name</span></div>
                     <div><input id="txtName" type ="text" value = ""/></div>
                     <div><span>Between</span></div>
@@ -141,16 +136,16 @@
                 <input type="radio" name="type_sel" value="desc_2">Descendants FD
                 <br>
                 <input id ="btnRunDiag" type="submit" value="Draw" />
-            
+
             </div>
-            
+
             <div id = "ged-error"  class = "hidePanel" >
                 <br/>
                 <b>Invalid data</b>
                 <br/>
                 <div id="errormessage"></div>
             </div>
-            
+
             <div id = "ged-loading"  class = "hidePanel" >
                 <br/>
                 <b>Loading data</b>
@@ -159,25 +154,25 @@
                 <div id="loadingmessage"></div>
             </div>
         </div>
-        
+
         <div id ="panelB" class = "hidePanel">
-         
-                                                                                                                                                                                       
+
+
 
         </div>
     </div>
-    
- 
- 
-    
+
+
+
+
 
 
     <div id ="map_message" class ="hidePanel" title="Diag Info">
-        <div class = "map_year"><span>Year: </span><span id ="map_year" >1650</span></div> 
-        <div class = "map_year"><span>Zoom level: </span><span id ="map_zoom" >0</span></div> 
-        <div class = "map_year"><span>X Pos: </span><span id ="map_X" >0</span></div> 
-        <div class = "map_year"><span>Y Pos: </span><span id ="map_Y" >0</span></div> 
-        <div class = "map_year"><span>Nodes: </span><span id ="nodes" >0</span><span> Energy: </span><span id ="energy" >0</span></div> 
+        <div class = "map_year"><span>Year: </span><span id ="map_year" >1650</span></div>
+        <div class = "map_year"><span>Zoom level: </span><span id ="map_zoom" >0</span></div>
+        <div class = "map_year"><span>X Pos: </span><span id ="map_X" >0</span></div>
+        <div class = "map_year"><span>Y Pos: </span><span id ="map_Y" >0</span></div>
+        <div class = "map_year"><span>Nodes: </span><span id ="nodes" >0</span><span> Energy: </span><span id ="energy" >0</span></div>
 
     </div>
 
@@ -190,16 +185,16 @@
         <div id = "so" class = "s button_box"><span></span></div>
       <!--  <div id = "de" class = "debug button_box"><span></span></div>-->
     </div>
-  
-    
-    
+
+
+
      <div id ="dataInfo" class ="hidePanel" title="Data Info">
         <b>Data screen</b>
-         
+
          <input  id ="hidPersonId" type="hidden">
 
             <b>Christian Name:</b>
-            
+
             <input id="txtCName" type="text" />
 
              <b>Surname:</b>
@@ -225,7 +220,7 @@
             <input id="txtOccupationPlace" type="text" />
             <b>Occupation Description:</b>
              <input id="txtOccupationDesc" type="text" />
-           
+
 
 
 
@@ -235,9 +230,9 @@
              <input id="deleteNode" type="submit" value="Delete" />
          </div>
 
-    <canvas id="myCanvas" >    
+    <canvas id="myCanvas" >
     </canvas>
- 
+
 
 </body>
 </html>

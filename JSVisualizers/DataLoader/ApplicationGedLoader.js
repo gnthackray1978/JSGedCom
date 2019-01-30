@@ -1,19 +1,19 @@
-function ApplicationGedLoader() {
-    
-    
+//T http://127.0.0.1:1337/JSVisualizers/DataLoader/GedAncPreLoader net::ERR_ABORTED 404 (Not Found)
+import {GedAncPreLoader} from "./GedAncPreLoader.js";
+import {GedPreLoader} from "./GedPreLoader.js";
+
+
+export function ApplicationGedLoader() {
     this.cacheFamilies = [];
     this.cachePersons = [];
-    
     this.families = [];
     this.persons = [];
-
     this.loader = null;
-  
-};
+}
 
 ApplicationGedLoader.prototype = {
     constructor: function() {
-    },    
+    },
 
     parseLine: function(line) {
 
@@ -61,11 +61,18 @@ ApplicationGedLoader.prototype = {
     },
 
     processFile: function(file,progressFunction, newloader) {
-        
+
+        var asynchCall = function (func, callback) {
+           setTimeout(function() {
+                func();
+                if (callback) {callback();}
+            }, 0);
+        };
+
+
         console.log('processFile');
-        
-        var asynch = new Asynch();
-        
+
+
         var results = file.match(/[^\n]+(?:\r?\n|$)/g);
 
         if(results == null || results.length ==0){
@@ -78,7 +85,7 @@ ApplicationGedLoader.prototype = {
         var makeLists = function(){
             var idx =0;
             var currentId = {};
-            
+
             while (idx < results.length) {
                 var gLine = that.parseLine(results[idx]);
                 try {
@@ -122,9 +129,9 @@ ApplicationGedLoader.prototype = {
 
 
                             if (gLine.tag == 'NAME') currentId.name = gLine.value;
-                            if (gLine.tag == 'FAMS') currentId.famId = gLine.value;                    
-                    
-                   
+                            if (gLine.tag == 'FAMS') currentId.famId = gLine.value;
+
+
                         }
 
 
@@ -171,23 +178,23 @@ ApplicationGedLoader.prototype = {
                                 //because we have take a row out of the array dont need to increment anything
                             }
                         }
-                    }             
+                    }
                 } catch(err) {
                 }
                 idx++;
             }
-            
-            
+
+
         };
 
         var parseSpouses = function(){
             // we need to have the families ordered by the birth of their children
             var famChildIdx = 0;
             var famidx = 0;
-            
+
             var idx = 0;
             while (idx < that.persons.length) {
-                
+
                 famidx = 0;
 
                 while (famidx < that.families.length) {
@@ -207,7 +214,7 @@ ApplicationGedLoader.prototype = {
                             break;
                         }
                         famChildIdx++;
-                    }            
+                    }
 
 
                     famidx++;
@@ -216,16 +223,16 @@ ApplicationGedLoader.prototype = {
                 idx++;
             }
         };
-        
+
         var parseChildren = function(){
-            // sort family children 
+            // sort family children
             var famidx = 0;
             while (famidx < that.families.length) {
 
                 that.families[famidx].children.sort(function(a, b) {
                     return a.date - b.date;
                 });
-        
+
                 if (that.families[famidx].husbId != '0')
                     that.families[famidx].husband.children = that.families[famidx].children;
 
@@ -244,56 +251,23 @@ ApplicationGedLoader.prototype = {
         };
 
         progressFunction('parsing ged file',true);
-        
-        
-        asynch.acall(makeLists, function(){
+
+
+        asynchCall(makeLists, function(){
             progressFunction('parsing persons',true);
-            asynch.acall(parseSpouses, function(){
+            asynchCall(parseSpouses, function(){
                 progressFunction('parsing families',true);
-                asynch.acall(parseChildren, function(){
-                    
+                asynchCall(parseChildren, function(){
+
                     var rng = that.findDateRange();
-                    
+
                     that.cacheFamilies = JSON.parse(JSON.stringify(that.families));
                     that.cachePersons = JSON.parse(JSON.stringify(that.persons));
-                    
+
                     newloader(that.families, that.persons, rng);
                 });
             });
         });
-        
-        
-        
-        
-        
-       
-       
-       
-        //searchFams(findPerson('@I4@'));
-
-
-        //idx = 0;
-
-        //var genidx = 0;
-        //while (idx < generations.length) {
-
-        //    genidx = 0;
-        //    while (genidx < generations[idx].length) {
-
-        //        var p = generations[idx][genidx];
-
-
-        //        console.log(idx + ' ' + p.PersonId + ' ' + p.Name + '  ' + p.DOB + ' FatherId ' + p.FatherId
-        //            + ' FatherIdx  ' + p.FatherIdx + ' MotherId ' + p.MotherId + ' MotherIdx ' + p.MotherIdx
-        //            + ' FS ' + p.IsFamilyStart + ' FE ' + p.IsFamilyEnd + ' IsParentalLink ' + p.IsParentalLink) ;// + ' IsHtmlLink ' + p.IsHtmlLink ;' IsDisplayed ' + p.IsDisplayed + 
-        //        genidx++;
-        //    }
-
-        //    idx++;
-        //}
-
-        // we need to end up with a list of people {spouses, children} with their spouses following them , ordered by generation
-        // we have the persons with generation id do we need a family position tag?
 
 
     },
@@ -310,7 +284,7 @@ ApplicationGedLoader.prototype = {
 
         return null;
     },
-    
+
     findMakeFirst: function(person) {
 
 
@@ -326,52 +300,50 @@ ApplicationGedLoader.prototype = {
 
         return null;
     },
-    
-    
+
     findDateRange: function() {
 
         var startDate =2000;
         var endDate =0;
-        
+
         var idx = 0;
         while (idx < this.persons.length) {
             var date = this.persons[idx].date;
-            
+
             if (date && date < startDate && date !=0) {
                 startDate = date;
             }
-            
+
             if (date && date > endDate && date !=0) {
                 endDate = date;
             }
-            
+
             idx++;
         }
 
         return {s:startDate, e:endDate};
     },
-    
+
     SetForAncLoader: function() {
         this.loader = new GedAncPreLoader(this);
-        
+
     },
-    
+
     SetForDescLoader: function () {
         this.loader = new GedPreLoader(this);
     },
 
     GetGenerations: function (personId, callback) {
-        
+
         console.log('dataloader GetGenerations');
-        
+
         if (this.loader == null) {
 
             console.log('no loader set');
         }
 
         this.loader.GetGenerations(personId, callback);
-        
+
     }
-    
 
 };

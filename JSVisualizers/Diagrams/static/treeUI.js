@@ -1,5 +1,5 @@
 
-var TreeUI = function (modelCode, callback) {
+export function TreeUI (modelCode, callback) {
 
     this.docClose = new Image();
     this.docNew = new Image();
@@ -9,7 +9,7 @@ var TreeUI = function (modelCode, callback) {
     //red box "#99003A"
     //blue "#99CCFF"
 
-  
+
     if (this.modelCode == 0) {
         // descendants
         this.backgroundcolour = 'black';
@@ -33,47 +33,45 @@ var TreeUI = function (modelCode, callback) {
 
     }
 
-  
-    this.docClose.src = '../images/icons/24x24/plus.png';
+
+    this.docClose.src = '../JSVisualizers/Images/24x24/plus.png';
 
     var that = this;
     this.docClose.onload = function () {
-        that.docNew.src = '../images/icons/24x24/minus.png';
-        
+        that.docNew.src = '../JSVisualizers/Images/24x24/minus.png';
+
         that.docNew.onload = function () {
             callback(that);
         };
 
     };
-    
-
-};
 
 
+}
 
 TreeUI.prototype = {
 
 
     UpdateUI: function (screen_width, screen_height, box_width, box_height) {
-        
+
         this.screen_width = screen_width;
         this.screen_height = screen_height;
         this.canvas = document.getElementById("myCanvas");
-        
+
 
         this.context = this.canvas.getContext("2d");
 
         this.boxWidth = box_width;
         this.boxHeight = box_height;
     },
-    
+
     DrawLine: function (points) {
 
         var _pointIdx = 0;
         this.context.beginPath();
         var _validLine = false;
         var _sx1 = -100; //screen left
-        var _sx2 = this.screen_width + 100; // screen right 
+        var _sx2 = this.screen_width + 100; // screen right
         var _sy1 = -100;
         var _sy2 = this.screen_height + 100;
 
@@ -209,13 +207,13 @@ TreeUI.prototype = {
                 }
                 else {
                     xoffset = 16;
-                    //lines 
+                    //lines
                     var halfwidth = Math.abs(_person.X2 - _person.X1) / 2;
                     var middlebox = _person.X1 + halfwidth;
 
-                   
 
-                    //middle of box   
+
+                    //middle of box
                     if ((_person.ChildCount > 0 || _person.SpouseLst.length> 0) && !_person.IsHtmlLink) {
                     //
                         // this.context.beginPath();
@@ -247,8 +245,8 @@ TreeUI.prototype = {
                     }
                     else {
 
-                        if (!_person.IsHtmlLink) { 
-                            
+                        if (!_person.IsHtmlLink) {
+
                             this.context.moveTo(middlebox, _person.Y1);
                             this.context.lineTo(middlebox, _person.Y1 + 7);
                         }
@@ -479,5 +477,3 @@ TreeUI.prototype = {
         return nameAr;
     }
 };
-
- 

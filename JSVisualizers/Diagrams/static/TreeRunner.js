@@ -1,35 +1,33 @@
 
-var JSMaster, AncTree, Tree;
+import {AncTree} from "./AncTree.js";
+import {DescTree} from "./DescTree.js";
 
-
-
-
-var TreeRunner = function () {
+export function TreeRunner() {
     this._tree = null;
-    this.ancUtils = new AncUtils();
+
     this.treeUI = null;
     this._moustQueue = [];
     this._mouseDown = false;
-    
+
     this.kill  = false;
-};
+}
 
 TreeRunner.prototype = {
     run: function (id,applicationGedLoader, tree) {
-     
+
             var type = $("input[name='type_sel']:checked").val();
-        
+
             this.treeUI = new TreeUI(type == 'anc' ? 1:0, $.proxy(function (treeUI) {
 
-            
-            
+
+
             var int;
-       
+
             var that = this;
             this._tree = tree;
-            
+
             this.applicationGedLoader = applicationGedLoader;
-        
+
             this._tree.selectedPersonId = id;
             this._tree.selectedPersonX = 0;
             this._tree.selectedPersonY = 0;
@@ -100,29 +98,29 @@ TreeRunner.prototype = {
 
             $("#myCanvas").click(function (evt) {
                 if (that._tree !== null) {
-                
+
                     var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
- 
+
                     that._tree.PerformClick(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
-                
+
                     that._tree.UpdateGenerationState();
 
-                    if (that._tree.refreshData) {                    
-                        getData(that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);                    
+                    if (that._tree.bt_refreshData) {
+                        getData(that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);
                     }
-            
+
 
                     that._moustQueue[that._moustQueue.length] = new Array(1000000, 1000000);
                 }
             });
-            
+
             $("#myCanvas").mousemove(function (evt) {
                 if (that._tree !== null) {
-                
+
                     var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
 
                     var _point = new Array(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
-                
+
                     that._tree.SetMouse(_point[0], _point[1]);
                     if (that._mouseDown) {
                         that._moustQueue.push(_point);
@@ -133,14 +131,14 @@ TreeRunner.prototype = {
             $("#ml .message").html('<span>Downloading Descendant Tree</span>');
 
             getData( this._tree.selectedPersonId, 0, 0);
-        
+
         }, this));
 
 
     },
     processData: function (data) {
 
-        var _zoomLevel = 100; 
+        var _zoomLevel = 100;
 
         this._tree.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
@@ -154,8 +152,8 @@ TreeRunner.prototype = {
         this._tree.UpdateGenerationState();
 
         this._tree.RelocateToSelectedPerson();
-         
-        this._tree.refreshData = false;
+
+        this._tree.bt_refreshData = false;
     },
 
     CleanUp: function () {
@@ -175,21 +173,9 @@ TreeRunner.prototype = {
             this._tree.SetCentrePoint(_point[0], _point[1]);
             this._tree.DrawTree();
         }
-        
+
         if(!this.kill)
             setTimeout($.proxy(this.GameLoop, this));
     }
 
 };
-
-
-
-
-
-
-
-
-
-
-
-

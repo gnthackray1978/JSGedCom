@@ -1,14 +1,9 @@
-﻿var QD = function () {
-
-
-};
-
-
+﻿export function QD() {}
 
 QD.prototype = {
 
     fill: function (question, answer, questionType) {
-      
+
         try {
             var QD = {
                 Question: question,
@@ -20,7 +15,7 @@ QD.prototype = {
         } catch (e) {
             console.log(question + ' ' + e);
         }
-        
+
         return QD;
 
     }

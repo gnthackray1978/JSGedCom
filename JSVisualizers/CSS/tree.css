@@ -1,6 +1,6 @@
-body 
+body
 {
-  
+
 }
 
 .map_year {
@@ -22,7 +22,7 @@ body
 {
 
     position: absolute;
-    
+
 }
 
 
@@ -32,7 +32,7 @@ body
     background-color: #FFFFFF;
     border: thin solid #99CCFF;
 }
-    
+
 .descendantstyle
 {
     color: #000000;
@@ -46,7 +46,7 @@ body
 
 #map_label
 {
-    padding: 5px; 
+    padding: 5px;
     filter: alpha(opacity=90);
     border-radius: 10px;
     width: 200px;
@@ -67,8 +67,8 @@ body
     filter: alpha(opacity=90);
     border-radius: 10px;
     width: 100px;
-        
-       /* top: -30px; 
+
+       /* top: -30px;
     height: 100px;
     position: absolute;
    right: 30px;
@@ -89,7 +89,7 @@ body
     position: absolute;
     left: 5px;
     top: 8px;
-    background-image: url('/images/Icons/silver_images/navigate_plus.png');
+    background-image: url('../Images/silver_images/navigate_plus.png');
     background-repeat: no-repeat;
 }
 #map_control .d
@@ -98,7 +98,7 @@ body
     position: absolute;
     left: 5px;
     top: 38px;
-    background-image: url('/images/Icons/silver_images/navigate_minus.png');
+    background-image: url('../Images/silver_images/navigate_minus.png');
     background-repeat: no-repeat;
 }
 
@@ -108,7 +108,7 @@ body
     position: absolute;
     left: 60px;
     top: 0px;
-    background-image: url('/images/Icons/silver_images/nav_up_blue.png');
+    background-image: url('../Images/silver_images/nav_up_blue.png');
     background-repeat: no-repeat;
 }
 #map_control .s
@@ -117,7 +117,7 @@ body
     position: absolute;
     top: 50px;
     left: 60px;
-    background-image: url('/images/Icons/silver_images/nav_down_blue.png');
+    background-image: url('../Images/silver_images/nav_down_blue.png');
     background-repeat: no-repeat;
 }
 
@@ -127,7 +127,7 @@ body
     position: absolute;
     left: 85px;
     top: 25px;
-    background-image: url('/images/Icons/silver_images/nav_right_blue.png');
+    background-image: url('../Images/silver_images/nav_right_blue.png');
     background-repeat: no-repeat;
 }
 #map_control .w
@@ -136,7 +136,7 @@ body
     position: absolute;
     left: 40px;
     top: 25px;
-    background-image: url('/images/Icons/silver_images/nav_left_blue.png');
+    background-image: url('../Images/silver_images/nav_left_blue.png');
     background-repeat: no-repeat;
 }
 
@@ -150,7 +150,7 @@ body
     position: absolute;
     right: 2px;
     top: 50px;
-    background-image: url('/images/Icons/silver_images/navigate_debug.png');
+    background-image: url('/./Images/silver_images/navigate_debug.png');
     background-repeat: no-repeat;
 }
 

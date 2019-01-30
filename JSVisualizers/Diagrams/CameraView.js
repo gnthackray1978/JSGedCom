@@ -1,5 +1,10 @@
+//GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Types/Vector net::ERR_ABORTED 404 (Not Found)
 
-var CameraView = function (colourScheme, startwidth, startheight) {
+import {Vector} from "./Types/Vector.js";
+import {Utils} from "./Libs/Utils.js";
+
+
+export function CameraView(colourScheme, startwidth, startheight) {
 
     this.layout = null;
     //this.graph = graph;
@@ -11,11 +16,11 @@ var CameraView = function (colourScheme, startwidth, startheight) {
     this.colourScheme = colourScheme;
 
 
-    // graph size 
+    // graph size
     this.original_graph_width = startwidth;
     this.original_graph_height = startheight;
 
-    // graph size 
+    // graph size
     this.graph_width = this.original_graph_width;
     this.graph_height = this.original_graph_height;
 
@@ -24,8 +29,8 @@ var CameraView = function (colourScheme, startwidth, startheight) {
     this.display_height = window.innerHeight + 500;
 
     //save screen width/height
-    this.screenHeight = screen.height;
-    this.screenWidth = screen.width;
+    this.bt_screenHeight = screen.height;
+    this.bt_screenWidth = screen.width;
 
     //positional controls
     this.centrePoint = 0;
@@ -38,7 +43,7 @@ var CameraView = function (colourScheme, startwidth, startheight) {
     this.mouse_x = 0;
     this.mouse_y = 0;
 
-    // queue of points to move graph to 
+    // queue of points to move graph to
     this.mouseQueue = [];
 
     this.mouseXPercLocat = 0.0;
@@ -50,13 +55,12 @@ var CameraView = function (colourScheme, startwidth, startheight) {
     // zoom level
     this.zoompercentage = 0;
 
-    //info tracker 
-    this.infoDisplayed = new Array();
+    //info tracker
+    this.infoDisplayed = [];
 
 
     this.moving = '';
-};
-
+}
 
 CameraView.prototype = {
 
@@ -116,7 +120,7 @@ CameraView.prototype = {
             this.percX1 = _distanceFromX1 / _onePercentDistance;
 
             if (this.centreVerticalPoint > 0) {
-                _distanceFromY1 = this.mouse_y - this.centreVerticalPoint; // ;                
+                _distanceFromY1 = this.mouse_y - this.centreVerticalPoint; // ;
             }
             else {
                 _distanceFromY1 = Math.abs(this.centreVerticalPoint) + this.mouse_y;
@@ -149,15 +153,15 @@ CameraView.prototype = {
         }
         if (_dir == 'UP' || _dir == 'DOWN') {
 
-            this.mouse_x = this.screenWidth / 2;
-            this.mouse_y = this.screenHeight / 2;
+            this.mouse_x = this.bt_screenWidth / 2;
+            this.mouse_y = this.bt_screenHeight / 2;
 
             this.GetPercDistances();
 
             this.mouseXPercLocat = this.percX1;
             this.mouseYPercLocat = this.percY1;
 
-            // zero the centre point 
+            // zero the centre point
             this.SetCentrePoint(1000000, 1000000);
 
             if (_dir == 'UP') {
@@ -208,7 +212,7 @@ CameraView.prototype = {
         var p = utils.fromScreen({ x: (e.pageX - this.centrePoint) - pos.left, y: (e.pageY - this.centreVerticalPoint) - pos.top });
         return p;
     },
-    
+
     currentPositionToScreen: function (pos, e) {
         var utils = new Utils(this.currentBB, this.graph_width, this.graph_height);
         var p = utils.toScreen({ x: (e.pageX - this.centrePoint) - pos.left, y: (e.pageY - this.centreVerticalPoint) - pos.top });
@@ -234,7 +238,7 @@ CameraView.prototype = {
 
         return validDraw;
     },
-    
+
     mapOffset: function (v1) {
 
         v1.x += this.centrePoint;
@@ -249,7 +253,7 @@ CameraView.prototype = {
 
         if (this.layout.parentNode == undefined) {
             this.targetBB = this.layout.getBoundingBox();
-            
+
             // current gets 20% closer to target every iteration
             this.zoomCurrentBB(this.targetBB, 10);
 
@@ -291,8 +295,8 @@ CameraView.prototype = {
 
         var that = this;
         var countonscreen = 0;
-        var onscreenNodes = new Array();
-        var offscreenNodes = new Array();
+        var onscreenNodes = [];
+        var offscreenNodes = [];
         var maxNodes = false;
 
 
@@ -339,8 +343,8 @@ CameraView.prototype = {
 
         var that = this;
         var countonscreen = 0;
-        var onscreenNodes = new Array();
-        var offscreenNodes = new Array();
+        var onscreenNodes = [];
+        var offscreenNodes = [];
         var maxNodes = false;
 
         this.layout.eachNode(function (node, point) {
@@ -369,6 +373,3 @@ CameraView.prototype = {
     }
 
 };
-
-
-

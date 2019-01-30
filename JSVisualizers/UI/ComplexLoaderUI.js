@@ -1,10 +1,13 @@
-/** @constructor */
-function ComplexLoaderUI(gedPreLoader) {       
+
+import {Panels} from "../Libs/Panels.js";
+
+
+export function ComplexLoaderUI(gedPreLoader) {
     this.gedPreLoader = gedPreLoader;
-    
+
     this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
-    
-    this.defaultGed = '/basicvis/samples/default.txt';
+
+    this.defaultGed = 'default.ged';
 
     this.showGed = true;
     this.showMapControls = true;
@@ -13,9 +16,9 @@ function ComplexLoaderUI(gedPreLoader) {
     this.dataLoader = true;
     this.selectedId =0;
     this.selectedName= '';
-    this.onPersonSelected;
+    this.onPersonSelected=null;
     this.treeRunner = null;
-    this.forceDirect;
+    this.forceDirect=null;
 }
 
 ComplexLoaderUI.prototype.Refresh = function (gedPreLoader) {
@@ -24,7 +27,7 @@ ComplexLoaderUI.prototype.Refresh = function (gedPreLoader) {
 };
 
 ComplexLoaderUI.prototype.toggleFDOptions = function (visible) {
-    
+
     if(visible)
         $("#fdoptions").removeClass("hidePanel").addClass("displayPanel");
     else
@@ -32,37 +35,38 @@ ComplexLoaderUI.prototype.toggleFDOptions = function (visible) {
 };
 
 ComplexLoaderUI.prototype.showGedContent = function () {
-    
+
     $("#ged-error").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-content").removeClass("hidePanel").addClass("displayPanel");
 };
 
 ComplexLoaderUI.prototype.showGedError = function (message) {
-    
+
     $("#ged-content").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
     $("#ged-error").removeClass("hidePanel").addClass("displayPanel");
-    
-    
+
+
     $("#errormessage").html(message);
 };
 ComplexLoaderUI.prototype.showGedLoading = function (message, show) {
-    
-  
+
+
     if(!show)
         $("#ged-loading").removeClass("displayPanel").addClass("hidePanel");
     else
         $("#ged-loading").removeClass("hidePanel").addClass("displayPanel");
-        
+
     $("#loadingmessage").html(message);
 
-    
+
 };
+
 ComplexLoaderUI.prototype.newFileLoaded = function (treedate) {
-    
+
     var that =this;
-    
+
     var handleFileSelect = function(evt) {
         var files = evt.target.files; // FileList object
         // Loop through the FileList and render image files as thumbnails.
@@ -80,7 +84,7 @@ ComplexLoaderUI.prototype.newFileLoaded = function (treedate) {
             reader.readAsText(f);
         }
     };
-    
+
     $('#defaultFile').click(function (e) {
 
         $.get(that.defaultGed, function (contents) {
@@ -93,6 +97,7 @@ ComplexLoaderUI.prototype.newFileLoaded = function (treedate) {
 
     document.getElementById('fileinput').addEventListener('change', handleFileSelect, false);
 };
+
 ComplexLoaderUI.prototype.showSelectedPerson = function(id, name) {
 
     var selectedPerson = 'Selected Person: ' + id + ' ' + name;
@@ -100,7 +105,9 @@ ComplexLoaderUI.prototype.showSelectedPerson = function(id, name) {
     $('#selected_person').html(selectedPerson);
 
     return id;
-};    
+};
+
+
 ComplexLoaderUI.prototype.RunDiagClicked = function( action) {
     var that = this;
     $('#btnRunDiag').click(function(e) {
@@ -110,6 +117,7 @@ ComplexLoaderUI.prototype.RunDiagClicked = function( action) {
         e.preventDefault();
     });
 };
+
 ComplexLoaderUI.prototype.PersonClicked = function(ancestorFunc) {
     this.onPersonSelected = ancestorFunc;
 };
@@ -120,10 +128,10 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
 
 
     var that = this;
-    
+
     var panels = new Panels();
-    
-    
+
+
     $('input[type=radio][name=type_sel]').change(function() {
         if (this.value == 'desc_2') {
             that.toggleFDOptions(true);
@@ -132,35 +140,35 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
             that.toggleFDOptions(false);
         }
     });
-    
-    
+
+
 
     $('body').on("click", "#chooseFileLnk", $.proxy(function () { panels.masterShowTab('1'); return false; }, panels));
 
     $('body').on("click", "#selectPersonLnk", $.proxy(function () { panels.masterShowTab('2'); return false; }, panels));
-    
+
 
     $("#minimized_options").removeClass("hidePanel").addClass("displayPanel");
-  
+
     $('#show_controls').click(function (e) {
 
         if (that.showMapControls) {
           //  $("#map_control").removeClass("hidePanel").addClass("displayPanel");
-            
+
             $("#map_control").dialog();
-            
+
       //   $(".ui-widget-header").css("border", "none" );
             //   $(".ui-widget-header").css("background", "none");
-         
+
              $(".ui-widget-header").css("height", "7px");
-            
+
              $(".ui-dialog-title").css("position", "absolute");
              $(".ui-dialog-title").css("top", "0px");
              $(".ui-dialog-title").css("left", "0px");
-            
+
              $('*[aria-describedby="map_control"]').css("width", "120px");
              $('*[aria-describedby="map_control"]').css("height", "100px");
-            
+
             that.showMapControls = false;
         } else {
          //   $("#map_control").removeClass("displayPanel").addClass("hidePanel");
@@ -184,12 +192,12 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
             $(".ui-dialog-title").css("position", "absolute");
             $(".ui-dialog-title").css("top", "0px");
             $(".ui-dialog-title").css("left", "0px");
-            
+
             $('*[aria-describedby="dataLoader"]').css("top", "90px");
             $('*[aria-describedby="dataLoader"]').css("left", "70px");
             $('*[aria-describedby="dataLoader"]').css("width", "350px");
           //  $('*[aria-describedby="dataLoader"]').css("height", "600px");
-            
+
             $("#dataLoader").css("padding", "0px");
 
         } else {
@@ -202,14 +210,14 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
 
     $('#show_debugbox').click(function (e) {
 
-     
+
 
          if (that.showDebug) {
-        
+
              $("#map_message").dialog();
-             
+
              that.showDebug = false;
-             
+
              $(".ui-widget-header").css("height", "7px");
 
              $(".ui-dialog-title").css("position", "absolute");
@@ -220,7 +228,7 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
              $('*[aria-describedby="map_message"]').css("height", "140px");
 
         } else {
-           
+
 
              $("#map_message").dialog("close");
           that.showDebug = true;
@@ -242,19 +250,21 @@ ComplexLoaderUI.prototype.InitPanelVisibility = function() {
          //   $('*[aria-describedby="dataInfo"]').css("height", "600px");
 
             $("#dataInfo").css("padding", "0px");
-            
+
             //font-size: 1.1em; */
             that.showDataControls = false;
         } else {
-          
+
             that.showDataControls = true;
         }
-    });       
+    });
 };
+
+
 ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
 
     var that = this;
-    
+
     var showPersons = function(data, ancestorFunc) {
 
         var from = $('#txtFrom').val().yearDate();
@@ -279,11 +289,11 @@ ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
         $('#person_lookup_body').html(tableBody);
 
         $(".anc_class").off("click");
-        
+
         $('.anc_class').click(function(e) {
             if(that.onPersonSelected)
                 that.onPersonSelected(event.target.parentNode.id, event.target.outerText);
-                
+
             that.selectedId = event.target.parentNode.id;
             that.selectedName= event.target.outerText;
             e.preventDefault();
@@ -300,14 +310,14 @@ ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
         // });
 
     };
- 
+
     $('#btnFilter').click(function (e) {
-        
+
         showPersons(data, ancestorFunc);
 
         e.preventDefault();
     });
-  
+
 
     showPersons(data, ancestorFunc);
 
@@ -324,7 +334,7 @@ ComplexLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
 };
 
 ComplexLoaderUI.prototype.setFDDefaults = function (start,increment,speed) {
-    
+
     $("#txtStartYear").val(start);
     $("#txtIncrementSize").val(increment);
     $("#txtSpeed").val(speed);
@@ -332,12 +342,12 @@ ComplexLoaderUI.prototype.setFDDefaults = function (start,increment,speed) {
 
 
 ComplexLoaderUI.prototype.GetFDParams = function() {
-    
+
     var params ={
         sy: Number($("#txtStartYear").val()),
         im: Number($("#txtIncrementSize").val()),
         sp: Number($("#txtSpeed").val())
     };
-    
+
     return params;
 };

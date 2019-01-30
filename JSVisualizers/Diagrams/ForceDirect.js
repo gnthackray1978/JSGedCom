@@ -22,105 +22,103 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/*global TreeLinker*/
-/*global FDLayout*/ 
-/*global CameraView*/
-/*global LayoutSettings*/
-/*global LayoutList*/ 
- 
- 
-var ForceDirect = function (channel,settings, gedPreLoader) {
+import {LayoutList} from "./LayoutList.js";
+import {Graph} from "./Graph.js";
+import {FDRenderer} from "./FDRenderer.js";
+import {RenderingHandler} from "./RenderingHandler.js";
+
+export function ForceDirect(channel,settings, gedPreLoader) {
 
     this.channel = channel;
-    
+
     this.settings = settings;
 
     this.renderingHandler = null;
-    
+
     this.gedPreLoader = gedPreLoader;
 
-    this.yearTimer;
+    this.yearTimer=null;
 
     var that =this;
-    
-    this.channel.subscribe("mouseDown", function(data, envelope) {
-        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
-            that.renderingHandler.start();
-    });
-    
-    this.channel.subscribe("mouseMove", function(data, envelope) {
-        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
-            that.renderingHandler.start();
-    });
-    
 
-    
-};
+    this.channel.on("mouseDown", function(data, envelope) {
+        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+            that.renderingHandler.start();
+    });
+
+    this.channel.on("mouseMove", function(data, envelope) {
+        if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+            that.renderingHandler.start();
+    });
+
+
+
+}
 
 ForceDirect.prototype = {
     init: function(id, params) {
-        
+
         var that = this;
-        
+
         this.settings.speed =params.sp;
         this.settings.increment =params.im;
         this.settings.year = params.sy;
-        
+
         this.gedPreLoader.GetGenerations(id, function(data){
             that.run(data);
         });
     },
-    
+
     kill: function() {
-   
+
         if(this.gedPreLoader){
             this.gedPreLoader.generations =[];
             this.gedPreLoader.searchDepth = 0;
         }
-            
+
         this.gedPreLoader = undefined;
-      
+
         this.graph = null;
         this.treeLinker = null;
         this.renderingHandler = null;
         this.layout = null;
-        
-        
+
+
         if(this.yearTimer)
-            clearInterval(this.yearTimer)
+            clearInterval(this.yearTimer);
     },
-    
+
     run: function(data) {
-        
+
         var canvas = document.getElementById("myCanvas");
-    
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-    
+
         var ctx = canvas.getContext("2d");
 
 
         var that = this;
 
         var graph = new Graph(that.channel);
-        
+
         var layoutList = new LayoutList(that.channel, graph, ctx, that.settings, data);
 
         layoutList.Init();
-        
-        
 
-        this.yearTimer = setInterval(function() { myTimer() }, that.settings.speed);
 
-      
+
+        this.yearTimer = setInterval(myTimer, that.settings.speed);
+
+
         function myTimer() {
 
-            that.channel.publish( "mapyear",  {value: that.settings.year});
+            that.channel.emit( "mapyear",  {value: that.settings.year});
 
             layoutList.populateGraph(that.settings.year);
 
             that.settings.year += that.settings.increment;
-            
+
             if (Number(that.settings.year) > layoutList.topYear) clearInterval(that.yearTimer);
         }
 
@@ -134,5 +132,3 @@ ForceDirect.prototype = {
 
 
 };
-
-

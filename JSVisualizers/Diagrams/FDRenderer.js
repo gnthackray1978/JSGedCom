@@ -1,19 +1,22 @@
-/*global vector*/
-/*global Utils*/
+//GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Diagrams/Types/Vector net::ERR_ABORTED 404 (Not Found)
+//FDRenderer.js:3 GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Diagrams/libs/Utils net::ERR_ABORTED 404 (Not Found)
 
-var FDRenderer = function(graph, ctx){
+import {Vector} from "./Types/Vector.js";
+import {Utils} from "./Libs/Utils.js";
+
+export function FDRenderer(graph, ctx){
     this.graph = graph;
     this.ctx = ctx;
-};
+}
 
 FDRenderer.prototype ={
-    
+
     clear : function(cameraView) {
         this.ctx.clearRect(0, 0, cameraView.graph_width, cameraView.graph_height);
     },
 
     drawEdges : function(map, edge, p1, p2) {
-        
+
         var _utils = new Utils(map.currentBB, map.graph_width, map.graph_height);
 
         var x1 = map.mapOffset(_utils.toScreen(p1)).x;
@@ -129,9 +132,9 @@ FDRenderer.prototype ={
 
         if (map.layout.parentNode != undefined && map.layout.parentLayout != undefined) {
             // get parent location
-            var _tp = new Utils(map.layout.parentLayout._cameraView.currentBB, 
+            var _tp = new Utils(map.layout.parentLayout._cameraView.currentBB,
                 map.layout.parentLayout._cameraView.graph_width, map.layout.parentLayout._cameraView.graph_height);
-                
+
             var pV = map.layout.parentLayout.nodePoints[map.layout.parentNode.id];
             pV = map.layout.parentLayout._cameraView.mapOffset(_tp.toScreen(pV.p));
 
@@ -155,14 +158,14 @@ FDRenderer.prototype ={
 
             if (map.layout.nodePoints[node.id].m==1)
                 _utils.star(map, this.ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
-            else  
+            else
                 _utils.star(map, this.ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
 
 
             if (node.data.RecordLink != undefined) {
                 var name = node.data.RecordLink.Name;
                 var m = map.layout.nodePoints[node.id].m;
-                
+
                 if (node.data.RecordLink.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.RecordLink.DOB, this.year, 20)) {
                     _utils.drawText(map, this.ctx, s.x, s.y, name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
                 }
@@ -170,7 +173,7 @@ FDRenderer.prototype ={
                 if (selectionId == 3) {
                     _utils.drawText(map, this.ctx, s.x, s.y, name + ' ' + m , node.data.type, selectionId);
                 }
-                
+
                 if (selectionId == 2) {
                     _utils.drawText(map, this.ctx, s.x, s.y, name + ' ' + m, node.data.type, selectionId);
 

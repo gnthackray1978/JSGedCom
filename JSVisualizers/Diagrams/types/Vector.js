@@ -2,10 +2,10 @@
 
 
 // Vector
-Vector = function (x, y) {
+export function Vector(x, y) {
     this.x = x;
     this.y = y;
-};
+}
 
 Vector.random = function () {
     return new Vector(10.0 * (Math.random() - 0.5), 10.0 * (Math.random() - 0.5));
@@ -49,6 +49,3 @@ Vector.prototype.distance = function (d2) {
 
     return Math.sqrt(x + y);
 };
-
-
-

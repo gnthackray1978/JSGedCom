@@ -1,12 +1,12 @@
-/*global Node */
-/*global Point */
-/*global Vector */
 
- 
+import {Vector} from "./Types/Vector.js";
+import {Node} from "./Types/Node.js";
+import {Point} from "./Types/Point.js";
+import {Spring} from "./Types/Spring.js";
 
-var FDLayout = function (channel, graph, camera, settings, parentNode, parentLayout, firstNode) {
+export function FDLayout(channel, graph, camera, settings, parentNode, parentLayout, firstNode) {
     this._channel = channel;
-    
+
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
     this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
     this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
@@ -27,57 +27,57 @@ var FDLayout = function (channel, graph, camera, settings, parentNode, parentLay
     this.nodePoints = {}; // keep track of points associated with nodes
     this.edgeSprings = {}; // keep track of springs associated with edges
 
-    this._cameraView.layout = this; // oh dear george! 
+    this._cameraView.layout = this; // oh dear george!
     this._cameraView.currentBB = this.getBoundingBox(); // fix this!!!
 
     this.selectionChanged = null;
     this.nearestChanged = null;
     this.draggedChanged = null;
-    
+
     this.highLightedListeners = [];
-    
+
     this.selectedListeners = [];
     this.dragList = [];
 
     this.selectionMass = 0;
-    
+
     var that = this;
-    
+
     //handle channel events
-    this._channel.subscribe("mouseDoubleClick", function(data, envelope) {
+    this._channel.on("mouseDoubleClick", function(data, envelope) {
         console.log('mouseDoubleClick=');
         that.resetDragListNodeMass(data.value);
     });
-    
-    this._channel.subscribe("mouseDown", function(data, envelope) {
-    
+
+    this._channel.on("mouseDown", function(data, envelope) {
+
         that.processNewSelections(data.value);
     });
-    
-    this._channel.subscribe("mouseUp", function(data, envelope) {
-        
+
+    this._channel.on("mouseUp", function(data, envelope) {
+
         that.handlermouseUp(data.value);
-        
+
     });
-    
-    this._channel.subscribe("buttondown", function(data, envelope) {
-        
+
+    this._channel.on("buttondown", function(data, envelope) {
+
         that.processNewSelections(data.value);
     });
-    
-    this._channel.subscribe("buttonup", function(data, envelope) {
-       
+
+    this._channel.on("buttonup", function(data, envelope) {
+
         that.handlermouseUp(data.value);
-        
+
     });
-    
-    this._channel.subscribe("mouseMove", function(data, envelope) {
+
+    this._channel.on("mouseMove", function(data, envelope) {
         //console.log('mouseMove=');
         that.checkForHighLights(data.value);
     });
-    
-    
-};
+
+
+}
 
 FDLayout.prototype = {
     point: function (node) {
@@ -207,19 +207,19 @@ FDLayout.prototype = {
     resetDragListNodeMass:function(e) {
 
         //reset nearest draglist node mass
-        
+
         console.log('mouseDoubleClick_');
 
         if (e.target.id == "myCanvas") {
-          
+
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e); 
+            var p = this._cameraView.currentPositionFromScreen(pos, e);
 
             var newNearest = this.nearestPoint(p);
- 
+
             if (newNearest.node != null) {
-                // find node in dragged list 
+                // find node in dragged list
                 // remove it
                 // reset its mass
                 var idx = 0;
@@ -227,7 +227,7 @@ FDLayout.prototype = {
                 while (idx < this.dragList.length) {
                     if (this.dragList[idx] != null &&
                         this.dragList[idx].id == newNearest.node.id) {
-                        
+
                         this.nodePoints[this.dragList[idx].id].m = this.dragList[idx].m;
                         this.dragList[idx] = null;
                     }
@@ -238,7 +238,7 @@ FDLayout.prototype = {
             }
         }
     },
-    
+
     //formerly mousedown
     processNewSelections: function (e) {
 
@@ -254,23 +254,23 @@ FDLayout.prototype = {
             var newNearest = this.nearestPoint(p);
 
             if (newNearest.node != null) {
-                
+
                 if (newNearest.node.id != this.selected.node.id) {
                     this.selected.point.m = 1;
                     this.resetMasses();
-                    
+
                     this.selected = newNearest;
-                    
+
                     console.log('selected changed: ' + this.selected);
 
                     this.notifySelection(this.selected);
                 }
-                
+
                 if (newNearest.node.id != this.nearest.node.id) {
                     this.nearest = newNearest;
                     this.notifyHighLight(this.nearest);
                 }
-                
+
                 if (newNearest.node.id != this.dragged.node.id) {
                     this.dragged = newNearest;
                 }
@@ -278,11 +278,11 @@ FDLayout.prototype = {
 
             if (this.selected.node !== null) {
             //    this.selectionMass = this.dragged.point.m;
-                
-                
-                
+
+
+
                 if (this.dragged.node.id != -1) {
-                  
+
                     var idx = 0;
                     var found = false;
                     while (idx < this.dragList.length) {
@@ -302,7 +302,7 @@ FDLayout.prototype = {
                 }
 
 
-                
+
 
             }
 
@@ -316,13 +316,13 @@ FDLayout.prototype = {
         if (e.target.id == "es") this._cameraView.moving = 'EAST';
         if (e.target.id == "so") this._cameraView.moving = 'SOUTH';
         if (e.target.id == "de") this._cameraView.moving = 'DEBUG';
-       
+
     },
 
     resetMasses: function (e) {
 
         var idx = 0;
-        
+
         while (idx < this.dragList.length) {
             if (this.dragList[idx]!=null)
                 this.nodePoints[this.dragList[idx].id].m = this.dragList[idx].m;
@@ -333,24 +333,24 @@ FDLayout.prototype = {
 
 
     },
-    
+
     //mouseup
     handlermouseUp: function (e) {
-        
+
         console.log('mouseUp_');
 
         if (e.target.id == "myCanvas") {
- 
+
             this._cameraView.addToMouseQueue(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
-            
-            
-            
+
+
+
             this.mouseup = true;
         } else {
             this._cameraView.moving = '';
         }
-        
+
     },
 
     //formerly mousemove
@@ -366,7 +366,7 @@ FDLayout.prototype = {
         }
 
         var newNearest = this.nearestPoint(p);
-      
+
 
         if (newNearest.node != null && newNearest.node.id != this.nearest.node.id) {
             this.nearest = newNearest;
@@ -374,7 +374,7 @@ FDLayout.prototype = {
             this.notifyHighLight(this.nearest);
         }
 
-        
+
         if (this.dragged.node.id !== -1) {
             this.dragged.point.p.x = p.x;
             this.dragged.point.p.y = p.y;
@@ -382,17 +382,17 @@ FDLayout.prototype = {
     },
 
     getSelection: function (node) {
-            // 1 nothing 
-            // 2 nearest 
-            // 3 selected 
+            // 1 nothing
+            // 2 nearest
+            // 3 selected
             var selectedPersonId = '';
             var nodePersonId = '';
 
-            if (this.selected != null
-                && this.selected.node != undefined
-                && this.selected.node.data != undefined
-                && this.selected.node.data.RecordLink != undefined) {
-                selectedPersonId = this.selected.node.data.RecordLink.PersonId;
+            if (this.selected != null &&
+                this.selected.node != undefined &&
+                this.selected.node.data != undefined &&
+                this.selected.node.data.RecordLink != undefined) {
+                  selectedPersonId = this.selected.node.data.RecordLink.PersonId;
             }
 
             if (node.data != undefined && node.data.RecordLink != undefined) {
@@ -412,12 +412,12 @@ FDLayout.prototype = {
 
     notifyHighLight: function (e) {
 
-        this._channel.publish("nodeHighlighted",{value:e.node.data.RecordLink});
+        this._channel.emit("nodeHighlighted",{value:e.node.data.RecordLink});
     },
-    
+
     notifySelection: function (e) {
 
-        this._channel.publish("nodeSelected",{value:e.node.data.RecordLink});
+        this._channel.emit("nodeSelected",{value:e.node.data.RecordLink});
     },
 
     //Find the nearest point to a particular position
@@ -428,7 +428,7 @@ FDLayout.prototype = {
             if (n.data.type == 'normal') {
                 var point = t.point(n);
                 var distance = point.p.subtract(pos).magnitude();
-    
+
                 if (min.distance === null || distance < min.distance) {
                     min = { node: n, point: point, distance: distance };
                 }
@@ -437,22 +437,22 @@ FDLayout.prototype = {
 
         return min;
     },
-    
+
     hasNearestNode :function(){
         if (this.nearest != null && this.nearest.node != null)
             return true;
         else
             return false;
-        
+
     },
-    
+
     nearestNodePoint : function () {
         if(this.nearest.node != null) {
             return this.nodePoints[this.nearest.node.id];
         }
         else
         {
-            console.log('nearest node null');   
+            console.log('nearest node null');
             return -1;
         }
     },
@@ -460,7 +460,7 @@ FDLayout.prototype = {
     getBoundingBox : function () {
         var bottomleft = new Vector(-2, -2);
         var topright = new Vector(2, 2);
-    
+
         this.eachNode(function (n, point) {
             if (point.p.x < bottomleft.x) {
                 bottomleft.x = point.p.x;
@@ -475,12 +475,10 @@ FDLayout.prototype = {
                 topright.y = point.p.y;
             }
         });
-    
+
         var padding = topright.subtract(bottomleft).multiply(0.07); // ~5% padding
-    
+
         return { bottomleft: bottomleft.subtract(padding), topright: topright.add(padding) };
     }
 
-};
-
-
+}

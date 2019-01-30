@@ -9,7 +9,7 @@ String.prototype.yearDate = function () {
         this.match = function (pat) {
             return true;
         };
-    
+
     var matches = this.match(pattern);
 
     if (matches != null && matches.length > 0) {
@@ -18,10 +18,6 @@ String.prototype.yearDate = function () {
         return 0;
     }
 };
-
-
-
-
 
 Array.prototype.ContainsRec = function(_rec) {
 
@@ -36,8 +32,6 @@ Array.prototype.ContainsRec = function(_rec) {
     return false;
 
 };
-
-
 
 $.fn.pasteEvents = function (delay) {
     if (delay == undefined) delay = 20;
@@ -73,8 +67,8 @@ Array.prototype.LinkContainingPoint = function (mx,my) {
 
     for (var i = 0; i < this.length; i++) {
 
-        if ((this[i].x1 <= mx && this[i].x2 >= mx) 
-        && (this[i].y1 <= my && this[i].y2 >= my))                      
+        if ((this[i].x1 <= mx && this[i].x2 >= mx)
+        && (this[i].y1 <= my && this[i].y2 >= my))
         {
             return this[i];
         }
@@ -118,7 +112,7 @@ Array.prototype.SortByGenIdx = function()
 };
 
 Array.prototype.RemoveDupes = function () {
-   
+
     var uniqueNames = [];
     $.each(this, function (i, el) {
         if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);

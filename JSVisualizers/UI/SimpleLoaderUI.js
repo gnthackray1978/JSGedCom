@@ -1,10 +1,10 @@
 
-function SimpleLoaderUI(loader) {
-    
+export function SimpleLoaderUI(loader) {
+
     this.loader = loader;
     this.gedPreLoader = loader;
     this.treeRunner = null;
-    this.forceDirect;
+    this.forceDirect =null;
 }
 
 
@@ -26,7 +26,7 @@ SimpleLoaderUI.prototype.InitPanelVisibility = function () {
     $("#ged_options").removeClass("displayPanel").addClass("hidePanel");
     $("#edit_tools").addClass("displayPanel").removeClass("hidePanel");
     $("#minimized_options").removeClass("displayPanel").addClass("hidePanel");
-    
+
 };
 
 SimpleLoaderUI.prototype.newFileLoaded = function (treedate) {
@@ -36,3 +36,4 @@ SimpleLoaderUI.prototype.newFileLoaded = function (treedate) {
 SimpleLoaderUI.prototype.showPersonSelectList = function (data, ancestorFunc) {
     return data;
 };
+ 

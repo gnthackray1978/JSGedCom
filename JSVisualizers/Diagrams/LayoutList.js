@@ -1,15 +1,19 @@
-var LayoutList = function(channel, graph, ctx, settings, data){
+import {FDLayout} from "./FDLayout.js";
+import {CameraView} from "./CameraView.js";
+import {Graph} from "./Graph.js";
+
+export function LayoutList(channel, graph, ctx, settings, data){
     this.graph = graph;
     this.ctx = ctx;
     this.settings = settings;
     this.channel = channel;
     this.layouts =[];
     this.data = data;
-    
+
     this.topYear= this.data.TopYear;
     this.bottomYear =this.data.BottomYear;
     this.currentYear =this.data.BottomYear;
-};
+}
 
 
 //init
@@ -17,16 +21,16 @@ var LayoutList = function(channel, graph, ctx, settings, data){
 
 LayoutList.prototype ={
     Init : function(){
-        
-        var parentLayout = this.layout = new FDLayout(this.channel, this.graph, 
-            new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight), 
+
+        var parentLayout = this.layout = new FDLayout(this.channel, this.graph,
+            new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight),
             this.settings);
 
         this.layouts.push({ layout: parentLayout, type: 'parent' });
     },
-    
+
     AddLayout : function(parentLayout, entry){
-        
+
         var infoGraph = new Graph(this.channel);
 
         var centreNode = infoGraph.newNode({
@@ -85,15 +89,15 @@ LayoutList.prototype ={
             infoGraph.newEdge(centreNode, dlocNode, { type: 'data', directional: false });
         }
 
-        return new FDLayout(this.channel,infoGraph, 
+        return new FDLayout(this.channel,infoGraph,
             new CameraView(this.settings.colourScheme, 200, 200), this.settings, entry, parentLayout, centreNode);
-        
+
     },
-    
+
     UpdateActiveLayouts : function(){
-        
+
         var that = this;
-        
+
         var onScreenList = [];
 
         if (that.layouts[0].layout._cameraView.zoompercentage > that.settings.sublayoutZoom)
@@ -115,13 +119,16 @@ LayoutList.prototype ={
 
             if (that.layouts[i].type == 'child') {
                 var nodePresent = false;
-                onScreenList.forEach(function(value, index, ar) {
+
+                let layoutOnScreen = function(value) {
                     if (that.layouts[i].layout.parentNode.id == value.id) nodePresent = true;
-                });
+                };
+
+                onScreenList.forEach(layoutOnScreen);
 
                 if (!nodePresent) that.layouts.splice(i, 1);
             }
-        };
+        }
 
         that.layouts.forEach(function(layout, index, ar) {
             // if (layout.layout.graph.eventListeners.length == 0)
@@ -129,22 +136,22 @@ LayoutList.prototype ={
 
             layout.layout._cameraView.adjustPosition();
         });
-        
-        
-        
+
+
+
     },
-    
+
     _createDOB: function(genIdx,personIdx){
         var _dob = 0;
 
         try
         {
             _dob = this.data.Generations[genIdx][personIdx].RecordLink.DOB;
-            
+
             if(_dob == 0)//try estimate dob if there is a father
             {
                 var tpFIDX = this.data.Generations[genIdx][personIdx].FatherIdx;
-                
+
                 if(genIdx > 0 && tpFIDX){
                     if(this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
                         _dob = this.data.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
@@ -156,12 +163,12 @@ LayoutList.prototype ={
         {
             console.log(e);
         }
-        
+
         return _dob;
     },
 
     populateGraph: function (year) {
-        
+
         var mygraph = this.graph;
 
         var genIdx = 0;
@@ -181,30 +188,30 @@ LayoutList.prototype ={
                     var _dob = this._createDOB(genIdx,personIdx);
 
                     //if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
-                    
+
                     if (_dob < year && _dob != 0) {
-                        
+
                         var personId = currentPerson.PersonId;
-                        
+
                         if (!mygraph.containsNode(personId)) {
 
                             if (currentPerson.nodeLink == undefined ||
                                 currentPerson.nodeLink == null) {
-                               
+
                                 this.data.Generations[genIdx][personIdx].nodeLink =
-                                    mygraph.newNode({ label: descriptor, 
-                                                      RecordLink: currentPerson.RecordLink, 
+                                    mygraph.newNode({ label: descriptor,
+                                                      RecordLink: currentPerson.RecordLink,
                                                       RecordId : personId,
                                                       type: 'normal' });
 
                             }
 
                             var fatherEdge = this.data.FatherEdge(genIdx,personIdx);
-                            
+
                             if(fatherEdge.IsValid)
                                 mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
-                            
-                           
+
+
                         }
                         else {
                         //    console.log('person present');
@@ -214,8 +221,8 @@ LayoutList.prototype ={
 
                     // count how many desendants this person has in the diagram already.
                     if (this.data.Generations[genIdx][personIdx].nodeLink != undefined)
-                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount 
-                        = this.data.DescendantCount(genIdx, personIdx);
+                        this.data.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount =
+                         this.data.DescendantCount(genIdx, personIdx);
                 }
 
                 personIdx++;
@@ -225,12 +232,13 @@ LayoutList.prototype ={
         }
 
     },
-    
+
     TopLayout: function(){
         return this.layouts[0].layout;
     }
 
-  
-    
-    
+
+
+
 };
+ 

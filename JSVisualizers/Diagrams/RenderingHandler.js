@@ -13,16 +13,16 @@ RenderingHandler.requestAnimationFrame = __bind(window.requestAnimationFrame ||
 //layouts
 //renderer
 
-function RenderingHandler(channel, layoutList, renderer) {
+export function RenderingHandler(channel, layoutList, renderer) {
     this._channel = channel;
 
     this.layouts = layoutList;
-    
+
     this.renderer = renderer;
 
     var that = this;
-    
-    this._channel.subscribe("graphChanged", function(data, envelope) {
+
+    this._channel.on("graphChanged", function(data, envelope) {
         that.start();
     });
 
@@ -39,13 +39,13 @@ RenderingHandler.prototype = {
         RenderingHandler.requestAnimationFrame(function step() {
 
             that.layouts.UpdateActiveLayouts();
-           
+
             var energyCount = 0;
 
 
             that.renderer.clear(that.layouts.TopLayout()._cameraView);
 
-            that._channel.publish( "nodecount", { value: that.layouts.TopLayout()._cameraView.countOnscreenNodes() } );
+            that._channel.emit( "nodecount", { value: that.layouts.TopLayout()._cameraView.countOnscreenNodes() } );
 
             that.layouts.layouts.forEach(function(layout,idx) {
 
@@ -58,7 +58,7 @@ RenderingHandler.prototype = {
 
                 var map = layout.layout._cameraView;
 
-                // render 
+                // render
                 layout.layout.eachEdge(function(edge, spring) {
                    $.proxy(that.renderer.drawEdges(map, edge, spring.point1.p, spring.point2.p), that);
                 });
@@ -72,7 +72,7 @@ RenderingHandler.prototype = {
                 idx++;
             });
 
-            that._channel.publish( "energy",  {value: energyCount.toFixed(2) });
+            that._channel.emit( "energy",  {value: energyCount.toFixed(2) });
 
 
             // stop simulation when energy of the system goes below a threshold
@@ -92,5 +92,6 @@ RenderingHandler.prototype = {
     done: function() {
 
     }
-    
+
 };
+ 
