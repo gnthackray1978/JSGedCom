@@ -1,6 +1,7 @@
 
 import {AncTree} from "./AncTree.js";
 import {DescTree} from "./DescTree.js";
+import {TreeUI} from "./TreeUI.js";
 
 export function TreeRunner() {
     this._tree = null;
@@ -13,47 +14,16 @@ export function TreeRunner() {
 }
 
 TreeRunner.prototype = {
-    run: function (id,applicationGedLoader, tree) {
+    run: function (id, data,tree) {
 
             var type = $("input[name='type_sel']:checked").val();
 
             this.treeUI = new TreeUI(type == 'anc' ? 1:0, $.proxy(function (treeUI) {
 
-
-
             var int;
 
             var that = this;
             this._tree = tree;
-
-            this.applicationGedLoader = applicationGedLoader;
-
-            this._tree.selectedPersonId = id;
-            this._tree.selectedPersonX = 0;
-            this._tree.selectedPersonY = 0;
-
-
-            var getData = function (personId,x,y) {
-                if (type == 'anc') {
-                    that._tree = new AncTree();
-                    that._tree.treeUI = treeUI;
-                    that.applicationGedLoader.SetForAncLoader();
-                } else {
-                    that._tree = new DescTree();
-                    that._tree.treeUI = treeUI;
-                    that.applicationGedLoader.SetForDescLoader();
-                }
-
-                that._tree.selectedPersonY = y;
-                that._tree.selectedPersonX = x;
-                that._tree.selectedPersonId = personId;
-
-                that.applicationGedLoader.GetGenerations(personId, function(data){
-                    that.processData(data);
-                });
-
-            };
-
 
             $(".button_box").mousedown(function (evt) {
                 var _dir = '';
@@ -130,15 +100,19 @@ TreeRunner.prototype = {
 
             $("#ml .message").html('<span>Downloading Descendant Tree</span>');
 
-            getData( this._tree.selectedPersonId, 0, 0);
 
+            this.processData(id,data,treeUI);
         }, this));
 
 
     },
-    processData: function (data) {
+    processData: function (id,data, UI) {
 
         var _zoomLevel = 100;
+
+        this._tree.selectedPersonId = id;
+        this._tree.selectedPersonX = 0;
+        this._tree.selectedPersonY = 0;
 
         this._tree.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
@@ -146,6 +120,7 @@ TreeRunner.prototype = {
         //    var _zoomLevel = 100;
         //    var _xpos = 750.0;
         //    var _ypos = 100.0;
+        this._tree.treeUI = UI;
 
         this._tree.generations = data.Generations;
 

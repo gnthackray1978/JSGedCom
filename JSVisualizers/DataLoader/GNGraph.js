@@ -1,5 +1,5 @@
 
-export function GedData(generationsArray) {
+export function GNGraph(generationsArray) {
 
     this.TopYear=0;
 
@@ -12,7 +12,7 @@ export function GedData(generationsArray) {
 
 }
 
-GedData.prototype = {
+GNGraph.prototype = {
 
     DescendantCount: function (genidx, personidx) {
 

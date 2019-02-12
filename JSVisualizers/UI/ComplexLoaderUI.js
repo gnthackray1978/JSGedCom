@@ -2,10 +2,7 @@
 import {Panels} from "../Libs/Panels.js";
 
 
-export function ComplexLoaderUI(gedPreLoader) {
-    this.gedPreLoader = gedPreLoader;
-
-    this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
+export function ComplexLoaderUI() {
 
     this.defaultGed = 'default.ged';
 
@@ -20,11 +17,6 @@ export function ComplexLoaderUI(gedPreLoader) {
     this.treeRunner = null;
     this.forceDirect=null;
 }
-
-ComplexLoaderUI.prototype.Refresh = function (gedPreLoader) {
-    this.gedPreLoader = gedPreLoader;
-    this.applicationGedLoader = this.gedPreLoader.applicationGedLoader;
-};
 
 ComplexLoaderUI.prototype.toggleFDOptions = function (visible) {
 
@@ -105,6 +97,18 @@ ComplexLoaderUI.prototype.showSelectedPerson = function(id, name) {
     $('#selected_person').html(selectedPerson);
 
     return id;
+};
+
+ComplexLoaderUI.prototype.dataParseComplete = function(persons, range) {
+
+  if(persons == undefined || persons == null || persons.length ==0){
+      this.showGedError("Could not obtain list of persons");
+      return;
+  }
+  this.showGedContent();
+  this.showPersonSelectList(persons);
+  this.setFDDefaults(Number(range.s)+50,5,3000);
+
 };
 
 

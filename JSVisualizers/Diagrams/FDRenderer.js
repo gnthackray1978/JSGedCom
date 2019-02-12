@@ -1,5 +1,3 @@
-//GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Diagrams/Types/Vector net::ERR_ABORTED 404 (Not Found)
-//FDRenderer.js:3 GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Diagrams/libs/Utils net::ERR_ABORTED 404 (Not Found)
 
 import {Vector} from "./Types/Vector.js";
 import {Utils} from "./Libs/Utils.js";

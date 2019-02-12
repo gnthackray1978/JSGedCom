@@ -146,7 +146,7 @@ FakeData.prototype = {
                             PersonId: personId,
                             RelationType: 0,
                             SpouseIdxLst: [],
-                            SpouseLst: [],
+                            SpouseIdLst: [],
                             X1: 0,
                             X2: 0,
                             Y1: 0,

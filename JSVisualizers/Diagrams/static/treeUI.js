@@ -1,14 +1,11 @@
+import plusImg from '../../Images/24x24/plus.png'; // with import
+import minusImg from '../../Images/24x24/plus.png'; // with import
 
 export function TreeUI (modelCode, callback) {
 
     this.docClose = new Image();
     this.docNew = new Image();
     this.modelCode = modelCode;
-
-
-    //red box "#99003A"
-    //blue "#99CCFF"
-
 
     if (this.modelCode == 0) {
         // descendants
@@ -33,12 +30,11 @@ export function TreeUI (modelCode, callback) {
 
     }
 
-
-    this.docClose.src = '../JSVisualizers/Images/24x24/plus.png';
+    this.docClose.src = plusImg;
 
     var that = this;
     this.docClose.onload = function () {
-        that.docNew.src = '../JSVisualizers/Images/24x24/minus.png';
+        that.docNew.src = minusImg;
 
         that.docNew.onload = function () {
             callback(that);
@@ -214,7 +210,7 @@ TreeUI.prototype = {
 
 
                     //middle of box
-                    if ((_person.ChildCount > 0 || _person.SpouseLst.length> 0) && !_person.IsHtmlLink) {
+                    if ((_person.ChildCount > 0 || _person.SpouseIdLst.length> 0) && !_person.IsHtmlLink) {
                     //
                         // this.context.beginPath();
 

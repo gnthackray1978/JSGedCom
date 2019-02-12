@@ -52,7 +52,6 @@ export function TreeBase() {
 //    this.initial_mouse_x = 0; //int
 //    this.initial_mouse_y = 0; //int
 
-
   //  this.xFromCentre = 0.0;
   //  this.yFromCentre = 0.0;
 
@@ -139,18 +138,20 @@ TreeBase.prototype = {
 
 
     },
-    GetTreePerson: function (personId) {
+
+    _GetTreePerson: function (graph, personId) {
+
 
         var _genidx = 0;
         var _personIdx = 0;
 
-        while (_genidx < this.generations.length) {
+        while (_genidx < graph.length) {
             _personIdx = 0;
 
-            while (_personIdx < this.generations[_genidx].length) {
+            while (_personIdx < graph[_genidx].length) {
 
-                if (this.generations[_genidx][_personIdx].PersonId == personId) {
-                    return this.generations[_genidx][_personIdx];
+                if (graph[_genidx][_personIdx].PersonId == personId) {
+                    return graph[_genidx][_personIdx];
                 }
                 _personIdx++;
             }
@@ -159,27 +160,51 @@ TreeBase.prototype = {
 
         return null;
     },
+
     SetVisibility: function (parent, isDisplay) {
 
         var personStack = [];
-        var _genidx = 0;
+
+        let graph = this.generations;
+
+        parent.Children.foreach((item)=>{
+          personStack.push(item);
+        });
+
+        // var currentTP = parent;
+        // while (personStack.length > 0) {
+        //     currentTP = personStack.pop();
+        //     currentTP.IsDisplayed = isDisplay;
+        //
+        //     var spouseIdx = 0;
+        //     while (spouseIdx < currentTP.SpouseIdxLst.length) {
+        //         var spIdx = currentTP.SpouseIdxLst[spouseIdx];
+        //
+        //         graph[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
+        //         spouseIdx++;
+        //     }
+        //
+        //   }
+
+//find children
+        // var _genidx = 0;
+        // if (graph.length > parent.GenerationIdx) {
+        //     _genidx = 0;
+        //     while (_genidx < graph[parent.GenerationIdx].length) {
+        //         // find all the children of the parent
+        //
+        //         //GenerationIdx is the generation of their children!
+        //         if (graph[parent.GenerationIdx][_genidx].FatherId == parent.PersonId ||
+        //                 graph[parent.GenerationIdx][_genidx].MotherId == parent.PersonId) {
+        //
+        //             personStack.push(graph[parent.GenerationIdx][_genidx]);
+        //         }
+        //
+        //         _genidx++;
+        //     }
+        // }
 
 
-        if (this.generations.length > parent.GenerationIdx) {
-            _genidx = 0;
-            while (_genidx < this.generations[parent.GenerationIdx].length) {
-                // find all the children of the parent
-
-
-                if (this.generations[parent.GenerationIdx][_genidx].FatherId == parent.PersonId ||
-                        this.generations[parent.GenerationIdx][_genidx].MotherId == parent.PersonId) {
-
-                    personStack.push(this.generations[parent.GenerationIdx][_genidx]);
-                }
-
-                _genidx++;
-            }
-        }
 
         var currentTP = parent;
         while (personStack.length > 0) {
@@ -190,17 +215,18 @@ TreeBase.prototype = {
             while (spouseIdx < currentTP.SpouseIdxLst.length) {
                 var spIdx = currentTP.SpouseIdxLst[spouseIdx];
 
-                this.generations[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
+                graph[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
                 spouseIdx++;
             }
 
-            if (this.generations.length > currentTP.GenerationIdx + 1) {
+            if (graph.length > currentTP.GenerationIdx + 1) {
                 _genidx = 0;
-                while (_genidx < this.generations[currentTP.GenerationIdx].length) {
+                while (_genidx < graph[currentTP.GenerationIdx].length) {
                     // find all the children of the currently selected generation
 
-                    if (this.generations[currentTP.GenerationIdx][_genidx].FatherId == currentTP.PersonId || this.generations[currentTP.GenerationIdx][_genidx].MotherId == currentTP.PersonId) {
-                        personStack.push(this.generations[currentTP.GenerationIdx][_genidx]);
+                    if (graph[currentTP.GenerationIdx][_genidx].FatherId == currentTP.PersonId ||
+                       graph[currentTP.GenerationIdx][_genidx].MotherId == currentTP.PersonId) {
+                        personStack.push(graph[currentTP.GenerationIdx][_genidx]);
                     }
 
                     _genidx++;
@@ -210,6 +236,8 @@ TreeBase.prototype = {
 
 
     },
+
+
     MoveTree: function (direction) {
         // console.log('move tree' + direction);
 
@@ -334,7 +362,7 @@ TreeBase.prototype = {
     },
 
     SetMouse: function (x, y, mousestate) {
-        console.log('mouse set: ' + x + ' , ' + y);
+    //    console.log('mouse set: ' + x + ' , ' + y);
         this.mouse_x = x;
         this.mouse_y = y;
 
@@ -409,7 +437,7 @@ TreeBase.prototype = {
 
         if (mouseLink !== null) {
 
-            var selectedPerson = this.GetTreePerson(mouseLink.action);
+            var selectedPerson = this._GetTreePerson(this.generations,mouseLink.action);
 
        //     var zoomReq = this.zoomPercentage; //-100
          //   var xpos = selectedPerson.X1;
@@ -434,7 +462,7 @@ TreeBase.prototype = {
 
                 var parts = buttonLink.action.split(',');
 
-                var clickedPerson = this.GetTreePerson(parts[0]);
+                var clickedPerson = this._GetTreePerson(this.generations, parts[0]);
 
                 var isVis = true;
 
@@ -575,7 +603,7 @@ TreeBase.prototype = {
 
         var distanceToMove = 0.0;
         var currentPersonLocation = 0;
-        var _temp = this.GetTreePerson(personId);
+        var _temp = this._GetTreePerson(this.generations, personId);
 
         var x = 0.0;
         var y = 0.0;
@@ -702,4 +730,3 @@ TreeBase.prototype = {
 
 
 };
- 

@@ -100,7 +100,7 @@ DescTree.prototype = {
         //html('<span>Downloading Descendant Tree</span>');
 
 
-        try {
+        // try {
 
             while (_genidx < this.generations.length) {
                 _personIdx = 0;
@@ -126,10 +126,10 @@ DescTree.prototype = {
                 _genidx++;
             }
 
-
-        } catch (e) {
-            console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
-        }
+        //
+        // } catch (e) {
+        //     console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
+        // }
 
 
 
@@ -251,7 +251,7 @@ DescTree.prototype = {
 
                     var genPerson = this.generations[_genIdx][_personIdx];
 
-                    try {
+
 
                     if (genPerson.IsDisplayed) {
                         //  console.log('displaying: ' + genPerson.Name);
@@ -310,9 +310,12 @@ DescTree.prototype = {
 
                         var _thirdStorkX = 0.0;
 
-                        if (_genIdx > 0)
+                        if (_genIdx > 0){
+                            if( this.generations[_genIdx - 1][genPerson.FatherIdx] == undefined){
+                              console.log('error');
+                            }
                             _parent_gen_lower_y = this.generations[_genIdx - 1][genPerson.FatherIdx].Y2;
-
+                        }
                         var _firstRow = _current_gen_upper_y - this.lowerSpan;
                         var _secondRow = _parent_gen_lower_y + this.middleSpan; // changed with increment later on - need to calculate the maximum and minimum this increment will be
                         var _thirdRow = _parent_gen_lower_y + this.middleSpan;
@@ -500,9 +503,6 @@ DescTree.prototype = {
 
                     } // end (genPerson.IsDisplayed)
 
-                    } catch (e) {
-                        console.log('Error in '+ _genIdx + ' ' + _personIdx + ': ' +  genPerson.PersonId + ' - ' + e);
-                    }
 
                     _personIdx++;
                 } //end while
@@ -797,13 +797,13 @@ DescTree.prototype = {
         // later remarries we want the next nextparent setting to the current parents edge
         if (fatIdx == motIdx) {
             //remember fatidx and motidx are the same!
-            if (this.generations[genidx - 1][fatIdx].SpouseLst.length > 0) {
+            if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 0) {
                 return this.generations[genidx - 1][fatIdx].X2;
             }
         }
 
         // if multiple spouses set next parent as end of first one
-        if (this.generations[genidx - 1][fatIdx].SpouseLst.length > 1) {
+        if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 1) {
             if (Math.abs(fatIdx - motIdx) == 1) {
                 return nextParentLink;
             }
@@ -847,7 +847,7 @@ DescTree.prototype = {
 
         var currentParentsLeft = this.generations[genidx - 1][idxParentLink].X1;
 
-        if (this.generations[genidx - 1][fatIdx].SpouseLst.length > 1) {
+        if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 1) {
 
             if (Math.abs(fatIdx - motIdx) == 2) {
                 return prevParentLink;
@@ -881,5 +881,3 @@ DescTree.prototype = {
     }
 
 };
-
- 
