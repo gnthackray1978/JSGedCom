@@ -178,11 +178,11 @@ export class DescGraphCreator {
 
     }
 
-    addPerson(person, spouse, isChild) {
+    addPerson(rawPerson, rawSpouse, isChild) {
             isChild = (isChild == undefined) ? true : isChild;
 
             var newPerson = {
-                RecordLink: this.RecordLinkLoader.fill(person),
+                RecordLink: this.RecordLinkLoader.fill(rawPerson),
                 ChildCount: 1,
                 ChildIdx: 0,
                 ChildIdxLst: [],
@@ -191,19 +191,20 @@ export class DescGraphCreator {
                 DescendentCount: 0,
                 FatherId: '',
                 FatherIdx: -1,
-                GenerationIdx: person.generation,
+                GenerationIdx: rawPerson.generation,
                 Index: 0,
                 IsDisplayed: true,
                 IsFamilyEnd: true,
-                IsFamilyStart: person.isFirst,
+                IsFamilyStart: rawPerson.isFirst,
                 IsHtmlLink: false,
                 IsParentalLink: false,
                 MotherId: '',
                 MotherIdx: -1,
-                PersonId: person.id,
+                PersonId: rawPerson.id,
                 RelationType: 0,
                 SpouseIdxLst: [],
                 SpouseIdLst: [],
+                Spouses: [],
                 X1: 0,
                 X2: 0,
                 Y1: 0,
@@ -213,16 +214,16 @@ export class DescGraphCreator {
 
             var idx = 0;
 
-            if (person.children == undefined) person.children = [];
+            if (rawPerson.children == undefined) rawPerson.children = [];
 
-            while (idx < person.children.length) {
+            while (idx < rawPerson.children.length) {
 
-                newPerson.ChildLst.push(person.children[idx].id);
+                newPerson.ChildLst.push(rawPerson.children[idx].id);
 
                 idx++;
             }
 
-            newPerson.ChildCount = person.children.length;
+            newPerson.ChildCount = rawPerson.children.length;
 
 
             var lastPersonAdded = this._generations[this.searchDepth - 1].length - 1;
@@ -230,7 +231,7 @@ export class DescGraphCreator {
 
             //default every person to family end = true
             //then if the new person we are adding isnt a isfirst reset that to false.
-            if (this._generations[this.searchDepth - 1].length > 0 && !person.isFirst) {
+            if (this._generations[this.searchDepth - 1].length > 0 && !rawPerson.isFirst) {
 
                 this._generations[this.searchDepth - 1][lastPersonAdded].IsFamilyEnd = false;
             }
@@ -249,7 +250,7 @@ export class DescGraphCreator {
             // if not
             //
 
-            if (person.isFirst) {
+            if (rawPerson.isFirst) {
 
                 this._generations[this.searchDepth - 1][lastPersonAdded].IsParentalLink = true;
             }
@@ -289,7 +290,7 @@ export class DescGraphCreator {
                     tpFamily[lastPersonAdded].IsParentalLink = true;
                 }
                 else {
-                    console.log('zero length family: ' + person.id);
+                    console.log('zero length family: ' + rawPerson.id);
                 }
 
 
@@ -297,19 +298,21 @@ export class DescGraphCreator {
 
 
 
-            if (spouse != undefined) {
+            if (rawSpouse != undefined) {
                 var currentPersonIdx = this._generations[this.searchDepth - 1].length - 1;
                 var spouseIdx = currentPersonIdx;
 
                 // fill out spouses location in the current generation
                 while (spouseIdx >= 0) {
-                    if (this._generations[this.searchDepth - 1][spouseIdx].PersonId == spouse.id) {
-
+                    if (this._generations[this.searchDepth - 1][spouseIdx].PersonId == rawSpouse.id) {
+                        this._generations[this.searchDepth - 1][currentPersonIdx].Spouses.push(this._generations[this.searchDepth - 1][spouseIdx]);
                         this._generations[this.searchDepth - 1][currentPersonIdx].SpouseIdxLst.push(spouseIdx);
-                        this._generations[this.searchDepth - 1][currentPersonIdx].SpouseIdLst.push(spouse.id);
+                        this._generations[this.searchDepth - 1][currentPersonIdx].SpouseIdLst.push(rawSpouse.id);
 
                         this._generations[this.searchDepth - 1][spouseIdx].SpouseIdxLst.push(currentPersonIdx);
                         this._generations[this.searchDepth - 1][spouseIdx].SpouseIdLst.push(newPerson.PersonId);
+                        this._generations[this.searchDepth - 1][spouseIdx].Spouses.push(this._generations[this.searchDepth - 1][currentPersonIdx]);
+
                         break;
                     }
                     spouseIdx--;

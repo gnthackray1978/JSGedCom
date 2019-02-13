@@ -382,7 +382,7 @@ minHeight	.\Libs\jquery-ui.js	/^		minHeight: true,$/;"	p
 minWidth	.\Libs\jquery-ui.js	/^		minWidth: true$/;"	p
 minWidth	.\Libs\jquery-ui.js	/^		minWidth: true,$/;"	p
 nearest.node	.\Diagrams\FDLayout.js	/^    this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };$/;"	p
-newPerson.RecordLink	.\DataLoader\DescGraphCreator.js	/^                RecordLink: this.RecordLinkLoader.fill(person),$/;"	p
+newPerson.RecordLink	.\DataLoader\DescGraphCreator.js	/^                RecordLink: this.RecordLinkLoader.fill(rawPerson),$/;"	p
 nextParentLink	.\Diagrams\Static\DescTree.js	/^        var nextParentLink = middleParents;$/;"	v
 options.to.height	.\Libs\jquery-ui.js	/^		height: original.height * factor.y,$/;"	p
 original.height	.\Libs\jquery-ui.js	/^		height: el.height(),$/;"	p

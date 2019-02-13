@@ -61,38 +61,47 @@ export class AncGraphCreator {
 
 
             if (currentGen == 0) {
-
+                let startNode = this._generations[0][0];
                 currentGen++;
                 this._generations[currentGen] = [];
-            //    this.FamilySpanLines[currentGen] = [];
+
                 if (family.length > 0) {
+
+                    let husbandIdx = -1;
+                    let wifeIdx = -1;
+
                     if (family[0].husband.id != 0) {
 
-                        this._generations[currentGen].push(this.addPerson(currentGen,0,family[0].husband, family[0].wife));
-                     //   this.FamilySpanLines[currentGen].push([]);
+                        // add father
+                        this._generations[currentGen].push(
+                          this.addPerson(currentGen,0,family[0].husband, startNode));
+                        // move back down to the first node
+                        // set the father idx
+                        husbandIdx = this._generations[currentGen].length - 1;
 
-                        this._generations[currentGen - 1][0].FatherIdx = this._generations[currentGen].length - 1;
-
-                        if (family[0].wife.id != 0) {
-                            var lastAdded = this._generations[currentGen].length - 1;
-                            this._generations[currentGen][lastAdded].SpouseIdxLst = [];
-                            this._generations[currentGen][lastAdded].SpouseIdxLst.push(lastAdded + 1);
-                            this._generations[currentGen][lastAdded].Index = lastAdded;
-                        }
+                        this._generations[currentGen - 1][0].FatherIdx = husbandIdx;
+                        this._generations[currentGen][husbandIdx].Index = husbandIdx;
                     }
 
                     if (family[0].wife.id != 0) {
-                        this._generations[currentGen].push(this.addPerson(currentGen,0,family[0].wife, family[0].husband));
-                      //  this.FamilySpanLines[currentGen].push([]);
+                        this._generations[currentGen].push(
+                          this.addPerson(currentGen,0,family[0].wife, startNode));
 
-                        this._generations[currentGen - 1][0].MotherIdx = this._generations[currentGen].length - 1;
+                        wifeIdx = this._generations[currentGen].length - 1;
 
-                        if (family[0].husband.id != 0) {
-                            let lastAdded = this._generations[currentGen].length - 1;
-                            this._generations[currentGen][lastAdded].SpouseIdxLst = [];
-                            this._generations[currentGen][lastAdded].SpouseIdxLst.push(lastAdded - 1);
-                            this._generations[currentGen][lastAdded].Index = lastAdded;
-                        }
+                        this._generations[currentGen - 1][0].MotherIdx = wifeIdx;
+                        this._generations[currentGen][wifeIdx].Index = wifeIdx;
+                    }
+
+                    if (husbandIdx > 0 && wifeIdx > 0) {
+
+                        this._generations[currentGen][wifeIdx].SpouseIdxLst = [];
+                        this._generations[currentGen][wifeIdx].SpouseIdxLst.push(wifeIdx - 1);
+                        this._generations[currentGen][wifeIdx].Spouses.push(this._generations[currentGen][husbandIdx]);
+
+                        this._generations[currentGen][husbandIdx].SpouseIdxLst = [];
+                        this._generations[currentGen][husbandIdx].SpouseIdxLst.push(husbandIdx + 1);
+                        this._generations[currentGen][husbandIdx].Spouses.push(this._generations[currentGen][wifeIdx]);
                     }
                 }
             }
@@ -122,49 +131,41 @@ export class AncGraphCreator {
                     if(this._generations[currentGen + 1] == undefined)
                         this._generations[currentGen + 1] = [];
 
-                   // if (this.FamilySpanLines[currentGen + 1] == undefined)
-                   //     this.FamilySpanLines[currentGen + 1] = [];
-
+                    let husbandIdx = -1;
+                    let wifeIdx = -1;
 
                     if (familyi[0].husband.id != 0) {
                         this._generations[currentGen + 1].push(
                           this.addPerson(currentGen + 1, idx, familyi[0].husband, currentChild));
-                        let lastAdded = this._generations[currentGen + 1].length - 1;
-                        this._generations[currentGen + 1][lastAdded].Index = lastAdded;
 
-                        this._generations[currentGen][idx].FatherIdx = this._generations[currentGen + 1].length - 1;
-
-                      //  this.FamilySpanLines[currentGen + 1].push([]);
-
-                        if (familyi[0].wife.id != 0) {
-
-                            this._generations[currentGen + 1][lastAdded].SpouseIdxLst = [];
-                            this._generations[currentGen + 1][lastAdded].SpouseIdxLst.push(lastAdded + 1);
-
-                        }
-
+                        husbandIdx= this._generations[currentGen + 1].length - 1;
+                        this._generations[currentGen + 1][husbandIdx].Index = husbandIdx;
+                        this._generations[currentGen][idx].FatherIdx = husbandIdx;
                     }
 
 
                     if (familyi[0].wife.id != 0) {
                         this._generations[currentGen + 1].push(
                           this.addPerson(currentGen + 1,idx, familyi[0].wife, currentChild));
-                        let lastAdded = this._generations[currentGen + 1].length - 1;
 
-                        this._generations[currentGen + 1][lastAdded].Index = lastAdded;
-                        this._generations[currentGen][idx].MotherIdx = this._generations[currentGen + 1].length - 1;
-
-                 //       this.FamilySpanLines[currentGen + 1].push([]);
-
-                        if (familyi[0].husband.id != 0) {
-
-                            this._generations[currentGen + 1][lastAdded].SpouseIdxLst = [];
-                            this._generations[currentGen + 1][lastAdded].SpouseIdxLst.push(lastAdded - 1);
-
-                        }
+                        wifeIdx = this._generations[currentGen + 1].length - 1;
+                        this._generations[currentGen + 1][wifeIdx].Index = wifeIdx;
+                        this._generations[currentGen][idx].MotherIdx = wifeIdx;
                     }
 
+                    if (husbandIdx > 0 && wifeIdx > 0) {
 
+                      this._generations[currentGen + 1][wifeIdx].SpouseIdxLst = [];
+                      this._generations[currentGen + 1][wifeIdx].SpouseIdxLst.push(wifeIdx - 1);
+                      this._generations[currentGen + 1][wifeIdx].Spouses.
+                        push(this._generations[currentGen + 1][husbandIdx]);
+
+                      this._generations[currentGen + 1][husbandIdx].SpouseIdxLst = [];
+                      this._generations[currentGen + 1][husbandIdx].SpouseIdxLst.push(husbandIdx + 1);
+                      this._generations[currentGen + 1][husbandIdx].Spouses.
+                        push(this._generations[currentGen + 1][wifeIdx]);
+
+                    }
 
                 }
 
