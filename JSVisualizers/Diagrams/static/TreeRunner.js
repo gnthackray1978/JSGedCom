@@ -3,110 +3,95 @@ import {AncTree} from "./AncTree.js";
 import {DescTree} from "./DescTree.js";
 import {TreeUI} from "./TreeUI.js";
 
-export function TreeRunner() {
-    this._tree = null;
+export class TreeRunner {
 
-    this.treeUI = null;
-    this._moustQueue = [];
-    this._mouseDown = false;
+    constructor(){
+      this._tree = null;
+      this._UILoaded =true;// not currently used by intended to be set when ui had finished loading
 
-    this.kill  = false;
-}
+      this.treeUI = null;
+      this._moustQueue = [];
+      this._mouseDown = false;
 
-TreeRunner.prototype = {
-    run: function (id, data,tree) {
+      this.kill  = false;
+      this._moveTimer=0;
+      this._gameLoopTimer =0;
+    }
 
-            var type = $("input[name='type_sel']:checked").val();
+    get validtree() {
+       if(this._tree == null || this._tree == undefined) return false;
+       if(!this._UILoaded) return false;
 
-            this.treeUI = new TreeUI(type == 'anc' ? 1:0, $.proxy(function (treeUI) {
+       return true;
+    }
 
-            var int;
+    movebuttondown(_dir){
 
-            var that = this;
-            this._tree = tree;
+      if(!this.validtree) return;
 
-            $(".button_box").mousedown(function (evt) {
-                var _dir = '';
+      this._moveTimer = setInterval( () =>{ this._tree.MoveTree(_dir); }, 100);
+    }
+    movebuttonup(){
+      if(!this.validtree) return;
 
-                if (evt.target.id == "up") _dir = 'UP';
-                if (evt.target.id == "dn") _dir = 'DOWN';
-                if (evt.target.id == "we") _dir = 'WEST';
-                if (evt.target.id == "no") _dir = 'NORTH';
-                if (evt.target.id == "es") _dir = 'EAST';
-                if (evt.target.id == "so") _dir = 'SOUTH';
-                if (evt.target.id == "de") _dir = 'DEBUG';
+      clearInterval(this._moveTimer);
+    }
 
-                if (that._tree !== null) {
-                    int = setInterval(function () { that._tree.MoveTree(_dir); }, 100);
-                }
+    canvasmousedown(){
+      if(!this.validtree) return;
 
-            }).mouseup(function () {
-                clearInterval(int);
-            });
+      this._mouseDown = true;
+    }
 
+    canvasmouseup(){
+      if(!this.validtree) return;
 
-            setTimeout($.proxy(this.GameLoop, this), 1000 / 50);
+      this._mouseDown = false;
 
-            $("#myCanvas").mousedown(function (evt) {
-                evt.preventDefault();
-                if (that._tree !== null) {
-                    evt.originalEvent.preventDefault();
-                    that._mouseDown = true;
-                }
-            });
+      var _point = new Array(1000000, 1000000);
+      this._moustQueue[this._moustQueue.length] = _point;
+    }
 
-            $("#myCanvas").mouseup(function (evt) {
-                evt.preventDefault();
-                if (that._tree !== null) {
-                    that._mouseDown = false;
+    canvasclick(clientX , boundingrecleft, clientY , boundingrectop){
 
-                    var _point = new Array(1000000, 1000000);
-                    that._moustQueue[that._moustQueue.length] = _point;
+         if(!this.validtree) return;
 
-                }
-            });
+          this._tree.PerformClick(clientX- boundingrecleft, clientY - boundingrectop);
 
-            $("#myCanvas").click(function (evt) {
-                if (that._tree !== null) {
+          this._tree.UpdateGenerationState();
 
-                    var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
+          if (this._tree.bt_refreshData) {
+              getData(this._tree.selectedPersonId, this._tree.selectedPersonX, this._tree.selectedPersonY);
+          }
 
-                    that._tree.PerformClick(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
+          this._moustQueue[this._moustQueue.length] = new Array(1000000, 1000000);
 
-                    that._tree.UpdateGenerationState();
+    }
 
-                    if (that._tree.bt_refreshData) {
-                        getData(that._tree.selectedPersonId, that._tree.selectedPersonX, that._tree.selectedPersonY);
-                    }
+    canvasmove(clientX , boundingrecleft, clientY , boundingrectop){
 
+         if(!this.validtree) return;
 
-                    that._moustQueue[that._moustQueue.length] = new Array(1000000, 1000000);
-                }
-            });
+          var _point = new Array(clientX - boundingrecleft, clientY- boundingrectop);
 
-            $("#myCanvas").mousemove(function (evt) {
-                if (that._tree !== null) {
+          this._tree.SetMouse(_point[0], _point[1]);
+          if (this._mouseDown) {
+              this._moustQueue.push(_point);
+          }
 
-                    var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
-
-                    var _point = new Array(evt.clientX - boundingrec.left, evt.clientY - boundingrec.top);
-
-                    that._tree.SetMouse(_point[0], _point[1]);
-                    if (that._mouseDown) {
-                        that._moustQueue.push(_point);
-                    }
-                }
-            });
-
-            $("#ml .message").html('<span>Downloading Descendant Tree</span>');
+    }
 
 
-            this.processData(id,data,treeUI);
-        }, this));
+    run(id, data,tree, ui){
 
+      this.treeUI =ui; //= new TreeUI(type == 'anc' ? 1:0, $.proxy(function (treeUI) {
+      this._tree = tree;
+      clearTimeout(this._gameLoopTimer);
+      this._gameLoopTimer = setTimeout($.proxy(this.GameLoop, this), 1000 / 50);
+      this.processData(id,data,ui);
+    }
 
-    },
-    processData: function (id,data, UI) {
+    processData (id,data, UI) {
 
         var _zoomLevel = 100;
 
@@ -129,17 +114,17 @@ TreeRunner.prototype = {
         this._tree.RelocateToSelectedPerson();
 
         this._tree.bt_refreshData = false;
-    },
+    }
 
-    CleanUp: function () {
+    CleanUp () {
 
         $("#myCanvas").unbind();
         $(".button_box").unbind();
         this._tree = undefined;
         this.kill = true;
-    },
+    }
 
-    GameLoop: function () {
+    GameLoop () {
 
         while (this._moustQueue.length > 0) {
             var _point = this._moustQueue.shift();
@@ -153,4 +138,4 @@ TreeRunner.prototype = {
             setTimeout($.proxy(this.GameLoop, this));
     }
 
-};
+}

@@ -165,75 +165,24 @@ TreeBase.prototype = {
 
         var personStack = [];
 
-        let graph = this.generations;
-
-        parent.Children.foreach((item)=>{
-          personStack.push(item);
+        parent.Children.forEach((child)=>{
+          personStack.push(child);
         });
-
-        // var currentTP = parent;
-        // while (personStack.length > 0) {
-        //     currentTP = personStack.pop();
-        //     currentTP.IsDisplayed = isDisplay;
-        //
-        //     var spouseIdx = 0;
-        //     while (spouseIdx < currentTP.SpouseIdxLst.length) {
-        //         var spIdx = currentTP.SpouseIdxLst[spouseIdx];
-        //
-        //         graph[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
-        //         spouseIdx++;
-        //     }
-        //
-        //   }
-
-//find children
-        // var _genidx = 0;
-        // if (graph.length > parent.GenerationIdx) {
-        //     _genidx = 0;
-        //     while (_genidx < graph[parent.GenerationIdx].length) {
-        //         // find all the children of the parent
-        //
-        //         //GenerationIdx is the generation of their children!
-        //         if (graph[parent.GenerationIdx][_genidx].FatherId == parent.PersonId ||
-        //                 graph[parent.GenerationIdx][_genidx].MotherId == parent.PersonId) {
-        //
-        //             personStack.push(graph[parent.GenerationIdx][_genidx]);
-        //         }
-        //
-        //         _genidx++;
-        //     }
-        // }
-
-
 
         var currentTP = parent;
         while (personStack.length > 0) {
             currentTP = personStack.pop();
             currentTP.IsDisplayed = isDisplay;
 
-            var spouseIdx = 0;
-            while (spouseIdx < currentTP.SpouseIdxLst.length) {
-                var spIdx = currentTP.SpouseIdxLst[spouseIdx];
+            currentTP.Spouses.forEach((spouse)=>{
+              spouse.IsDisplayed = isDisplay;
+            });
 
-                graph[currentTP.GenerationIdx-1][spIdx].IsDisplayed = isDisplay;
-                spouseIdx++;
-            }
+            currentTP.Children.forEach((child)=>{
+              personStack.push(child);
+            });
 
-            if (graph.length > currentTP.GenerationIdx + 1) {
-                _genidx = 0;
-                while (_genidx < graph[currentTP.GenerationIdx].length) {
-                    // find all the children of the currently selected generation
-
-                    if (graph[currentTP.GenerationIdx][_genidx].FatherId == currentTP.PersonId ||
-                       graph[currentTP.GenerationIdx][_genidx].MotherId == currentTP.PersonId) {
-                        personStack.push(graph[currentTP.GenerationIdx][_genidx]);
-                    }
-
-                    _genidx++;
-                }
-            }
-        }
-
+          }
 
     },
 
@@ -367,29 +316,6 @@ TreeBase.prototype = {
         this.mouse_y = y;
 
         if (mousestate == undefined) mousestate = false;
-
-//        if (this.initial_mouse_x === 0) {
-//            this.initial_mouse_x = this.mouse_x;
-//        }
-
-//        if (this.initial_mouse_y === 0) {
-//            this.initial_mouse_y = this.mouse_y;
-//        }
-
-
-//        if (this.mouse_x < this.centrePoint) {
-//            this.xFromCentre = this.centrePoint - this.mouse_x;
-//        }
-//        else {
-//            if (this.centrePoint < 0) {
-//                this.xFromCentre = this.mouse_x + Math.abs(this.centrePoint);
-//            }
-//            else {
-//                this.xFromCentre = this.mouse_x - this.centrePoint;
-//            }
-
-//            this.xFromCentre = this.xFromCentre - (this.xFromCentre * 2);
-//        }
 
         var mouseLink = this.bt_links.LinkContainingPoint(this.mouse_x, this.mouse_y);
 

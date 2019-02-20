@@ -80,6 +80,7 @@ export class AncGraphCreator {
                         husbandIdx = this._generations[currentGen].length - 1;
 
                         this._generations[currentGen - 1][0].FatherIdx = husbandIdx;
+                        this._generations[currentGen - 1][0].Father = this._generations[currentGen][husbandIdx];
                         this._generations[currentGen][husbandIdx].Index = husbandIdx;
                     }
 
@@ -90,6 +91,7 @@ export class AncGraphCreator {
                         wifeIdx = this._generations[currentGen].length - 1;
 
                         this._generations[currentGen - 1][0].MotherIdx = wifeIdx;
+                        this._generations[currentGen - 1][0].Mother = this._generations[currentGen][wifeIdx];
                         this._generations[currentGen][wifeIdx].Index = wifeIdx;
                     }
 
@@ -141,6 +143,7 @@ export class AncGraphCreator {
                         husbandIdx= this._generations[currentGen + 1].length - 1;
                         this._generations[currentGen + 1][husbandIdx].Index = husbandIdx;
                         this._generations[currentGen][idx].FatherIdx = husbandIdx;
+                        this._generations[currentGen][idx].Father= this._generations[currentGen + 1][husbandIdx];
                     }
 
 
@@ -151,6 +154,7 @@ export class AncGraphCreator {
                         wifeIdx = this._generations[currentGen + 1].length - 1;
                         this._generations[currentGen + 1][wifeIdx].Index = wifeIdx;
                         this._generations[currentGen][idx].MotherIdx = wifeIdx;
+                        this._generations[currentGen][idx].Mother =this._generations[currentGen + 1][wifeIdx];
                     }
 
                     if (husbandIdx > 0 && wifeIdx > 0) {
@@ -190,6 +194,7 @@ export class AncGraphCreator {
               ChildLst: [],
               Children: [child],
               DescendentCount: 0,
+              Father:undefined,
               FatherId: '',
               FatherIdx: -1,
               GenerationIdx: genIdx,
@@ -199,6 +204,7 @@ export class AncGraphCreator {
               IsFamilyStart: false,
               IsHtmlLink: true,
               IsParentalLink: false,
+              Mother:undefined,
               MotherId: '',
               MotherIdx: -1,
               PersonId: person.id,

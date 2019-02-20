@@ -338,12 +338,6 @@ DescTree.prototype = {
 
 
 
-                        //if (genPerson.Name == 'George Shelton Thackray')
-                        //     console.log('displaying: ' + genPerson.Name);
-
-                        //regional parental links
-
-
                         if (genPerson.IsParentalLink && _genIdx > 0) {
 
 

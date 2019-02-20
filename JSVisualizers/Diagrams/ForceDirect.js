@@ -24,9 +24,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 import {LayoutList} from "./LayoutList.js";
 import {Graph} from "./Graph.js";
-import {FDRenderer} from "./FDRenderer.js";
+import {RenderLib} from "./Static/RenderLib.js";
 import {RenderingHandler} from "./RenderingHandler.js";
-
+//test
 export function ForceDirect(channel,settings, gedPreLoader) {
 
     this.channel = channel;
@@ -122,7 +122,7 @@ ForceDirect.prototype = {
             if (Number(that.settings.year) > layoutList.topYear) clearInterval(that.yearTimer);
         }
 
-        that.renderingHandler = new RenderingHandler(that.channel, layoutList, new FDRenderer(graph, ctx));
+        that.renderingHandler = new RenderingHandler(that.channel, layoutList, new RenderLib(graph, ctx));
 
         that.renderingHandler.start();
 

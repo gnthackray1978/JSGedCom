@@ -11,6 +11,7 @@ import {LayoutSettings} from "./Diagrams/CommonSettings/LayoutSettings.js";
 import {ForceDirect} from "./Diagrams/ForceDirect.js";
 import {GedLib} from "./DataLoader/GedLib.js";
 import {AncGraphCreator} from "./DataLoader/AncGraphCreator.js";
+import {TreeUI} from "./Diagrams/Static/TreeUI.js";
 
 import mitt from 'mitt';
 
@@ -18,20 +19,14 @@ $(document).ready(function () {
 
     let _graphLoaderUI = null;
     var channel;
-    let _treeRunner =null ;
+
     let _forceDirect = null;
     const _applicationGedLoader = new GedLib();
-  //var test = new ForceDirect();
 
     channel = mitt();
+    let _treeRunner = new TreeRunner();
 
-
-  //  if (window.location.hash == '#test') {
-    //    _graphLoaderUI = new SimpleLoaderUI(new FakeData());
-  //  } else {
-        _graphLoaderUI = new ComplexLoaderUI();//
-  //  }
-
+    _graphLoaderUI = new ComplexLoaderUI();//
 
     _graphLoaderUI.InitPanelVisibility();
 
@@ -45,11 +40,9 @@ $(document).ready(function () {
         const dispose =()=>{
           if(_forceDirect)
               _forceDirect.kill();
-
-          if (_treeRunner!= null)
-              _treeRunner.CleanUp();
         };
         let loader;
+        let treeUI = new TreeUI();
 
         switch (_graphLoaderUI.GetDiagramType()) {
             case 'anc':
@@ -59,8 +52,10 @@ $(document).ready(function () {
                 loader = new AncGraphCreator(_applicationGedLoader.families,_applicationGedLoader.persons);
 
                 loader.GetGenerations(selectedId,function(data){
-                  _treeRunner = new TreeRunner();
-                  _treeRunner.run(selectedId,data, new AncTree());
+                  treeUI.Init(1, (instance)=>{
+                    TreeUI.WireUp(_treeRunner);
+                    _treeRunner.run(selectedId,data, new AncTree(),treeUI);
+                  });
                 });
 
                 break;
@@ -71,8 +66,10 @@ $(document).ready(function () {
                 loader = new DescGraphCreator(_applicationGedLoader.families,_applicationGedLoader.persons);
 
                 loader.GetGenerations(selectedId,function(data){
-                  _treeRunner = new TreeRunner();
-                  _treeRunner.run(selectedId,data, new DescTree());
+                 treeUI.Init(0, (instance)=>{
+                    TreeUI.WireUp(_treeRunner);
+                    _treeRunner.run(selectedId,data, new DescTree(),treeUI);
+                  });
                 });
 
 
@@ -87,7 +84,7 @@ $(document).ready(function () {
 
                 var diagUI = new VisControlsUI(channel, settings);
 
-                let gedPreLoader = new DescGraphCreator(_applicationGedLoader);
+                let gedPreLoader = new DescGraphCreator(_applicationGedLoader.families,_applicationGedLoader.persons);
 
                 _forceDirect = new ForceDirect(channel, settings, gedPreLoader);
 

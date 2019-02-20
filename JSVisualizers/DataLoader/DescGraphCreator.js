@@ -189,6 +189,7 @@ export class DescGraphCreator {
                 ChildLst: [],
                 Children:[],
                 DescendentCount: 0,
+                Father:undefined,
                 FatherId: '',
                 FatherIdx: -1,
                 GenerationIdx: rawPerson.generation,
@@ -198,6 +199,7 @@ export class DescGraphCreator {
                 IsFamilyStart: rawPerson.isFirst,
                 IsHtmlLink: false,
                 IsParentalLink: false,
+                Mother:undefined,
                 MotherId: '',
                 MotherIdx: -1,
                 PersonId: rawPerson.id,
@@ -264,6 +266,8 @@ export class DescGraphCreator {
                 // so fill array with people who have parental indexs
                 // then use middle of array as parental link person!
 
+                //also remember we are looking back through
+                //the previously added generation
                 var tpFamily = [];
 
                 while (idx >= 0) {
@@ -337,12 +341,15 @@ export class DescGraphCreator {
 
                         newPerson.FatherIdx = firstParentIdx;
                         newPerson.FatherId = this._generations[previousGeneration][firstParentIdx].PersonId;
-
+                        newPerson.Father =this._generations[previousGeneration][firstParentIdx];
                         newPerson.MotherId = this._generations[previousGeneration][secondParentIdx].PersonId;
                         newPerson.MotherIdx = secondParentIdx;
+                        newPerson.Mother  = this._generations[previousGeneration][secondParentIdx];
+
                     } else {
 
                         newPerson.FatherIdx = secondParentIdx;
+                        newPerson.Father =this._generations[previousGeneration][secondParentIdx];
                         newPerson.FatherId = this._generations[previousGeneration][secondParentIdx].PersonId;
                     }
 

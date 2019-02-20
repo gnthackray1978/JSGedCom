@@ -1,54 +1,50 @@
 import plusImg from '../../Images/24x24/plus.png'; // with import
 import minusImg from '../../Images/24x24/plus.png'; // with import
 
-export function TreeUI (modelCode, callback) {
+export class TreeUI {
 
-    this.docClose = new Image();
-    this.docNew = new Image();
-    this.modelCode = modelCode;
+    Init(isAnc, callback){
+      this.docClose = new Image();
+      this.docNew = new Image();
+      this.modelCode = isAnc;
 
-    if (this.modelCode == 0) {
-        // descendants
-        this.backgroundcolour = 'black';
-        this.linecolour = '#99CCFF';
-        this.textcolour = 'black';// 'white';
-        this.spousecolour = 'slateblue';
+      if (this.modelCode == 0) {
+          // descendants
+          this.backgroundcolour = 'black';
+          this.linecolour = '#99CCFF';
+          this.textcolour = 'black';// 'white';
+          this.spousecolour = 'slateblue';
 
-        $("#map_control").removeClass("ancestorstyle").addClass("descendantstyle");
-        $("#map_label").removeClass("ancestorstyle").addClass("descendantstyle");
+          $("#map_control").removeClass("ancestorstyle").addClass("descendantstyle");
+          $("#map_label").removeClass("ancestorstyle").addClass("descendantstyle");
 
+      }
+      else {
+
+          this.backgroundcolour = 'white';
+          this.linecolour = 'black';
+          this.textcolour = 'black';
+          this.spousecolour = 'slateblue';
+
+          $("#map_control").removeClass("descendantstyle").addClass("ancestorstyle");
+          $("#map_label").removeClass("descendantstyle").addClass("ancestorstyle");
+
+      }
+
+      this.docClose.src = plusImg;
+
+      var that = this;
+      this.docClose.onload = function () {
+          that.docNew.src = minusImg;
+
+          that.docNew.onload = function () {
+              callback(that);
+          };
+
+      };
     }
-    else {
 
-        this.backgroundcolour = 'white';
-        this.linecolour = 'black';
-        this.textcolour = 'black';
-        this.spousecolour = 'slateblue';
-
-        $("#map_control").removeClass("descendantstyle").addClass("ancestorstyle");
-        $("#map_label").removeClass("descendantstyle").addClass("ancestorstyle");
-
-    }
-
-    this.docClose.src = plusImg;
-
-    var that = this;
-    this.docClose.onload = function () {
-        that.docNew.src = minusImg;
-
-        that.docNew.onload = function () {
-            callback(that);
-        };
-
-    };
-
-
-}
-
-TreeUI.prototype = {
-
-
-    UpdateUI: function (screen_width, screen_height, box_width, box_height) {
+    UpdateUI (screen_width, screen_height, box_width, box_height) {
 
         this.screen_width = screen_width;
         this.screen_height = screen_height;
@@ -59,9 +55,9 @@ TreeUI.prototype = {
 
         this.boxWidth = box_width;
         this.boxHeight = box_height;
-    },
+    }
 
-    DrawLine: function (points) {
+    DrawLine(points) {
 
         var _pointIdx = 0;
         this.context.beginPath();
@@ -98,7 +94,7 @@ TreeUI.prototype = {
         if (_validLine) {
             _pointIdx = 0;
             while (_pointIdx < points.length) {
-                var _Point = points[_pointIdx];
+                let _Point = points[_pointIdx];
                 if (_pointIdx === 0) {
                     this.context.moveTo(_Point[0], _Point[1]);
                 }
@@ -117,8 +113,9 @@ TreeUI.prototype = {
         }
 
 
-    },
-    DrawButton: function (_person, checked) {
+    }
+
+    DrawButton (_person, checked) {
         var linkArea = { x1: 0, x2: 0, y1: 0, y2: 0, action: 'box' };
         //
         if (_person.IsDisplayed &&
@@ -157,8 +154,9 @@ TreeUI.prototype = {
         }
         return linkArea;
 
-    },
-    DrawPerson: function (_person, sourceId, zoomPerc) {
+    }
+
+    DrawPerson (_person, sourceId, zoomPerc) {
 
         var xoffset = 0;
 
@@ -324,18 +322,15 @@ TreeUI.prototype = {
                     break;
 
             }
-
-
-
-
         }
 
         //typically used in descendanttree drawtree method
         //adds to basetree links collection
         return linkArea;
 
-    },
-    RoundedRect: function (ctx, x, y, width, height, radius) {
+    }
+
+    RoundedRect(ctx, x, y, width, height, radius) {
         ctx.beginPath();
         ctx.moveTo(x, y + radius);
         ctx.lineTo(x, y + height - radius);
@@ -347,8 +342,9 @@ TreeUI.prototype = {
         ctx.lineTo(x + radius, y);
         ctx.quadraticCurveTo(x, y, x, y + radius);
         ctx.stroke();
-    },
-    WriteName: function (xpos, ypos, _person, maxlines) {
+    }
+
+    WriteName(xpos, ypos, _person, maxlines) {
         this.context.font = "bold 8pt Calibri";
 
         if (_person.IsHtmlLink) {
@@ -377,8 +373,9 @@ TreeUI.prototype = {
         this.context.font = "8pt Calibri";
         this.context.fillStyle = "black";
         return _y;
-    },
-    WriteBLocation: function (xpos, ypos, _person, maxlines) {
+    }
+
+    WriteBLocation(xpos, ypos, _person, maxlines) {
         this.context.font = "8pt Calibri";
         this.context.fillStyle = this.textcolour;
 
@@ -401,8 +398,9 @@ TreeUI.prototype = {
             _y += linespacing;
         }
         return _y;
-    },
-    WriteDLocation: function (xpos, ypos, _person, maxlines) {
+    }
+
+    WriteDLocation(xpos, ypos, _person, maxlines) {
         this.context.font = "8pt Calibri";
         this.context.fillStyle = this.textcolour;
 
@@ -423,8 +421,8 @@ TreeUI.prototype = {
             }
         }
         return _y;
-    },
-    MakeArray: function (person, parseStr) {
+    }
+    MakeArray(person, parseStr) {
 
         var name = '';
         var nameAr = [];
@@ -472,4 +470,47 @@ TreeUI.prototype = {
 
         return nameAr;
     }
-};
+
+    static WireUp(runner){
+      $("#myCanvas").unbind();
+      $(".button_box").unbind();
+
+      $(".button_box").mousedown(function (evt) {
+          var _dir = '';
+
+          if (evt.target.id == "up") _dir = 'UP';
+          if (evt.target.id == "dn") _dir = 'DOWN';
+          if (evt.target.id == "we") _dir = 'WEST';
+          if (evt.target.id == "no") _dir = 'NORTH';
+          if (evt.target.id == "es") _dir = 'EAST';
+          if (evt.target.id == "so") _dir = 'SOUTH';
+          if (evt.target.id == "de") _dir = 'DEBUG';
+
+          runner.movebuttondown(_dir);
+
+      }).mouseup(function () {
+          runner.movebuttonup();
+      });
+
+      $("#myCanvas").mousedown(function (evt) {
+          evt.preventDefault();
+          evt.originalEvent.preventDefault();
+          runner.canvasmousedown();
+      });
+
+      $("#myCanvas").mouseup(function (evt) {
+        evt.preventDefault();
+        runner.canvasmouseup();
+      });
+
+      $("#myCanvas").click(function (evt) {
+        var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
+        runner.canvasclick(evt.clientX ,boundingrec.left, evt.clientY , boundingrec.top);
+      });
+
+      $("#myCanvas").mousemove(function (evt) {
+         var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
+         runner.canvasmove(evt.clientX ,boundingrec.left, evt.clientY , boundingrec.top);
+      });
+    }
+}
