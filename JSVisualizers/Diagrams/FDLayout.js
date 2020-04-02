@@ -214,7 +214,7 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e);
+            var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
 
             var newNearest = this.nearestPoint(p);
 
@@ -249,7 +249,7 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e);
+            var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
 
             var newNearest = this.nearestPoint(p);
 
@@ -359,7 +359,7 @@ FDLayout.prototype = {
     //    console.log('mouseMove_');
 
         var pos = $(this.canvasId).offset();
-        var p = this._cameraView.currentPositionFromScreen(pos, e);
+        var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
 
         if (!this.mouseup && this.selected.node.id !== -1 && this.dragged.node.id == -1) {
             this._cameraView.addToMouseQueue(e.clientX, e.clientY);
